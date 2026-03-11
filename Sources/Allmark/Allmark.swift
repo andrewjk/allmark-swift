@@ -1,4 +1,4 @@
-import Collections
+import OrderedCollections
 import Foundation
 
 /// The main entry point for the Allmark Markdown parser.

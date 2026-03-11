@@ -1,5 +1,5 @@
 import Foundation
-import Collections
+import OrderedCollections
 
 /// A collection of block and inline parsing rules.
 public struct RuleSet {

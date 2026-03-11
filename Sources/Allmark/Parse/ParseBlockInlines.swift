@@ -1,5 +1,5 @@
 import Foundation
-import Collections
+import OrderedCollections
 
 /// Parses block inlines by processing inline rules for a block node's content
 /// - Parameters:

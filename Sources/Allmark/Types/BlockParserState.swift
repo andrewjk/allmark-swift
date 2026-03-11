@@ -1,5 +1,5 @@
 import Foundation
-import Collections
+import OrderedCollections
 
 /// State maintained during block parsing.
 public struct BlockParserState {

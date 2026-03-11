@@ -1,5 +1,5 @@
 import Foundation
-import Collections
+import OrderedCollections
 
 @MainActor
 func _transform(src: String, rules: RuleSet, renderers: OrderedDictionary<String, Renderer>) -> String {

@@ -1,5 +1,5 @@
 import Foundation
-import Collections
+import OrderedCollections
 
 /// Console/terminal renderers for all node types.
 @MainActor

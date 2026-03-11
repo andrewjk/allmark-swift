@@ -1,5 +1,5 @@
 import Foundation
-import Collections
+import OrderedCollections
 
 @MainActor
 func _render(doc: MarkdownNode, renderers: OrderedDictionary<String, Renderer> = htmlRenderers) -> String {
