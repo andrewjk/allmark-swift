@@ -1,5 +1,5 @@
 import Testing
-@testable import allmark
+@testable import Allmark
 
 struct GfmAlertTests {
 	@Test func specAlert() async {

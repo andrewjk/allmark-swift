@@ -1,5 +1,5 @@
 import Testing
-@testable import allmark
+@testable import Allmark
 
 struct HeadingTests {
 	@Test func atxHeadingLevel1() async {

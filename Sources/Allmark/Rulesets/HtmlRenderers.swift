@@ -1,8 +1,9 @@
 import Foundation
 import Collections
 
+/// HTML renderers for all node types.
 @MainActor
-let htmlRenderers: OrderedDictionary<String, Renderer> = [
+public let htmlRenderers: OrderedDictionary<String, Renderer> = [
 	alertRenderer.name: alertRenderer,
 	blockQuoteRenderer.name: blockQuoteRenderer,
 	codeBlockRenderer.name: codeBlockRenderer,

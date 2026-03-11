@@ -1,8 +1,13 @@
 import Foundation
 
-struct Delimiter {
-	var markup: String
-	var start: Int
-	var length: Int
-	var handled: Bool?
+/// An inline delimiter for emphasis/links.
+public struct Delimiter {
+	/// The delimiter markup (e.g., "*", "_", "[").
+	public var markup: String
+	/// Starting position in the source.
+	public var start: Int
+	/// Length of the delimiter.
+	public var length: Int
+	/// Whether this delimiter has been handled.
+	public var handled: Bool?
 }

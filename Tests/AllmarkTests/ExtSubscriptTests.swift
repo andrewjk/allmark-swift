@@ -1,5 +1,5 @@
 import Testing
-@testable import allmark
+@testable import Allmark
 
 struct ExtSubscriptTests {
 	@Test func subscriptSingle() async {

@@ -1,7 +1,8 @@
 import Foundation
 
+/// The GitHub Flavored Markdown ruleset.
 @MainActor
-let gfmRuleSet = RuleSet(
+public let gfmRuleSet = RuleSet(
 	blocks: [
 		indentRule.name: indentRule,
 		headingRule.name: headingRule,

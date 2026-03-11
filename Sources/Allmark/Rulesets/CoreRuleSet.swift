@@ -1,7 +1,8 @@
 import Foundation
 
+/// The core CommonMark ruleset.
 @MainActor
-let coreRuleSet = RuleSet(
+public let coreRuleSet = RuleSet(
 	blocks: [
 		indentRule.name: indentRule,
 		headingRule.name: headingRule,

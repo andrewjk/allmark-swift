@@ -1,18 +1,28 @@
 import Foundation
 import Collections
 
-struct InlineParserState {
-	var rules: OrderedDictionary<String, InlineRule>
-	
-	var src: String
-	var i: Int
-	var line: Int
-	var lineStart: Int
-	var indent: Int
-	var delimiters: [Delimiter]
-	var refs: [String: LinkReference]
-	var footnotes: [String: FootnoteReference]
-	
+/// State maintained during inline parsing.
+public struct InlineParserState {
+	/// Inline parsing rules.
+	public var rules: OrderedDictionary<String, InlineRule>
+
+	/// The source text being parsed.
+	public var src: String
+	/// Current position in the source.
+	public var i: Int
+	/// Current line number.
+	public var line: Int
+	/// Starting position of the current line.
+	public var lineStart: Int
+	/// Current indentation level.
+	public var indent: Int
+	/// Active delimiter characters for emphasis/links.
+	public var delimiters: [Delimiter]
+	/// Link reference definitions.
+	public var refs: [String: LinkReference]
+	/// Footnote reference definitions.
+	public var footnotes: [String: FootnoteReference]
+
 	// HACK:
-	var debug: Bool?
+	public var debug: Bool?
 }

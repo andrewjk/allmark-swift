@@ -1,5 +1,5 @@
 import Testing
-@testable import allmark
+@testable import Allmark
 
 struct RenderConsoleTests {
     @Test func rendersParagraphToConsole() async {

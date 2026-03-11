@@ -1,8 +1,9 @@
 import Foundation
 import Collections
 
+/// Console/terminal renderers for all node types.
 @MainActor
-let consoleRenderers: OrderedDictionary<String, Renderer> = [
+public let consoleRenderers: OrderedDictionary<String, Renderer> = [
 	consoleAlertRenderer.name: consoleAlertRenderer,
 	consoleBlockQuoteRenderer.name: consoleBlockQuoteRenderer,
 	consoleCodeBlockRenderer.name: consoleCodeBlockRenderer,
