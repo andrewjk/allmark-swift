@@ -8,8 +8,8 @@ struct HeadingTests {
 		<h1>Heading 1</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -20,8 +20,8 @@ struct HeadingTests {
 		<h2>Heading 2</h2>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -32,8 +32,8 @@ struct HeadingTests {
 		<h3>Heading 3</h3>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -44,8 +44,8 @@ struct HeadingTests {
 		<h4>Heading 4</h4>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -56,8 +56,8 @@ struct HeadingTests {
 		<h5>Heading 5</h5>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -68,8 +68,8 @@ struct HeadingTests {
 		<h6>Heading 6</h6>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -80,8 +80,8 @@ struct HeadingTests {
 		<h1>Heading 1</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -92,8 +92,8 @@ struct HeadingTests {
 		<h2>Heading 2</h2>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -104,8 +104,8 @@ struct HeadingTests {
 		<h1>Heading 1</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -116,8 +116,8 @@ struct HeadingTests {
 		<h1><em>Heading</em> with <strong>emphasis</strong></h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -128,8 +128,8 @@ struct HeadingTests {
 		<h1>Heading with <code>code</code></h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -140,8 +140,8 @@ struct HeadingTests {
 		<h1>Heading with <a href="https://example.com">link</a></h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -155,8 +155,8 @@ struct HeadingTests {
 		<h1>Heading 1</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -170,8 +170,8 @@ struct HeadingTests {
 		<h2>Heading 2</h2>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -187,8 +187,8 @@ struct HeadingTests {
 		line 2</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -202,8 +202,8 @@ struct HeadingTests {
 		<h1><em>Heading</em> 1</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -214,8 +214,8 @@ struct HeadingTests {
 		<h1>Heading 1</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -227,8 +227,8 @@ struct HeadingTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -239,8 +239,8 @@ struct HeadingTests {
 		<p>#Not a heading</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -251,8 +251,8 @@ struct HeadingTests {
 		<p>####### Not a heading</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -263,8 +263,8 @@ struct HeadingTests {
 		<h1></h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -275,8 +275,8 @@ struct HeadingTests {
 		<h2></h2>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -293,8 +293,8 @@ struct HeadingTests {
 		</ul>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -305,8 +305,8 @@ struct HeadingTests {
 		<h1>Heading with # escaped</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -317,8 +317,8 @@ struct HeadingTests {
 		<h1>Last heading</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -335,8 +335,8 @@ struct HeadingTests {
 		<h3>Heading 3</h3>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -354,8 +354,8 @@ struct HeadingTests {
 		<h2>Heading 2</h2>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -370,8 +370,8 @@ struct HeadingTests {
 		<h1>Heading</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -382,8 +382,8 @@ struct HeadingTests {
 		<h1><strong>Bold</strong> text, <em>italic</em> text, <code>code</code>, and <a href="https://example.com">link</a></h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}

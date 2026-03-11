@@ -10,8 +10,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -24,8 +24,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -38,8 +38,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -52,8 +52,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -66,8 +66,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -80,8 +80,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -94,8 +94,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -106,8 +106,8 @@ struct ListOrderedTests {
 		<p>1234567890. Item</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -120,8 +120,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -140,8 +140,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -160,8 +160,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -180,8 +180,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -198,8 +198,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -221,8 +221,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -244,8 +244,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -270,8 +270,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -290,8 +290,8 @@ struct ListOrderedTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -304,8 +304,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -330,8 +330,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -349,8 +349,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -368,8 +368,8 @@ struct ListOrderedTests {
 		<p>Paragraph</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -388,8 +388,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -412,8 +412,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -426,8 +426,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -440,8 +440,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -466,8 +466,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -480,8 +480,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -494,8 +494,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -512,8 +512,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -543,8 +543,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -557,8 +557,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -570,8 +570,8 @@ struct ListOrderedTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -584,8 +584,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -610,8 +610,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -634,8 +634,8 @@ struct ListOrderedTests {
 		</ul>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -654,8 +654,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -668,8 +668,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -691,8 +691,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -703,8 +703,8 @@ struct ListOrderedTests {
 		<p>1.5 is a number</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -715,8 +715,8 @@ struct ListOrderedTests {
 		<p>1.Item</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -729,8 +729,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -755,8 +755,8 @@ struct ListOrderedTests {
 		</ol>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}

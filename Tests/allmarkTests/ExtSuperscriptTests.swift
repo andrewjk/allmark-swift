@@ -10,8 +10,8 @@ This should be ^up^ above everything else.
 <p>This should be <sup>up</sup> above everything else.</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -24,8 +24,8 @@ This should be ^^up^^ above everything else.
 <p>This should be <sup>up</sup> above everything else.</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -38,8 +38,8 @@ This should be ^^^up^^^ above everything else.
 <p>This should be ^^^up^^^ above everything else.</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -48,8 +48,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "x^2^"
 		let expected = "<p>x<sup>2</sup></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -58,8 +58,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "E=mc^2^"
 		let expected = "<p>E=mc<sup>2</sup></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -68,8 +68,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "x^2^ + y^2^ = z^2^"
 		let expected = "<p>x<sup>2</sup> + y<sup>2</sup> = z<sup>2</sup></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -78,8 +78,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "^note^ This is important."
 		let expected = "<p><sup>note</sup> This is important.</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -88,8 +88,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "See footnote^1^"
 		let expected = "<p>See footnote<sup>1</sup></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -98,8 +98,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "Hello^world!^"
 		let expected = "<p>Hello<sup>world!</sup></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -108,8 +108,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "text ^with spaces^ more"
 		let expected = "<p>text <sup>with spaces</sup> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -118,8 +118,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "math^2+3^"
 		let expected = "<p>math<sup>2+3</sup></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -128,8 +128,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "test^ing^test"
 		let expected = "<p>test<sup>ing</sup>test</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -138,8 +138,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "text^^text"
 		let expected = "<p>text^^text</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -148,8 +148,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "text ^**bold**^"
 		let expected = "<p>text <sup><strong>bold</strong></sup></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -158,8 +158,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "text ^`code`^"
 		let expected = "<p>text <sup><code>code</code></sup></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -168,8 +168,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "text \\^not superscript\\^"
 		let expected = "<p>text ^not superscript^</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -178,8 +178,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "text ^not closed"
 		let expected = "<p>text ^not closed</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -188,8 +188,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "text not opened^"
 		let expected = "<p>text not opened^</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -202,8 +202,8 @@ This should be ^^^up^^^ above everything else.
 </ul>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -216,8 +216,8 @@ This should be ^^^up^^^ above everything else.
 </blockquote>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -227,8 +227,8 @@ This should be ^^^up^^^ above everything else.
 		// The first pair of carets creates a superscript, leaving ^z^ as text
 		let expected = "<p>x<sup>y</sup>z^</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -237,8 +237,8 @@ This should be ^^^up^^^ above everything else.
 		let input = "text ^caret ^ inside^"
 		let expected = "<p>text <sup>caret ^ inside</sup></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}

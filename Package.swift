@@ -1,4 +1,4 @@
-// Version: 1.0.0
+// Version: 1.0.1
 // swift-tools-version: 6.1
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
@@ -16,7 +16,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/apple/swift-collections.git",
-            .upToNextMinor(from: "1.3.0") // or `.upToNextMajor
+            .upToNextMajor(from: "1.3.0") // or `.upToNextMinor
         )
     ],
     targets: [

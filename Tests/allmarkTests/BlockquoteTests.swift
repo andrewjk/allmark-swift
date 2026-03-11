@@ -10,8 +10,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -30,8 +30,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -50,8 +50,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -64,8 +64,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -78,8 +78,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -97,8 +97,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -116,8 +116,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -136,8 +136,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -160,8 +160,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -174,8 +174,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -188,8 +188,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -202,8 +202,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -216,8 +216,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -230,8 +230,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -244,8 +244,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -257,8 +257,8 @@ struct BlockquoteTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -278,8 +278,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -296,8 +296,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -315,8 +315,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -341,8 +341,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -369,8 +369,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -382,8 +382,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -395,8 +395,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -409,8 +409,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -428,8 +428,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -448,8 +448,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -465,8 +465,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -483,8 +483,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -497,8 +497,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -525,8 +525,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -547,8 +547,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -572,8 +572,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -592,8 +592,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -606,8 +606,8 @@ struct BlockquoteTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}

@@ -14,8 +14,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -32,8 +32,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -50,8 +50,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -68,8 +68,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -86,8 +86,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -107,8 +107,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -125,8 +125,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -151,8 +151,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -175,8 +175,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -193,8 +193,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -211,8 +211,8 @@ struct GfmAlertTests {
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -229,8 +229,8 @@ It should not be treated as an alert.</p>
 </blockquote>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -247,8 +247,8 @@ It should be a regular blockquote.</p>
 </blockquote>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -270,8 +270,8 @@ It should be a regular blockquote.</p>
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -295,8 +295,8 @@ It should be a regular blockquote.</p>
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -314,8 +314,8 @@ It should be a regular blockquote.</p>
 </div>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}

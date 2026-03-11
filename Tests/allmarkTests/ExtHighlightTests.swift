@@ -10,8 +10,8 @@ This should be =highlighted= as it is important.
 <p>This should be <mark>highlighted</mark> as it is important.</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -24,8 +24,8 @@ This should be ==highlighted== as it is important.
 <p>This should be <mark>highlighted</mark> as it is important.</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -38,8 +38,8 @@ This should be ===highlighted=== as it is important.
 <p>This should be ===highlighted=== as it is important.</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -48,8 +48,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text =a= more"
 		let expected = "<p>text <mark>a</mark> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -58,8 +58,8 @@ This should be ===highlighted=== as it is important.
 		let input = "=first= and =second= and =third="
 		let expected = "<p><mark>first</mark> and <mark>second</mark> and <mark>third</mark></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -68,8 +68,8 @@ This should be ===highlighted=== as it is important.
 		let input = "=highlighted= This is important."
 		let expected = "<p><mark>highlighted</mark> This is important.</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -78,8 +78,8 @@ This should be ===highlighted=== as it is important.
 		let input = "This is =highlighted="
 		let expected = "<p>This is <mark>highlighted</mark></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -88,8 +88,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text =word!= more"
 		let expected = "<p>text <mark>word!</mark> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -98,8 +98,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text =with spaces= more"
 		let expected = "<p>text <mark>with spaces</mark> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -108,8 +108,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text =a+b= more"
 		let expected = "<p>text <mark>a+b</mark> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -118,8 +118,8 @@ This should be ===highlighted=== as it is important.
 		let input = "test=ing=test"
 		let expected = "<p>test<mark>ing</mark>test</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -128,8 +128,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text==text"
 		let expected = "<p>text==text</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -138,8 +138,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text =**bold**="
 		let expected = "<p>text <mark><strong>bold</strong></mark></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -148,8 +148,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text =`code`="
 		let expected = "<p>text <mark><code>code</code></mark></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -158,8 +158,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text \\=not highlight\\="
 		let expected = "<p>text =not highlight=</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -168,8 +168,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text =not closed"
 		let expected = "<p>text =not closed</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -178,8 +178,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text not opened="
 		let expected = "<p>text not opened=</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -192,8 +192,8 @@ This should be ===highlighted=== as it is important.
 </ul>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -206,8 +206,8 @@ This should be ===highlighted=== as it is important.
 </blockquote>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -216,8 +216,8 @@ This should be ===highlighted=== as it is important.
 		let input = "text =equals = inside="
 		let expected = "<p>text <mark>equals = inside</mark></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -226,8 +226,8 @@ This should be ===highlighted=== as it is important.
 		let input = "=Start= of document."
 		let expected = "<p><mark>Start</mark> of document.</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -236,8 +236,8 @@ This should be ===highlighted=== as it is important.
 		let input = "End of =document="
 		let expected = "<p>End of <mark>document</mark></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}

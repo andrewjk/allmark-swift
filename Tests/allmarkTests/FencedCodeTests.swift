@@ -13,8 +13,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -30,8 +30,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -47,8 +47,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -64,8 +64,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -81,8 +81,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -98,8 +98,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -113,8 +113,8 @@ struct FencedCodeTests {
 		<pre><code></code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -134,8 +134,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -151,8 +151,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -168,8 +168,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -187,8 +187,8 @@ struct FencedCodeTests {
 		<pre><code></code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -206,8 +206,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -221,8 +221,8 @@ struct FencedCodeTests {
 		<pre><code class="language-code"></code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -242,8 +242,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -258,8 +258,8 @@ struct FencedCodeTests {
 		<p><code>code</code></p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -276,8 +276,8 @@ struct FencedCodeTests {
 		~~</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -294,8 +294,8 @@ struct FencedCodeTests {
 		<code>~</code></p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -312,8 +312,8 @@ struct FencedCodeTests {
 		<pre><code></code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -329,8 +329,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -346,8 +346,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -365,8 +365,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -384,8 +384,8 @@ struct FencedCodeTests {
 		<p>Paragraph</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -407,8 +407,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -426,8 +426,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -443,8 +443,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -460,8 +460,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -477,8 +477,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -495,8 +495,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -513,8 +513,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -530,8 +530,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -547,8 +547,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -570,8 +570,8 @@ struct FencedCodeTests {
 		<p>Paragraph 2</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -587,8 +587,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -606,8 +606,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -622,8 +622,8 @@ struct FencedCodeTests {
 		<p><code> </code> <code>code</code> <code> </code></p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -637,8 +637,8 @@ struct FencedCodeTests {
 		<pre><code class="language-javascript"></code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -657,8 +657,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -676,8 +676,8 @@ struct FencedCodeTests {
 		<h1>Heading</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -693,8 +693,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -710,8 +710,8 @@ struct FencedCodeTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}

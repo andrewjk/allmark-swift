@@ -10,8 +10,8 @@ This text was {>>commented<<} recently.
 <p>This text was <span class="markdown-comment">commented</span> recently.</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -20,8 +20,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>a<<} more"
 		let expected = "<p>text <span class=\"markdown-comment\">a</span> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -30,8 +30,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>with spaces<<} more"
 		let expected = "<p>text <span class=\"markdown-comment\">with spaces</span> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -40,8 +40,8 @@ This text was {>>commented<<} recently.
 		let input = "{>>commented<<} This is new."
 		let expected = "<p><span class=\"markdown-comment\">commented</span> This is new.</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -50,8 +50,8 @@ This text was {>>commented<<} recently.
 		let input = "This is {>>commented<<}"
 		let expected = "<p>This is <span class=\"markdown-comment\">commented</span></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -60,8 +60,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>word!<<} more"
 		let expected = "<p>text <span class=\"markdown-comment\">word!</span> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -70,8 +70,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>a-b<<} more"
 		let expected = "<p>text <span class=\"markdown-comment\">a-b</span> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -80,8 +80,8 @@ This text was {>>commented<<} recently.
 		let input = "test{>>ing<<}test"
 		let expected = "<p>test<span class=\"markdown-comment\">ing</span>test</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -90,8 +90,8 @@ This text was {>>commented<<} recently.
 		let input = "text{>><<}text"
 		let expected = "<p>text{&gt;&gt;&lt;&lt;}text</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -100,8 +100,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>**bold**<<}"
 		let expected = "<p>text <span class=\"markdown-comment\"><strong>bold</strong></span></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -110,8 +110,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>`code`<<}"
 		let expected = "<p>text <span class=\"markdown-comment\"><code>code</code></span></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -120,8 +120,8 @@ This text was {>>commented<<} recently.
 		let input = "text \\{>>not comment<<\\}"
 		let expected = "<p>text {&gt;&gt;not comment&lt;&lt;}</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -130,8 +130,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>not closed"
 		let expected = "<p>text {&gt;&gt;not closed</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -140,8 +140,8 @@ This text was {>>commented<<} recently.
 		let input = "text not opened<<}"
 		let expected = "<p>text not opened&lt;&lt;}</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -154,8 +154,8 @@ This text was {>>commented<<} recently.
 </ul>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -168,8 +168,8 @@ This text was {>>commented<<} recently.
 </blockquote>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -178,8 +178,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>some <text> inside<<} more"
 		let expected = "<p>text <span class=\"markdown-comment\">some <text> inside</span> more</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -188,8 +188,8 @@ This text was {>>commented<<} recently.
 		let input = "{>>Start<<} of document."
 		let expected = "<p><span class=\"markdown-comment\">Start</span> of document.</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -198,8 +198,8 @@ This text was {>>commented<<} recently.
 		let input = "End of {>>document<<}"
 		let expected = "<p>End of <span class=\"markdown-comment\">document</span></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -208,8 +208,8 @@ This text was {>>commented<<} recently.
 		let input = "{>>first<<} and {>>second<<} and {>>third<<}"
 		let expected = "<p><span class=\"markdown-comment\">first</span> and <span class=\"markdown-comment\">second</span> and <span class=\"markdown-comment\">third</span></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -218,8 +218,8 @@ This text was {>>commented<<} recently.
 		let input = "{>>comment *text<<} that shouldn't be bold*"
 		let expected = "<p><span class=\"markdown-comment\">comment *text</span> that shouldn't be bold*</p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -228,8 +228,8 @@ This text was {>>commented<<} recently.
 		let input = "*this text should be {>>commented but not bold*<<}"
 		let expected = "<p>*this text should be <span class=\"markdown-comment\">commented but not bold*</span></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -238,8 +238,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>plus + sign<<}"
 		let expected = "<p>text <span class=\"markdown-comment\">plus + sign</span></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -248,8 +248,8 @@ This text was {>>commented<<} recently.
 		let input = "text {>>minus - sign<<}"
 		let expected = "<p>text <span class=\"markdown-comment\">minus - sign</span></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -258,8 +258,8 @@ This text was {>>commented<<} recently.
 		let input = "text {+insertion {>>comment<<} end+}"
 		let expected = "<p>text <ins class=\"markdown-insertion\">insertion <span class=\"markdown-comment\">comment</span> end</ins></p>"
 		await MainActor.run {
-			let doc = parse(src: input, rules: extendedRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}

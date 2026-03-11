@@ -8,8 +8,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -20,8 +20,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -32,8 +32,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -44,8 +44,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -56,8 +56,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -68,8 +68,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -80,8 +80,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -92,8 +92,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -104,8 +104,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -117,8 +117,8 @@ struct ThematicBreakTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -133,8 +133,8 @@ struct ThematicBreakTests {
 		<p>Paragraph</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -150,8 +150,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -162,8 +162,8 @@ struct ThematicBreakTests {
 		<p>--</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -174,8 +174,8 @@ struct ThematicBreakTests {
 		<p>**</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -186,8 +186,8 @@ struct ThematicBreakTests {
 		<p>__</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -198,8 +198,8 @@ struct ThematicBreakTests {
 		<p>-*-</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -210,8 +210,8 @@ struct ThematicBreakTests {
 		<p>---***</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -224,8 +224,8 @@ struct ThematicBreakTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -242,8 +242,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -254,8 +254,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -266,8 +266,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -286,8 +286,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -304,8 +304,8 @@ struct ThematicBreakTests {
 		</ul>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -322,8 +322,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -342,8 +342,8 @@ struct ThematicBreakTests {
 		<p>Paragraph 2</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -361,8 +361,8 @@ struct ThematicBreakTests {
 		<p>Paragraph 2</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -377,8 +377,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -393,8 +393,8 @@ struct ThematicBreakTests {
 		<h1>Heading</h1>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -412,8 +412,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -431,8 +431,8 @@ struct ThematicBreakTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -452,8 +452,8 @@ struct ThematicBreakTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -464,8 +464,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -476,8 +476,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -493,8 +493,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -509,8 +509,8 @@ struct ThematicBreakTests {
 		<p>Text with <strong>bold</strong></p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -533,8 +533,8 @@ struct ThematicBreakTests {
 		</blockquote>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -550,8 +550,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -570,8 +570,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -582,8 +582,8 @@ struct ThematicBreakTests {
 		<p>--- text</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -601,8 +601,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -619,8 +619,8 @@ struct ThematicBreakTests {
 		</ul>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -644,8 +644,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -661,8 +661,8 @@ struct ThematicBreakTests {
 		</code></pre>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -673,8 +673,8 @@ struct ThematicBreakTests {
 		<hr />
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -685,8 +685,8 @@ struct ThematicBreakTests {
 		<p>---   text</p>
 		"""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -695,8 +695,8 @@ struct ThematicBreakTests {
 		let input = ""
 		let expected = ""
 		await MainActor.run {
-			let doc = parse(src: input, rules: coreRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected)
 		}
 	}

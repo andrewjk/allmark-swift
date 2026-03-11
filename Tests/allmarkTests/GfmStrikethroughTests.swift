@@ -8,8 +8,8 @@ struct GfmStrikethroughTests {
 <p><del>Hi</del> Hello, world!</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -20,8 +20,8 @@ struct GfmStrikethroughTests {
 <p><del>deleted</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -32,8 +32,8 @@ struct GfmStrikethroughTests {
 <p><del>this is deleted</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -44,8 +44,8 @@ struct GfmStrikethroughTests {
 <p>~~  spaces  ~~</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -56,8 +56,8 @@ struct GfmStrikethroughTests {
 <p><del><em>bold and deleted</em></del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -68,8 +68,8 @@ struct GfmStrikethroughTests {
 <p><em><del>deleted in italic</del></em></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -80,8 +80,8 @@ struct GfmStrikethroughTests {
 <p><del>code: <code>var x</code> here</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -92,8 +92,8 @@ struct GfmStrikethroughTests {
 <p><del><a href="http://example.com">link text</a></del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -104,8 +104,8 @@ struct GfmStrikethroughTests {
 <p><del>first</del> and <del>second</del> and <del>third</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -116,8 +116,8 @@ struct GfmStrikethroughTests {
 <p><del>deleted</del> followed by normal text.</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -128,8 +128,8 @@ struct GfmStrikethroughTests {
 <p>Normal text followed by <del>deleted</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -146,8 +146,8 @@ struct GfmStrikethroughTests {
 </ul>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -158,8 +158,8 @@ struct GfmStrikethroughTests {
 <p><del>text with ~ tilde</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -170,8 +170,8 @@ struct GfmStrikethroughTests {
 <pre><code class="language-double~~~~"></code></pre>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -186,8 +186,8 @@ line two~~
 line two</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -198,8 +198,8 @@ line two</del></p>
 <p><del>Hello, world!</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -210,8 +210,8 @@ line two</del></p>
 <p><del>12345</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -239,8 +239,8 @@ line two</del></p>
 </table>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -251,8 +251,8 @@ line two</del></p>
 <p>normal<del>deleted</del>normal</p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -263,8 +263,8 @@ line two</del></p>
 <p><del>text with *asterisk*</del></p>
 """
 		await MainActor.run {
-			let doc = parse(src: input, rules: gfmRuleSet)
-			let html = render(doc: doc, renderers: htmlRenderers)
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
