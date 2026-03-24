@@ -35,7 +35,7 @@ func testLineBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 			let html = MarkdownNode(
 				type: "html_span",
 				block: false,
-				index: state.i,
+				index: state.parentIndex + state.i,
 				line: state.line,
 				column: 1,
 				markup: "",

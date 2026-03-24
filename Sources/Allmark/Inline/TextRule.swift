@@ -29,7 +29,7 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 		let newTextNode = MarkdownNode(
 			type: "text",
 			block: false,
-			index: state.i,
+			index: state.parentIndex + state.i,
 			line: state.line,
 			column: 1,
 			markup: "",

@@ -45,7 +45,7 @@ func testFootnoteOpen(state: inout InlineParserState, parent: inout MarkdownNode
 	let text = MarkdownNode(
 		type: "text",
 		block: false,
-		index: start,
+		index: state.parentIndex + start,
 		line: state.line,
 		column: 1,
 		markup: markup,
@@ -81,7 +81,7 @@ func testFootnoteClose(state: inout InlineParserState, parent: inout MarkdownNod
 		// Convert the text node into a footnote node
 		var i = (parent.children?.count ?? 0) - 1
 		while i >= 0 {
-			if let lastNode = parent.children?[i], lastNode.index == startDel.start {
+			if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
 				let labelStart = startDel.start + startDel.markup.count
 				let src = state.src
 				let labelEndIndex = src.index(src.startIndex, offsetBy: state.i)

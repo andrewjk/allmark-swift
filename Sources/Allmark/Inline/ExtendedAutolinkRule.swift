@@ -55,7 +55,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 							let text = MarkdownNode(
 								type: "text",
 								block: false,
-								index: state.i,
+								index: state.parentIndex + state.i,
 								line: state.line,
 								column: 1,
 								markup: "",
@@ -80,7 +80,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 						let html = MarkdownNode(
 							type: "html_span",
 							block: false,
-							index: state.i,
+							index: state.parentIndex + state.i,
 							line: state.line,
 							column: 1,
 							markup: "",
@@ -115,7 +115,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 							let text = MarkdownNode(
 								type: "text",
 								block: false,
-								index: state.i,
+								index: state.parentIndex + state.i,
 								line: state.line,
 								column: 1,
 								markup: "",
@@ -136,7 +136,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 					let html = MarkdownNode(
 						type: "html_span",
 						block: false,
-						index: state.i,
+						index: state.parentIndex + state.i,
 						line: state.line,
 						column: 1,
 						markup: "",
@@ -177,7 +177,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 								let text = MarkdownNode(
 									type: "text",
 									block: false,
-									index: state.i,
+									index: state.parentIndex + state.i,
 									line: state.line,
 									column: 1,
 									markup: "",
@@ -200,7 +200,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 									let text = MarkdownNode(
 										type: "text",
 										block: false,
-										index: state.i,
+										index: state.parentIndex + state.i,
 										line: state.line,
 										column: 1,
 										markup: "",
@@ -221,7 +221,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 						let html = MarkdownNode(
 							type: "html_span",
 							block: false,
-							index: state.i,
+							index: state.parentIndex + state.i,
 							line: state.line,
 							column: 1,
 							markup: "",
@@ -258,7 +258,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 							let text = MarkdownNode(
 								type: "text",
 								block: false,
-								index: state.i,
+								index: state.parentIndex + state.i,
 								line: state.line,
 								column: 1,
 								markup: "",
@@ -281,7 +281,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 								let text = MarkdownNode(
 									type: "text",
 									block: false,
-									index: state.i,
+									index: state.parentIndex + state.i,
 									line: state.line,
 									column: 1,
 									markup: "",
@@ -302,7 +302,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 					let html = MarkdownNode(
 						type: "html_span",
 						block: false,
-						index: state.i,
+						index: state.parentIndex + state.i,
 						line: state.line,
 						column: 1,
 						markup: "",

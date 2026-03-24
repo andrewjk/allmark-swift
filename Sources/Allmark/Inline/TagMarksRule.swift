@@ -81,7 +81,7 @@ func testTagMarks(
 				// child followed by the other children of the parent (if any)
 				var i = (parent.children?.count ?? 0) - 1
 				while i >= 0 {
-					if let lastNode = parent.children?[i], lastNode.index == startDel.start {
+					if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
 						let text = MarkdownNode(
 							type: "text",
 							block: false,
@@ -129,7 +129,7 @@ func testTagMarks(
 			let text = MarkdownNode(
 				type: "text",
 				block: false,
-				index: start,
+				index: state.parentIndex + start,
 				line: state.line,
 				column: 1,
 				markup: markup,

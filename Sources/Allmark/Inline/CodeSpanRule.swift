@@ -90,7 +90,7 @@ func testCodeSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 			let textNode = MarkdownNode(
 				type: "text",
 				block: false,
-				index: state.i,
+				index: state.parentIndex + state.i,
 				line: state.line,
 				column: 1,
 				markup: content,
@@ -102,7 +102,7 @@ func testCodeSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 			let codeNode = MarkdownNode(
 				type: "code_span",
 				block: false,
-				index: state.i - openMatched,
+				index: state.parentIndex + state.i - openMatched,
 				line: state.line,
 				column: 1,
 				markup: markup,

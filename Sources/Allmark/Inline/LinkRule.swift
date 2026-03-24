@@ -40,7 +40,7 @@ func testLinkOpen(state: inout InlineParserState, parent: inout MarkdownNode) ->
 	let text = MarkdownNode(
 		type: "text",
 		block: false,
-		index: start,
+		index: state.parentIndex + start,
 		line: state.line,
 		column: 1,
 		markup: markup,
@@ -63,7 +63,7 @@ func testImageOpen(state: inout InlineParserState, parent: inout MarkdownNode) -
 	let text = MarkdownNode(
 		type: "text",
 		block: false,
-		index: start,
+		index: state.parentIndex + start,
 		line: state.line,
 		column: 1,
 		markup: markup,
@@ -107,7 +107,7 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 		// followed by the other children of the parent (if any)
 		var i = (parent.children?.count ?? 0) - 1
 		while i >= 0 {
-			if let lastNode = parent.children?[i], lastNode.index == startDel.start {
+			if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
 				var start = state.i + 1
 				let src = state.src
 				let labelStart = startDel.start + startDel.markup.count

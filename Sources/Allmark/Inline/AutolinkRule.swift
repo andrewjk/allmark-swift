@@ -45,7 +45,7 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 						let text = MarkdownNode(
 							type: "text",
 							block: false,
-							index: state.i,
+							index: state.parentIndex + state.i,
 							line: state.line,
 							column: 1,
 							markup: "",
@@ -64,7 +64,7 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 				let html = MarkdownNode(
 					type: "html_span",
 					block: false,
-					index: state.i,
+					index: state.parentIndex + state.i,
 					line: state.line,
 					column: 1,
 					markup: "",
@@ -100,7 +100,7 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 						let text = MarkdownNode(
 							type: "text",
 							block: false,
-							index: state.i,
+							index: state.parentIndex + state.i,
 							line: state.line,
 							column: 1,
 							markup: "",
@@ -119,7 +119,7 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 				let html = MarkdownNode(
 					type: "html_span",
 					block: false,
-					index: state.i,
+					index: state.parentIndex + state.i,
 					line: state.line,
 					column: 1,
 					markup: "",

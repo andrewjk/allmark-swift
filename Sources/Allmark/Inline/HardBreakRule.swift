@@ -17,7 +17,7 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 			let hb = MarkdownNode(
 				type: "hard_break",
 				block: false,
-				index: state.i,
+				index: state.parentIndex + state.i,
 				line: state.line,
 				column: 1,
 				markup: "\\",

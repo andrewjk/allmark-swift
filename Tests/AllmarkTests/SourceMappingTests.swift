@@ -259,254 +259,286 @@ struct SourceMappingTests {
 
 	// Inline tests
 	@Test func autolinkURL() async {
-		let input = "<https://example.com>"
+		let input = "# Test\n\n<https://example.com>"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let autolink = paragraph.children![0]
 			#expect(autolink.type == "html_span")
-			#expect(autolink.index == 0)
+			#expect(autolink.index == 8)
 			#expect(autolink.length == 21)
 		}
 	}
 
 	@Test func autolinkEmail() async {
-		let input = "<user@example.com>"
+		let input = "# Test\n\n<user@example.com>"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let autolink = paragraph.children![0]
 			#expect(autolink.type == "html_span")
-			#expect(autolink.index == 0)
+			#expect(autolink.index == 8)
 			#expect(autolink.length == 18)
 		}
 	}
 
 	@Test func extendedAutolinkWww() async {
-		let input = "www.example.com"
+		let input = "# Test\n\nwww.example.com"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let extendedAutolink = paragraph.children![0]
 			#expect(extendedAutolink.type == "html_span")
-			#expect(extendedAutolink.index == 0)
+			#expect(extendedAutolink.index == 8)
 			#expect(extendedAutolink.length == 15)
 		}
 	}
 
 	@Test func codeSpan() async {
-		let input = "`code`"
+		let input = "# Test\n\n`code`"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let codeSpan = paragraph.children![0]
 			#expect(codeSpan.type == "code_span")
-			#expect(codeSpan.index == 0)
+			#expect(codeSpan.index == 8)
 			#expect(codeSpan.length == 6)
 		}
 	}
 
 	@Test func emphasisAsterisk() async {
-		let input = "*emphasis*"
+		let input = "# Test\n\n*emphasis*"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let emphasis = paragraph.children![0]
 			#expect(emphasis.type == "emphasis")
-			#expect(emphasis.index == 0)
+			#expect(emphasis.index == 8)
 			#expect(emphasis.length == 10)
 		}
 	}
 
 	@Test func emphasisUnderscore() async {
-		let input = "here: _emphasis_"
+		let input = "# Test\n\nhere: _emphasis_"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let emphasis = paragraph.children![1]
 			#expect(emphasis.type == "emphasis")
-			#expect(emphasis.index == 6)
+			#expect(emphasis.index == 14)
 			#expect(emphasis.length == 10)
 		}
 	}
 
 	@Test func strong() async {
-		let input = "**strong**"
+		let input = "# Test\n\n**strong**"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let strong = paragraph.children![0]
 			#expect(strong.type == "strong")
-			#expect(strong.index == 0)
+			#expect(strong.index == 8)
 			#expect(strong.length == 10)
 		}
 	}
 
 	@Test func link() async {
-		let input = "[link](url)"
+		let input = "# Test\n\n[link](url)"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let link = paragraph.children![0]
 			#expect(link.type == "link")
-			#expect(link.index == 0)
+			#expect(link.index == 8)
 			#expect(link.length == 11)
 		}
 	}
 
 	@Test func linkWithTitle() async {
-		let input = "[link](url \"title\")"
+		let input = "# Test\n\n[link](url \"title\")"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let link = paragraph.children![0]
 			#expect(link.type == "link")
-			#expect(link.index == 0)
+			#expect(link.index == 8)
 			#expect(link.length == 19)
 		}
 	}
 
 	@Test func footnote() async {
-		let input = "[^1]"
+		let input = "# Test\n\n[^1]"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let footnote = paragraph.children![0]
-			#expect(footnote.index == 0)
+			#expect(footnote.index == 8)
 			#expect(footnote.length == 4)
 		}
 	}
 
 	@Test func hardBreak() async {
-		let input = "line  \nbreak"
+		let input = "# Test\n\nline  \nbreak"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let hardBreak = paragraph.children![1]
-			#expect(hardBreak.index == 4)
+			#expect(hardBreak.index == 12)
 			#expect(hardBreak.length == 2)
 		}
 	}
 
 	@Test func strikethrough() async {
-		let input = "~~strikethrough~~"
+		let input = "# Test\n\n~~strikethrough~~"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let strikethrough = paragraph.children![0]
 			#expect(strikethrough.type == "strikethrough")
-			#expect(strikethrough.index == 0)
+			#expect(strikethrough.index == 8)
 			#expect(strikethrough.length == 17)
 		}
 	}
 
 	@Test func highlight() async {
-		let input = "==highlight=="
+		let input = "# Test\n\n==highlight=="
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let highlight = paragraph.children![0]
 			#expect(highlight.type == "highlight")
-			#expect(highlight.index == 0)
+			#expect(highlight.index == 8)
 			#expect(highlight.length == 13)
 		}
 	}
 
-	@Test func testSubscript() async {
-		let input = "~subscript~"
+	@Test func subscriptNode() async {
+		let input = "# Test\n\n~subscript~"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let subscriptNode = paragraph.children![0]
 			#expect(subscriptNode.type == "subscript")
-			#expect(subscriptNode.index == 0)
+			#expect(subscriptNode.index == 8)
 			#expect(subscriptNode.length == 11)
 		}
 	}
 
 	@Test func superscript() async {
-		let input = "^superscript^"
+		let input = "# Test\n\n^superscript^"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let superscript = paragraph.children![0]
 			#expect(superscript.type == "superscript")
-			#expect(superscript.index == 0)
+			#expect(superscript.index == 8)
 			#expect(superscript.length == 13)
 		}
 	}
 
 	@Test func insertion() async {
-		let input = "{++inserted++}"
+		let input = "# Test\n\n{++inserted++}"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let insertion = paragraph.children![0]
 			#expect(insertion.type == "insertion")
-			#expect(insertion.index == 0)
+			#expect(insertion.index == 8)
 			#expect(insertion.length == 14)
 		}
 	}
 
 	@Test func deletion() async {
-		let input = "del: {--deleted--}"
+		let input = "# Test\n\ndel: {--deleted--}"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let deletion = paragraph.children![1]
 			#expect(deletion.type == "deletion")
-			#expect(deletion.index == 5)
+			#expect(deletion.index == 13)
 			#expect(deletion.length == 13)
 		}
 	}
 
 	@Test func htmlSpan() async {
-		let input = "<span>content</span>"
+		let input = "# Test\n\n<span>content</span>"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let htmlStart = paragraph.children![0]
 			let htmlEnd = paragraph.children![2]
 			#expect(htmlStart.type == "html_span")
-			#expect(htmlStart.index == 0)
+			#expect(htmlStart.index == 8)
 			#expect(htmlStart.length == 6)
 			#expect(htmlEnd.type == "html_span")
-			#expect(htmlEnd.index == 13)
+			#expect(htmlEnd.index == 21)
 			#expect(htmlEnd.length == 7)
 		}
 	}
 
 	@Test func comment() async {
-		let input = "<!-- comment -->"
+		let input = "# Test\n\n<!-- comment -->"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let comment = doc.children![0]
-			#expect(comment.index == 0)
+			let comment = doc.children![1]
+			#expect(comment.index == 8)
 			#expect(comment.length == 16)
 		}
 	}
 
 	@Test func text() async {
-		let input = "plain text"
+		let input = "# Test\n\nplain text"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let text = paragraph.children![0]
 			#expect(text.type == "text")
-			#expect(text.index == 0)
+			#expect(text.index == 8)
 			#expect(text.length == 10)
 		}
 	}
 
 	@Test func textWithSpecialChars() async {
-		let input = "text with & chars"
+		let input = "# Test\n\ntext with & chars"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children![1]
 			let text = paragraph.children![0]
 			#expect(text.type == "text")
-			#expect(text.index == 0)
+			#expect(text.index == 8)
 			#expect(text.length == 17)
+		}
+	}
+
+	@Test func variousFormattings() async {
+		let input = "# Heading 1\n\nSome **bold** text, I'm ~~deleted~~, really {+gone+}"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+
+			let heading = doc.children![0]
+			#expect(heading.type == "heading")
+			#expect(heading.index == 0)
+			#expect(heading.length == 12)
+
+			let paragraph = doc.children![1]
+			#expect(paragraph.type == "paragraph")
+			#expect(paragraph.index == 13)
+			#expect(paragraph.length == 52)
+
+			let strong = paragraph.children![1]
+			#expect(strong.type == "strong")
+			#expect(strong.index == 18)
+			#expect(strong.length == 8)
+
+			let strikethrough = paragraph.children![3]
+			#expect(strikethrough.type == "strikethrough")
+			#expect(strikethrough.index == 37)
+			#expect(strikethrough.length == 11)
+
+			let deletion = paragraph.children![5]
+			#expect(deletion.type == "insertion")
+			#expect(deletion.index == 57)
+			#expect(deletion.length == 8)
 		}
 	}
 }

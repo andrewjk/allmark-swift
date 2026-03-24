@@ -107,7 +107,7 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 				// followed by the other children of the parent (if any)
 				var i = (parent.children?.count ?? 0) - 1
 				while i >= 0 {
-					if let lastNode = parent.children?[i], lastNode.index == startDel.start {
+					if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
 						// If it's longer than the last delimiter, or longer
 						// than two, save some for the next go-round
 						let useLength = min(startDel.length, 2)
@@ -193,7 +193,7 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 			let text = MarkdownNode(
 				type: "text",
 				block: false,
-				index: start,
+				index: state.parentIndex + start,
 				line: state.line,
 				column: 1,
 				markup: markup,
