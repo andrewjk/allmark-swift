@@ -1,13 +1,11 @@
 import Foundation
 
-@MainActor
 let consoleHighlightRenderer = Renderer(
 	name: "highlight",
 	render: renderConsoleHighlight
 )
 
-@MainActor
-func renderConsoleHighlight(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderConsoleHighlight(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	let style = ansiYellowBack + ansiBlack
 	let reset = ansiReset
 	state.output += style

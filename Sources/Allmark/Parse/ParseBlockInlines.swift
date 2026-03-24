@@ -7,7 +7,7 @@ import OrderedCollections
 ///   - rules: The inline rules to apply
 ///   - refs: Link references
 ///   - footnotes: Footnote references
-@MainActor
+
 func parseBlockInlines(
 	parent: inout MarkdownNode,
 	rules: OrderedDictionary<String, InlineRule>,
@@ -18,7 +18,7 @@ func parseBlockInlines(
 	if parent.type == "html_block" {
 		return
 	}
-	
+
 	// Handle code blocks specially
 	if parent.type == "code_block" {
 		var content = parent.content
@@ -49,7 +49,7 @@ func parseBlockInlines(
 		parent.children?.append(text)
 		return
 	}
-	
+
 	// Handle code fence specially
 	if parent.type == "code_fence" {
 		var content = parent.content
@@ -89,25 +89,26 @@ func parseBlockInlines(
 		parent.children?.append(text)
 		return
 	}
-	
+
 	var state = InlineParserState(
 		rules: rules,
 		// "Final spaces are stripped before inline parsing"
-        src: parent.content.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression),
+		src: parent.content.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression),
 		i: 0,
 		line: parent.line,
 		lineStart: 0,
 		indent: 0,
 		delimiters: [],
 		refs: refs,
-		footnotes: footnotes
+		footnotes: footnotes,
+		parentIndex: parent.index
 	)
-	
+
 	parseInline(state: &state, parent: parent)
-	
+
 	// Recursively parse inlines for block children
 	if var children = parent.children {
-		for i in 0..<children.count {
+		for i in 0 ..< children.count {
 			if children[i].block {
 				parseBlockInlines(parent: &children[i], rules: rules, refs: refs, footnotes: footnotes)
 			}

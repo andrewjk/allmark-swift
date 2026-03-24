@@ -1,12 +1,11 @@
 import Foundation
 
-@MainActor
 let imageRenderer = Renderer(
 	name: "image",
 	render: renderImage
 )
 
-func renderImage(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderImage(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	let alt = getChildText(node: node)
 	var title = ""

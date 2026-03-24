@@ -1,14 +1,14 @@
-import Testing
 @testable import Allmark
+import Testing
 
 struct ExtDeletionTests {
 	@Test func deletionSingle() async {
 		let input = """
-This text was {-deleted-} recently.
-"""
+		This text was {-deleted-} recently.
+		"""
 		let expected = """
-<p>This text was <del class="markdown-deletion">deleted</del> recently.</p>
-"""
+		<p>This text was <del class="markdown-deletion">deleted</del> recently.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -18,11 +18,11 @@ This text was {-deleted-} recently.
 
 	@Test func deletionDouble() async {
 		let input = """
-This text was {--deleted--} recently.
-"""
+		This text was {--deleted--} recently.
+		"""
 		let expected = """
-<p>This text was <del class="markdown-deletion">deleted</del> recently.</p>
-"""
+		<p>This text was <del class="markdown-deletion">deleted</del> recently.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -32,11 +32,11 @@ This text was {--deleted--} recently.
 
 	@Test func deletionTriple() async {
 		let input = """
-This text was {---deleted---} recently.
-"""
+		This text was {---deleted---} recently.
+		"""
 		let expected = """
-<p>This text was {---deleted---} recently.</p>
-"""
+		<p>This text was {---deleted---} recently.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -177,10 +177,10 @@ This text was {---deleted---} recently.
 	@Test func deletionInListItem() async {
 		let input = "- Item with {-deletion-}"
 		let expected = """
-<ul>
-<li>Item with <del class="markdown-deletion">deletion</del></li>
-</ul>
-"""
+		<ul>
+		<li>Item with <del class="markdown-deletion">deletion</del></li>
+		</ul>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -191,10 +191,10 @@ This text was {---deleted---} recently.
 	@Test func deletionInBlockquote() async {
 		let input = "> Quote with {-deletion-}"
 		let expected = """
-<blockquote>
-<p>Quote with <del class="markdown-deletion">deletion</del></p>
-</blockquote>
-"""
+		<blockquote>
+		<p>Quote with <del class="markdown-deletion">deletion</del></p>
+		</blockquote>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)

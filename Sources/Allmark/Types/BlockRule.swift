@@ -2,12 +2,9 @@ import Foundation
 
 // TODO: Try to arrange rules so that they don't have to refer to other rules
 // e.g. checking for code in lists
-// Note: BlockRule is not Sendable because it uses closures with inout parameters
-// which cannot be marked as @Sendable. This is acceptable for a single-threaded parser.
 
 /// A rule for parsing block-level Markdown elements.
-@MainActor
-public struct BlockRule {
+public struct BlockRule: Sendable {
 	/// The name for this rule, which must also be used for nodes created by this rule.
 	public var name: String
 
@@ -19,7 +16,7 @@ public struct BlockRule {
 	///   - state: The block parser state
 	///   - parent: The parent markdown node
 	/// - Returns: Whether the node should start
-	public var testStart: @MainActor (inout BlockParserState, MarkdownNode) -> Bool
+	public var testStart: @Sendable (inout BlockParserState, MarkdownNode) -> Bool
 
 	/// Creates a node for this rule.
 	/// - Parameters:
@@ -32,11 +29,23 @@ public struct BlockRule {
 	///   - state: The block parser state
 	///   - parent: The parent markdown node
 	/// - Returns: Whether the node should continue
-	public var testContinue: @MainActor (inout BlockParserState, MarkdownNode) -> Bool
+	public var testContinue: @Sendable (inout BlockParserState, MarkdownNode) -> Bool
 
 	/// Does any cleanup for this rule's node when it is closed.
 	/// - Parameters:
 	///   - state: The block parser state
 	///   - parent: The parent markdown node
-	public var closeNode: @MainActor (inout BlockParserState, MarkdownNode) -> Void
+	public var closeNode: @Sendable (inout BlockParserState, MarkdownNode) -> Void
+
+	public init(
+		name: String,
+		testStart: @escaping @Sendable (inout BlockParserState, MarkdownNode) -> Bool,
+		testContinue: @escaping @Sendable (inout BlockParserState, MarkdownNode) -> Bool,
+		closeNode: @escaping @Sendable (inout BlockParserState, MarkdownNode) -> Void
+	) {
+		self.name = name
+		self.testStart = testStart
+		self.testContinue = testContinue
+		self.closeNode = closeNode
+	}
 }

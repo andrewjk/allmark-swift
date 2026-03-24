@@ -1,6 +1,5 @@
 import Foundation
 
-@MainActor
 let textRule = InlineRule(
 	name: "text",
 	test: testText
@@ -13,18 +12,18 @@ let textRule = InlineRule(
 func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
 	let src = state.src
 	guard state.i < src.count else { return false }
-	
+
 	let index = src.index(src.startIndex, offsetBy: state.i)
 	let char = src[index]
-	
+
 	// TODO: Should this be in the testEscaped rule?
 	// "Any ASCII punctuation character may be backslash-escaped"
-	//if (char == "\\" && isPunctuation(code: Int(src[src.index(src.startIndex, offsetBy: state.i + 1)].asciiValue ?? 0))) {
+	// if (char == "\\" && isPunctuation(code: Int(src[src.index(src.startIndex, offsetBy: state.i + 1)].asciiValue ?? 0))) {
 	//	state.i += 1
 	//	let newIndex = src.index(src.startIndex, offsetBy: state.i)
 	//	char = src[newIndex]
-	//}
-	
+	// }
+
 	var lastNode = parent.children?.last
 	if lastNode == nil || lastNode?.type != "text" {
 		let newTextNode = MarkdownNode(
@@ -42,13 +41,13 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 	} else if isNewLine(char: String(char)) {
 		// "Spaces at the end of the line and beginning of the next line are removed"
 		if let last = lastNode {
-            last.markup = last.markup.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
+			last.markup = last.markup.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
 			if let count = parent.children?.count, count > 0 {
 				parent.children?[count - 1] = last
 			}
 		}
 	}
-	
+
 	let code = Int(char.asciiValue ?? 0)
 	if isAlphaNumeric(code: code) {
 		// If this an alphanumeric character, we can just process the whole
@@ -67,7 +66,7 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 		let startIndex = src.index(src.startIndex, offsetBy: start)
 		let endIndex = src.index(src.startIndex, offsetBy: state.i)
 		if let last = lastNode {
-			last.markup += String(src[startIndex..<endIndex])
+			last.markup += String(src[startIndex ..< endIndex])
 			if let count = parent.children?.count, count > 0 {
 				parent.children?[count - 1] = last
 			}
@@ -81,6 +80,13 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 			}
 		}
 	}
-	
+
+	if let last = lastNode {
+		last.length = last.markup.count
+		if let count = parent.children?.count, count > 0 {
+			parent.children?[count - 1] = last
+		}
+	}
+
 	return true
 }

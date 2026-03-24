@@ -1,6 +1,5 @@
 import Foundation
 
-@MainActor
 let extendedAutolinkRule = InlineRule(
 	name: "extended_autolink",
 	test: testExtendedAutolink
@@ -30,27 +29,28 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 	if parent.type == "html_block" {
 		return false
 	}
-	
+
 	let src = state.src
 	guard state.i < src.count else { return false }
-	
+
 	if !isEscaped(text: src, i: state.i) {
 		let index = src.index(src.startIndex, offsetBy: state.i)
 		let char = src[index]
-		
+
 		if char == "w" {
 			let tail = String(src[index...])
-			
+
 			let urlRange = NSRange(location: 0, length: tail.utf16.count)
 			if let urlMatch = urlRegex.firstMatch(in: tail, options: [], range: urlRange) {
 				let matchRange = urlMatch.range(at: 1)
 				if let range = Range(matchRange, in: tail) {
 					var url = String(tail[range])
-					
+
 					let spaceRange = NSRange(location: 0, length: url.utf16.count)
 					if spaceRegexExt.firstMatch(in: url, options: [], range: spaceRange) != nil {
 						let fullMatchRange = urlMatch.range(at: 0)
 						if let fullRange = Range(fullMatchRange, in: tail) {
+							let originalLength = tail[fullRange].count
 							let markup = escapeHtml(text: String(tail[fullRange]))
 							let text = MarkdownNode(
 								type: "text",
@@ -63,44 +63,50 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 								children: nil
 							)
 							text.markup = markup
+							text.length = originalLength
 							parent.children?.append(text)
-							state.i += tail[fullRange].count
+							state.i += originalLength
 							return true
 						}
 					}
-					
+
 					url = extendedValidation(url: url)
 					url = escapeHtml(text: url)
-					
-					let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
-					let html = MarkdownNode(
-						type: "html_span",
-						block: false,
-						index: state.i,
-						line: state.line,
-						column: 1,
-						markup: "",
-						indent: state.indent,
-						children: nil
-					)
-					html.content = "<a href=\"http://\(encodedUrl)\">\(url)</a>"
-					parent.children?.append(html)
-					state.i += url.count
-					
+
+					let fullMatchRange = urlMatch.range(at: 0)
+					if let fullRange = Range(fullMatchRange, in: tail) {
+						let originalLength = tail[fullRange].count
+						let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
+						let html = MarkdownNode(
+							type: "html_span",
+							block: false,
+							index: state.i,
+							line: state.line,
+							column: 1,
+							markup: "",
+							indent: state.indent,
+							children: nil
+						)
+						html.content = "<a href=\"http://\(encodedUrl)\">\(url)</a>"
+						html.length = originalLength
+						parent.children?.append(html)
+						state.i += url.count
+					}
+
 					return true
 				}
 			}
 		}
-		
+
 		if char == "h" || char == "f" {
 			let tail = String(src[index...])
-			
+
 			let urlRange = NSRange(location: 0, length: tail.utf16.count)
 			if let urlMatch = extUrlRegex.firstMatch(in: tail, options: [], range: urlRange) {
 				let matchRange = urlMatch.range(at: 1)
 				if let range = Range(matchRange, in: tail) {
 					var url = String(tail[range])
-					
+
 					let spaceRange = NSRange(location: 0, length: url.utf16.count)
 					if spaceRegexExt.firstMatch(in: url, options: [], range: spaceRange) != nil {
 						let fullMatchRange = urlMatch.range(at: 0)
@@ -122,10 +128,10 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 							return true
 						}
 					}
-					
+
 					url = extendedValidation(url: url)
 					url = escapeHtml(text: url)
-					
+
 					let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
 					let html = MarkdownNode(
 						type: "html_span",
@@ -140,12 +146,12 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 					html.content = "<a href=\"\(encodedUrl)\">\(url)</a>"
 					parent.children?.append(html)
 					state.i += url.count
-					
+
 					return true
 				}
 			}
 		}
-		
+
 		// Check alphanumeric for email
 		if state.i < src.count {
 			let code = Int(src[index].asciiValue ?? 0)
@@ -153,13 +159,13 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 				// TODO: I think we should actually check this when we come across an @,
 				// rather than any alphanumeric
 				let tail = String(src[index...])
-				
+
 				let emailRange = NSRange(location: 0, length: tail.utf16.count)
 				if let emailMatch = extEmailRegex.firstMatch(in: tail, options: [], range: emailRange) {
 					let matchRange = emailMatch.range(at: 1)
 					if let range = Range(matchRange, in: tail) {
 						var url = String(tail[range])
-						
+
 						// "+ can occur before the @, but not after" "., -, and _ can
 						// occur on both sides of the @, but only . may occur at the end
 						// of the email address, in which case it will not be considered
@@ -184,7 +190,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 								return true
 							}
 						}
-						
+
 						if let atIndex = url.firstIndex(of: "@") {
 							let afterAt = String(url[url.index(after: atIndex)...])
 							if afterAt.contains("+") {
@@ -208,9 +214,9 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 								}
 							}
 						}
-						
+
 						url = url.replacingOccurrences(of: "\\.$", with: "", options: .regularExpression)
-						
+
 						let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
 						let html = MarkdownNode(
 							type: "html_span",
@@ -225,22 +231,22 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 						html.content = "<a href=\"mailto:\(encodedUrl)\">\(url)</a>"
 						parent.children?.append(html)
 						state.i += url.count
-						
+
 						return true
 					}
 				}
 			}
 		}
-		
+
 		if char == "m" || char == "x" {
 			let tail = String(src[index...])
-			
+
 			let xmppRange = NSRange(location: 0, length: tail.utf16.count)
 			if let emailMatch = extXmppRegex.firstMatch(in: tail, options: [], range: xmppRange) {
 				let matchRange = emailMatch.range(at: 1)
 				if let range = Range(matchRange, in: tail) {
 					var url = String(tail[range])
-					
+
 					// "+ can occur before the @, but not after" "., -, and _ can
 					// occur on both sides of the @, but only . may occur at the end
 					// of the email address, in which case it will not be considered
@@ -265,7 +271,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 							return true
 						}
 					}
-					
+
 					if let atIndex = url.firstIndex(of: "@") {
 						let afterAt = String(url[url.index(after: atIndex)...])
 						if afterAt.contains("+") {
@@ -289,9 +295,9 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 							}
 						}
 					}
-					
+
 					url = url.replacingOccurrences(of: "\\.$", with: "", options: .regularExpression)
-					
+
 					let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
 					let html = MarkdownNode(
 						type: "html_span",
@@ -306,13 +312,13 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 					html.content = "<a href=\"\(encodedUrl)\">\(url)</a>"
 					parent.children?.append(html)
 					state.i += url.count
-					
+
 					return true
 				}
 			}
 		}
 	}
-	
+
 	return false
 }
 
@@ -321,12 +327,12 @@ let trailingEntity = try! NSRegularExpression(pattern: "&[a-z0-9]+;$", options: 
 
 func extendedValidation(url: String) -> String {
 	var result = url
-	
+
 	// "Trailing punctuation (specifically, ?, !, ., ,, :, *, _,
 	// and ~) will not be considered part of the autolink,
 	// though they may be included in the interior of the link"
 	result = result.replacingOccurrences(of: "[?!.,:*_~]$", with: "", options: .regularExpression)
-	
+
 	// "When an autolink ends in ), we scan the entire autolink for the total
 	// number of parentheses. If there is a greater number of closing
 	// parentheses than opening ones, we don't consider the unmatched trailing
@@ -359,13 +365,13 @@ func extendedValidation(url: String) -> String {
 			result = String(result[..<endIndex])
 		}
 	}
-	
+
 	// "If an autolink ends in a semicolon (;), we check to see if it appears to
 	// resemble an entity reference; if the preceding text is & followed by one
 	// or more alphanumeric characters. If so, it is excluded from the autolink"
 	if result.hasSuffix(";") {
 		result = result.replacingOccurrences(of: "&[a-z0-9]+;$", with: "", options: [.regularExpression, .caseInsensitive])
 	}
-	
+
 	return result
 }

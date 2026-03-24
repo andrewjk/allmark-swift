@@ -1,13 +1,11 @@
 import Foundation
 
-@MainActor
 let consoleLinkRenderer = Renderer(
 	name: "link",
 	render: renderConsoleLink
 )
 
-@MainActor
-func renderConsoleLink(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderConsoleLink(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	let style = ansiBlue + ansiUnderline
 	let reset = ansiReset
 	state.output += style

@@ -1,13 +1,11 @@
 import Foundation
 
-@MainActor
 let consoleAlertRenderer = Renderer(
 	name: "alert",
 	render: renderConsoleAlert
 )
 
-@MainActor
-func renderConsoleAlert(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderConsoleAlert(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	let reset = ansiReset
 	let type = node.markup.lowercased()
 	let styles: [String: String] = [
@@ -26,7 +24,7 @@ func renderConsoleAlert(_ node: MarkdownNode, _ state: inout RendererState, _ fi
 		"caution": "🚨",
 	]
 	let icon = icons[type] ?? "📝"
-	if !state.output.isEmpty && !state.output.hasSuffix("\n") {
+	if !state.output.isEmpty, !state.output.hasSuffix("\n") {
 		state.output += "\n"
 	}
 	state.output += "\(style)\(icon) \(type.capitalized):\(reset)\n"

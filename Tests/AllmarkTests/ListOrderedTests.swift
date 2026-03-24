@@ -1,5 +1,5 @@
-import Testing
 @testable import Allmark
+import Testing
 
 struct ListOrderedTests {
 	@Test func simpleOrderedListWithPeriodDelimiter() async {

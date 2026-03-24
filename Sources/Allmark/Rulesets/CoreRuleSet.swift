@@ -1,7 +1,7 @@
 import Foundation
 
 /// The core CommonMark ruleset.
-@MainActor
+
 public let coreRuleSet = RuleSet(
 	blocks: [
 		indentRule.name: indentRule,
@@ -28,5 +28,5 @@ public let coreRuleSet = RuleSet(
 		hardBreakRule.name: hardBreakRule,
 		lineBreakRule.name: lineBreakRule,
 		textRule.name: textRule,
-	],
+	]
 )

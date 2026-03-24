@@ -2,7 +2,7 @@ import Foundation
 import OrderedCollections
 
 /// Console/terminal renderers for all node types.
-@MainActor
+
 public let consoleRenderers: OrderedDictionary<String, Renderer> = [
 	consoleAlertRenderer.name: consoleAlertRenderer,
 	consoleBlockQuoteRenderer.name: consoleBlockQuoteRenderer,
@@ -28,12 +28,12 @@ public let consoleRenderers: OrderedDictionary<String, Renderer> = [
 	consoleParagraphRenderer.name: consoleParagraphRenderer,
 	consoleStrikethroughRenderer.name: consoleStrikethroughRenderer,
 	consoleStrongRenderer.name: consoleStrongRenderer,
-	//subscriptRenderer.name: subscriptRenderer,
-	//superscriptRenderer.name: superscriptRenderer,
+	// subscriptRenderer.name: subscriptRenderer,
+	// superscriptRenderer.name: superscriptRenderer,
 	consoleTableRenderer.name: consoleTableRenderer,
-	//tableCellRenderer.name: tableCellRenderer,
-	//tableHeaderRenderer.name: tableHeaderRenderer,
-	//tableRowRenderer.name: tableRowRenderer,
+	// tableCellRenderer.name: tableCellRenderer,
+	// tableHeaderRenderer.name: tableHeaderRenderer,
+	// tableRowRenderer.name: tableRowRenderer,
 	consoleTextRenderer.name: consoleTextRenderer,
 	consoleThematicBreakRenderer.name: consoleThematicBreakRenderer,
 ]

@@ -1,7 +1,7 @@
 import Foundation
 
 /// GFM tables (pipe-delimited)
-@MainActor
+
 let tableRule = BlockRule(
 	name: "table",
 	testStart: testTableStart,
@@ -9,7 +9,6 @@ let tableRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
-@MainActor
 func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
 	if parent.acceptsContent {
 		return false
@@ -18,11 +17,13 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 	// We may already have a table
 	if let lastNode = parent.children?.last,
 	   !state.hasBlankLine,
-	   lastNode.type == "table" {
+	   lastNode.type == "table"
+	{
 		let endOfLine = getEndOfLine(state: &state)
 
 		guard let headerRow = lastNode.children?.first,
-			  let headers = headerRow.children?.map({ $0.info ?? "" }) else {
+		      let headers = headerRow.children?.map({ $0.info ?? "" })
+		else {
 			return false
 		}
 
@@ -41,7 +42,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 		// Get row content, trim it, and remove leading/trailing pipes
 		let rowStart = state.src.index(state.src.startIndex, offsetBy: state.i)
 		let rowEnd = state.src.index(state.src.startIndex, offsetBy: endOfLine)
-		let rowContent = String(state.src[rowStart..<rowEnd])
+		let rowContent = String(state.src[rowStart ..< rowEnd])
 			.trimmingCharacters(in: .whitespaces)
 			.replacingOccurrences(of: "(^\\||\\|$)", with: "", options: .regularExpression)
 
@@ -65,13 +66,14 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 				indent: 0,
 				children: []
 			)
-			cell.content = (text).trimmingCharacters(in: CharacterSet.whitespaces)
+			cell.content = text.trimmingCharacters(in: CharacterSet.whitespaces)
 				.replacingOccurrences(of: "\\|", with: "|")
 			cell.info = headers[ri]
 			row.children?.append(cell)
 			ri += 1
 		}
 
+		lastNode.length = endOfLine - lastNode.index
 		state.i = endOfLine
 		return true
 	}
@@ -136,7 +138,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 				.trimmingCharacters(in: .whitespaces)
 				.replacingOccurrences(of: "(^\\||\\|$)", with: "", options: .regularExpression)
 
-			for i in 0..<headerContent.count {
+			for i in 0 ..< headerContent.count {
 				let idx = headerContent.index(headerContent.startIndex, offsetBy: i)
 				if headerContent[idx] == "|" && !isEscaped(text: headerContent, i: i) {
 					headerCellCount += 1
@@ -209,7 +211,8 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 			let markupEnd = min(end, state.src.count)
 			let markupStart = state.src.index(state.src.startIndex, offsetBy: state.i)
 			let markupEndIndex = state.src.index(state.src.startIndex, offsetBy: markupEnd)
-			mutableParent.markup = String(state.src[markupStart..<markupEndIndex])
+			mutableParent.markup = String(state.src[markupStart ..< markupEndIndex])
+			mutableParent.length = end - mutableParent.index
 			state.i = end
 			return true
 		}
@@ -218,7 +221,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 	return false
 }
 
-func testTableContinue(state: inout BlockParserState, node: MarkdownNode) -> Bool {
+func testTableContinue(state _: inout BlockParserState, node _: MarkdownNode) -> Bool {
 	// Just close the table every time, and check whether the last node was a
 	// table in testStart. That way we can interrupt tables with e.g.
 	// blockquotes, even if the blockquote contains a pipe
@@ -236,7 +239,7 @@ private func splitByUnescapedPipe(_ text: String) -> [String] {
 		let idx = text.index(text.startIndex, offsetBy: i)
 		let char = text[idx]
 
-		if char == "|" && !isEscaped(text: text, i: i) {
+		if char == "|", !isEscaped(text: text, i: i) {
 			result.append(current)
 			current = ""
 		} else {

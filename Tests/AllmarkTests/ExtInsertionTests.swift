@@ -1,14 +1,14 @@
-import Testing
 @testable import Allmark
+import Testing
 
 struct ExtInsertionTests {
 	@Test func insertionSingle() async {
 		let input = """
-This text was {+inserted+} recently.
-"""
+		This text was {+inserted+} recently.
+		"""
 		let expected = """
-<p>This text was <ins class="markdown-insertion">inserted</ins> recently.</p>
-"""
+		<p>This text was <ins class="markdown-insertion">inserted</ins> recently.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -18,11 +18,11 @@ This text was {+inserted+} recently.
 
 	@Test func insertionDouble() async {
 		let input = """
-This text was {++inserted++} recently.
-"""
+		This text was {++inserted++} recently.
+		"""
 		let expected = """
-<p>This text was <ins class="markdown-insertion">inserted</ins> recently.</p>
-"""
+		<p>This text was <ins class="markdown-insertion">inserted</ins> recently.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -32,11 +32,11 @@ This text was {++inserted++} recently.
 
 	@Test func insertionTriple() async {
 		let input = """
-This text was {+++inserted+++} recently.
-"""
+		This text was {+++inserted+++} recently.
+		"""
 		let expected = """
-<p>This text was {+++inserted+++} recently.</p>
-"""
+		<p>This text was {+++inserted+++} recently.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -177,10 +177,10 @@ This text was {+++inserted+++} recently.
 	@Test func insertionInListItem() async {
 		let input = "- Item with {+insertion+}"
 		let expected = """
-<ul>
-<li>Item with <ins class="markdown-insertion">insertion</ins></li>
-</ul>
-"""
+		<ul>
+		<li>Item with <ins class="markdown-insertion">insertion</ins></li>
+		</ul>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -191,10 +191,10 @@ This text was {+++inserted+++} recently.
 	@Test func insertionInBlockquote() async {
 		let input = "> Quote with {+insertion+}"
 		let expected = """
-<blockquote>
-<p>Quote with <ins class="markdown-insertion">insertion</ins></p>
-</blockquote>
-"""
+		<blockquote>
+		<p>Quote with <ins class="markdown-insertion">insertion</ins></p>
+		</blockquote>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)

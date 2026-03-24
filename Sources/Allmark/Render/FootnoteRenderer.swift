@@ -1,12 +1,11 @@
 import Foundation
 
-@MainActor
 let footnoteRenderer = Renderer(
 	name: "footnote",
 	render: renderFootnote
 )
 
-func renderFootnote(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderFootnote(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	if state.footnotes.first(where: { $0.info == node.info }) == nil {
 		state.footnotes.append(node)
 	}

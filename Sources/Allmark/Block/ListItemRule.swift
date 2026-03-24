@@ -1,7 +1,7 @@
 import Foundation
 
 /// List item continuation logic
-@MainActor
+
 let listItemRule = BlockRule(
 	name: "list_item",
 	testStart: testListItemStart,
@@ -9,7 +9,7 @@ let listItemRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
-func testListItemStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
+func testListItemStart(state _: inout BlockParserState, parent _: MarkdownNode) -> Bool {
 	return false
 }
 
@@ -18,14 +18,14 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 	if state.i >= src.count {
 		return false
 	}
-	
+
 	let index = src.index(src.startIndex, offsetBy: state.i)
 	let char = src[index]
-	
+
 	// This only applies to the lowest list_item
 	var itemNode: MarkdownNode? = nil
 	var i = state.openNodes.count - 1
-	
+
 	while i > 0 {
 		let openNode = state.openNodes[i]
 		if openNode.type == "list_item" {
@@ -33,7 +33,7 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 		} else if state.openNodes[i].type == "list_ordered" {
 			var numbers = ""
 			var end = state.i
-			
+
 			while end < src.count {
 				let endIndex = src.index(src.startIndex, offsetBy: end)
 				if isNumeric(code: Int(src[endIndex].asciiValue ?? 0)) {
@@ -43,11 +43,11 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 					break
 				}
 			}
-			
+
 			if end < src.count {
 				let delimiterIndex = src.index(src.startIndex, offsetBy: end)
 				let delimiter = src[delimiterIndex]
-				
+
 				if let item = itemNode {
 					if state.indent <= 3 && state.indent < item.subindent && !numbers.isEmpty && String(delimiter) == node.delimiter {
 						return false
@@ -65,22 +65,22 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 		}
 		i -= 1
 	}
-	
+
 	if state.indent >= node.subindent {
 		state.indent -= node.subindent
 		return true
 	}
-	
+
 	if state.hasBlankLine {
 		return true
 	}
-	
+
 	let openNode = state.openNodes.last!
 	if openNode.type == "paragraph" {
 		state.maybeContinue = true
 		node.maybeContinuing = true
 		return true
 	}
-	
+
 	return false
 }

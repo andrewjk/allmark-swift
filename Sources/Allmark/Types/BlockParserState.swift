@@ -26,4 +26,18 @@ public struct BlockParserState {
 	public var refs: [String: LinkReference]
 	/// Footnote reference definitions.
 	public var footnotes: [String: FootnoteReference]
+
+	public init(rules: OrderedDictionary<String, BlockRule>, src: String, i: Int, line: Int, lineStart: Int, indent: Int, openNodes: [MarkdownNode], maybeContinue: Bool, hasBlankLine: Bool, refs: [String: LinkReference], footnotes: [String: FootnoteReference]) {
+		self.rules = rules
+		self.src = src
+		self.i = i
+		self.line = line
+		self.lineStart = lineStart
+		self.indent = indent
+		self.openNodes = openNodes
+		self.maybeContinue = maybeContinue
+		self.hasBlankLine = hasBlankLine
+		self.refs = refs
+		self.footnotes = footnotes
+	}
 }

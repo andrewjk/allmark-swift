@@ -13,4 +13,12 @@ public struct RendererState {
 	public var depth: Int
 	/// Current quote nesting depth.
 	public var quoteDepth: Int
+
+	public init(renderers: OrderedDictionary<String, Renderer>, output: String, footnotes: [MarkdownNode], depth: Int, quoteDepth: Int) {
+		self.renderers = renderers
+		self.output = output
+		self.footnotes = footnotes
+		self.depth = depth
+		self.quoteDepth = quoteDepth
+	}
 }

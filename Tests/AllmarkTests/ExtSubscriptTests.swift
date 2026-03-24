@@ -1,14 +1,14 @@
-import Testing
 @testable import Allmark
+import Testing
 
 struct ExtSubscriptTests {
 	@Test func subscriptSingle() async {
 		let input = """
-This should be ~down~ below everything else.
-"""
+		This should be ~down~ below everything else.
+		"""
 		let expected = """
-<p>This should be <sub>down</sub> below everything else.</p>
-"""
+		<p>This should be <sub>down</sub> below everything else.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -19,11 +19,11 @@ This should be ~down~ below everything else.
 	// NOTE: GFM strikethrough must take precedence
 	@Test func subscriptDouble() async {
 		let input = """
-This should be ~~down~~ below everything else.
-"""
+		This should be ~~down~~ below everything else.
+		"""
 		let expected = """
-<p>This should be <del>down</del> below everything else.</p>
-"""
+		<p>This should be <del>down</del> below everything else.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -33,11 +33,11 @@ This should be ~~down~~ below everything else.
 
 	@Test func subscriptTriple() async {
 		let input = """
-This should be ~~~down~~~ below everything else.
-"""
+		This should be ~~~down~~~ below everything else.
+		"""
 		let expected = """
-<p>This should be ~~~down~~~ below everything else.</p>
-"""
+		<p>This should be ~~~down~~~ below everything else.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -198,10 +198,10 @@ This should be ~~~down~~~ below everything else.
 	@Test func subscriptInListItem() async {
 		let input = "- Item with ~subscript~"
 		let expected = """
-<ul>
-<li>Item with <sub>subscript</sub></li>
-</ul>
-"""
+		<ul>
+		<li>Item with <sub>subscript</sub></li>
+		</ul>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -212,10 +212,10 @@ This should be ~~~down~~~ below everything else.
 	@Test func subscriptInBlockquote() async {
 		let input = "> Quote with ~subscript~"
 		let expected = """
-<blockquote>
-<p>Quote with <sub>subscript</sub></p>
-</blockquote>
-"""
+		<blockquote>
+		<p>Quote with <sub>subscript</sub></p>
+		</blockquote>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)

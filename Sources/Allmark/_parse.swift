@@ -1,6 +1,5 @@
 import Foundation
 
-@MainActor
 func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 	var document = MarkdownNode(
 		type: "document",
@@ -42,6 +41,17 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 
 	while state.i < state.src.count {
 		parseLine(state: &state)
+	}
+
+	// Close the remaining open nodes
+	var j = state.openNodes.count
+	while j > 0 {
+		j -= 1
+		let openNode = state.openNodes[j]
+		openNode.length = state.i - openNode.index
+		if let rule = state.rules[openNode.type] {
+			rule.closeNode(&state, openNode)
+		}
 	}
 
 	parseBlockInlines(parent: &document, rules: rules.inlines, refs: state.refs, footnotes: state.footnotes)

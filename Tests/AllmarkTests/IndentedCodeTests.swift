@@ -1,5 +1,5 @@
-import Testing
 @testable import Allmark
+import Testing
 
 struct IndentedCodeTests {
 	@Test func simple4SpaceIndentedCode() async {

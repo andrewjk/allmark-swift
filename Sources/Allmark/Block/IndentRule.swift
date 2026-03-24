@@ -1,7 +1,7 @@
 import Foundation
 
 /// Indentation handling for spaces and tabs
-@MainActor
+
 let indentRule = BlockRule(
 	name: "indent",
 	testStart: testIndentStart,
@@ -10,20 +10,20 @@ let indentRule = BlockRule(
 )
 
 // TODO: Should this be built in and not a rule??
-func testIndentStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
+func testIndentStart(state: inout BlockParserState, parent _: MarkdownNode) -> Bool {
 	let src = state.src
 	if state.i >= src.count {
 		return false
 	}
-	
+
 	let index = src.index(src.startIndex, offsetBy: state.i)
 	let char = src[index]
-	
+
 	if isSpace(code: Int(char.asciiValue ?? 0)) {
 		while state.i < src.count {
 			let charIndex = src.index(src.startIndex, offsetBy: state.i)
 			let currentChar = src[charIndex]
-			
+
 			if currentChar == " " {
 				state.indent += 1
 				state.i += 1
@@ -36,10 +36,10 @@ func testIndentStart(state: inout BlockParserState, parent: MarkdownNode) -> Boo
 			}
 		}
 	}
-	
+
 	return false
 }
 
-func testIndentContinue(state: inout BlockParserState, node: MarkdownNode) -> Bool {
+func testIndentContinue(state _: inout BlockParserState, node _: MarkdownNode) -> Bool {
 	return false
 }

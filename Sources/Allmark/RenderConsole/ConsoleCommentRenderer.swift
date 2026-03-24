@@ -1,12 +1,10 @@
 import Foundation
 
-@MainActor
 let consoleCommentRenderer = Renderer(
 	name: "comment",
 	render: renderConsoleComment
 )
 
-@MainActor
-func renderConsoleComment(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderConsoleComment(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	state.output += "<!--\(node.content)-->"
 }

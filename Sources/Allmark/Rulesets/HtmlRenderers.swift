@@ -2,7 +2,7 @@ import Foundation
 import OrderedCollections
 
 /// HTML renderers for all node types.
-@MainActor
+
 public let htmlRenderers: OrderedDictionary<String, Renderer> = [
 	alertRenderer.name: alertRenderer,
 	blockQuoteRenderer.name: blockQuoteRenderer,

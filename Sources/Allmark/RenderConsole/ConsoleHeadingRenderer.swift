@@ -1,13 +1,11 @@
 import Foundation
 
-@MainActor
 let consoleHeadingRenderer = Renderer(
 	name: "heading",
 	render: renderConsoleHeading
 )
 
-@MainActor
-func renderConsoleHeading(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderConsoleHeading(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	var level = 0
 	var isUnderline = false
 	if node.markup.hasPrefix("#") {
@@ -19,15 +17,15 @@ func renderConsoleHeading(_ node: MarkdownNode, _ state: inout RendererState, _ 
 		level = 2
 		isUnderline = true
 	}
-	
+
 	let style = ansiBold + ansiMagenta
-	if !state.output.isEmpty && !state.output.hasSuffix("\n") {
+	if !state.output.isEmpty, !state.output.hasSuffix("\n") {
 		state.output += "\n"
 	}
-	
+
 	if isUnderline {
 		state.output += "\(style)"
-		
+
 		var headingText = ""
 		for child in node.children ?? [] {
 			if child.type == "text" {
@@ -44,7 +42,7 @@ func renderConsoleHeading(_ node: MarkdownNode, _ state: inout RendererState, _ 
 				headingText += childState.output
 			}
 		}
-		
+
 		let plainText = headingText.replacingOccurrences(of: "\u{001B}[0m", with: "")
 			.replacingOccurrences(of: "\u{001B}[1m", with: "")
 			.replacingOccurrences(of: "\u{001B}[2m", with: "")
@@ -61,7 +59,7 @@ func renderConsoleHeading(_ node: MarkdownNode, _ state: inout RendererState, _ 
 			.replacingOccurrences(of: "\u{001B}[43m", with: "")
 			.replacingOccurrences(of: "\u{001B}[9m", with: "")
 			.replacingOccurrences(of: "\u{001B}[29m", with: "")
-		
+
 		state.output += headingText
 		let underline = level == 1 ? String(repeating: "=", count: plainText.count) : String(repeating: "-", count: plainText.count)
 		state.output += "\n\(ansiReset)\(ansiDim)\(underline)\(ansiReset)\n"

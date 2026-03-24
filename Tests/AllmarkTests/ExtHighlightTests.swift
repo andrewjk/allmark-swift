@@ -1,14 +1,14 @@
-import Testing
 @testable import Allmark
+import Testing
 
 struct ExtHighlightTests {
 	@Test func highlightSingle() async {
 		let input = """
-This should be =highlighted= as it is important.
-"""
+		This should be =highlighted= as it is important.
+		"""
 		let expected = """
-<p>This should be <mark>highlighted</mark> as it is important.</p>
-"""
+		<p>This should be <mark>highlighted</mark> as it is important.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -18,11 +18,11 @@ This should be =highlighted= as it is important.
 
 	@Test func highlightDouble() async {
 		let input = """
-This should be ==highlighted== as it is important.
-"""
+		This should be ==highlighted== as it is important.
+		"""
 		let expected = """
-<p>This should be <mark>highlighted</mark> as it is important.</p>
-"""
+		<p>This should be <mark>highlighted</mark> as it is important.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -32,11 +32,11 @@ This should be ==highlighted== as it is important.
 
 	@Test func highlightTriple() async {
 		let input = """
-This should be ===highlighted=== as it is important.
-"""
+		This should be ===highlighted=== as it is important.
+		"""
 		let expected = """
-<p>This should be ===highlighted=== as it is important.</p>
-"""
+		<p>This should be ===highlighted=== as it is important.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -187,10 +187,10 @@ This should be ===highlighted=== as it is important.
 	@Test func highlightInListItem() async {
 		let input = "- Item with =highlight="
 		let expected = """
-<ul>
-<li>Item with <mark>highlight</mark></li>
-</ul>
-"""
+		<ul>
+		<li>Item with <mark>highlight</mark></li>
+		</ul>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -201,10 +201,10 @@ This should be ===highlighted=== as it is important.
 	@Test func highlightInBlockquote() async {
 		let input = "> Quote with =highlight="
 		let expected = """
-<blockquote>
-<p>Quote with <mark>highlight</mark></p>
-</blockquote>
-"""
+		<blockquote>
+		<p>Quote with <mark>highlight</mark></p>
+		</blockquote>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)

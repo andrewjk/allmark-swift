@@ -6,4 +6,9 @@ public struct FootnoteReference {
 	public var label: String
 	/// The content node for the footnote.
 	public var content: MarkdownNode
+
+	public init(label: String, content: MarkdownNode) {
+		self.label = label
+		self.content = content
+	}
 }

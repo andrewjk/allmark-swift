@@ -1,14 +1,14 @@
-import Testing
 @testable import Allmark
+import Testing
 
 struct ExtSuperscriptTests {
 	@Test func superscriptSingle() async {
 		let input = """
-This should be ^up^ above everything else.
-"""
+		This should be ^up^ above everything else.
+		"""
 		let expected = """
-<p>This should be <sup>up</sup> above everything else.</p>
-"""
+		<p>This should be <sup>up</sup> above everything else.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -18,11 +18,11 @@ This should be ^up^ above everything else.
 
 	@Test func superscriptDouble() async {
 		let input = """
-This should be ^^up^^ above everything else.
-"""
+		This should be ^^up^^ above everything else.
+		"""
 		let expected = """
-<p>This should be <sup>up</sup> above everything else.</p>
-"""
+		<p>This should be <sup>up</sup> above everything else.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -32,11 +32,11 @@ This should be ^^up^^ above everything else.
 
 	@Test func superscriptTriple() async {
 		let input = """
-This should be ^^^up^^^ above everything else.
-"""
+		This should be ^^^up^^^ above everything else.
+		"""
 		let expected = """
-<p>This should be ^^^up^^^ above everything else.</p>
-"""
+		<p>This should be ^^^up^^^ above everything else.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -197,10 +197,10 @@ This should be ^^^up^^^ above everything else.
 	@Test func superscriptInListItem() async {
 		let input = "- Item with ^superscript^"
 		let expected = """
-<ul>
-<li>Item with <sup>superscript</sup></li>
-</ul>
-"""
+		<ul>
+		<li>Item with <sup>superscript</sup></li>
+		</ul>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -211,10 +211,10 @@ This should be ^^^up^^^ above everything else.
 	@Test func superscriptInBlockquote() async {
 		let input = "> Quote with ^superscript^"
 		let expected = """
-<blockquote>
-<p>Quote with <sup>superscript</sup></p>
-</blockquote>
-"""
+		<blockquote>
+		<p>Quote with <sup>superscript</sup></p>
+		</blockquote>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)

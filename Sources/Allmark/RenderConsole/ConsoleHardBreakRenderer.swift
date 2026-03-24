@@ -1,11 +1,10 @@
 import Foundation
 
-@MainActor
 let consoleHardBreakRenderer = Renderer(
 	name: "hard_break",
 	render: renderConsoleHardBreak
 )
 
-func renderConsoleHardBreak(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderConsoleHardBreak(_: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	state.output += "\n"
 }

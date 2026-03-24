@@ -6,7 +6,7 @@ func movePastMarker(markerLength: Int, state: inout BlockParserState) {
 	if state.i < src.count {
 		let index = src.index(src.startIndex, offsetBy: state.i)
 		let char = src[index]
-		if char == "\t" && state.i + 1 < src.count {
+		if char == "\t", state.i + 1 < src.count {
 			let nextIndex = src.index(src.startIndex, offsetBy: state.i + 1)
 			if src[nextIndex] == "\t" {
 				state.indent = 6

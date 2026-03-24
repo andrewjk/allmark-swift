@@ -10,17 +10,17 @@ func testCriticMarks(
 	let closeDel = closingDelimiter ?? delimiter
 	let src = state.src
 	guard state.i < src.count else { return false }
-	
+
 	let index = src.index(src.startIndex, offsetBy: state.i)
 	let char = src[index]
-	
+
 	if char == "{" && !isEscaped(text: src, i: state.i) {
 		let start = state.i
 		var end = state.i
-		
+
 		// Get the markup
 		var markup = String(char)
-		for i in (start + 1)..<src.count {
+		for i in (start + 1) ..< src.count {
 			let iIndex = src.index(src.startIndex, offsetBy: i)
 			if src[iIndex] == delimiter.first {
 				markup.append(delimiter)
@@ -31,7 +31,7 @@ func testCriticMarks(
 				break
 			}
 		}
-		
+
 		if markup.count == 2 || markup.count == 3 {
 			// Add a new text node which may turn into deletion
 			let text = MarkdownNode(
@@ -45,17 +45,17 @@ func testCriticMarks(
 				children: nil
 			)
 			parent.children?.append(text)
-			
+
 			// Add the start delimiter
 			state.i += markup.count
 			state.delimiters.append(Delimiter(markup: markup, start: start, length: markup.count, handled: nil))
-			
+
 			return true
 		}
 	} else if String(char) == closeDel && !isEscaped(text: src, i: state.i) {
 		// Get the markup
 		var markup = "{" + delimiter
-		for i in (state.i + 1)..<src.count {
+		for i in (state.i + 1) ..< src.count {
 			let iIndex = src.index(src.startIndex, offsetBy: i)
 			if src[iIndex] == closeDel.first {
 				markup.append(delimiter)
@@ -65,7 +65,7 @@ func testCriticMarks(
 				return false
 			}
 		}
-		
+
 		if markup.count == 2 || markup.count == 3 {
 			// Loop backwards through delimiters to find a matching one that
 			// does not take precedence
@@ -79,7 +79,7 @@ func testCriticMarks(
 				}
 				startIndex -= 1
 			}
-			
+
 			// Check if it's a closing deletion
 			if let startDel = startDelimiter {
 				// Convert the text node into a deletion node with a new text
@@ -98,22 +98,21 @@ func testCriticMarks(
 							indent: 0,
 							children: nil
 						)
-						
+
 						lastNode.type = name
 						lastNode.markup = markup
-						
-						// Get children after the start node
+						lastNode.length = state.parentIndex + state.i - lastNode.index + markup.count
 						let movedNodes = Array(parent.children?.suffix(from: i + 1) ?? [])
 						lastNode.children = [text] + movedNodes
-						
+
 						// Remove the moved nodes from parent
 						if let childCount = parent.children?.count {
-							parent.children?.removeSubrange((i + 1)..<childCount)
+							parent.children?.removeSubrange((i + 1) ..< childCount)
 						}
-						
-						// Replace the node
+
+						// Replace node
 						parent.children?[i] = lastNode
-						
+
 						state.i += markup.count
 
 						if var del = startDelimiter {
@@ -124,12 +123,12 @@ func testCriticMarks(
 					}
 					i -= 1
 				}
-				
+
 				// TODO: Precedence!
 				// TODO: Should mark all delimiters between the tags as handled...
 			}
 		}
 	}
-	
+
 	return false
 }

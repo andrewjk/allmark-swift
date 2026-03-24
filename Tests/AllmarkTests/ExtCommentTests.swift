@@ -1,14 +1,14 @@
-import Testing
 @testable import Allmark
+import Testing
 
 struct ExtCommentTests {
 	@Test func commentBasic() async {
 		let input = """
-This text was {>>commented<<} recently.
-"""
+		This text was {>>commented<<} recently.
+		"""
 		let expected = """
-<p>This text was <span class="markdown-comment">commented</span> recently.</p>
-"""
+		<p>This text was <span class="markdown-comment">commented</span> recently.</p>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -149,10 +149,10 @@ This text was {>>commented<<} recently.
 	@Test func commentInListItem() async {
 		let input = "- Item with {>>comment<<}"
 		let expected = """
-<ul>
-<li>Item with <span class="markdown-comment">comment</span></li>
-</ul>
-"""
+		<ul>
+		<li>Item with <span class="markdown-comment">comment</span></li>
+		</ul>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)
@@ -163,10 +163,10 @@ This text was {>>commented<<} recently.
 	@Test func commentInBlockquote() async {
 		let input = "> Quote with {>>comment<<}"
 		let expected = """
-<blockquote>
-<p>Quote with <span class="markdown-comment">comment</span></p>
-</blockquote>
-"""
+		<blockquote>
+		<p>Quote with <span class="markdown-comment">comment</span></p>
+		</blockquote>
+		"""
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let html = _render(doc: doc, renderers: htmlRenderers)

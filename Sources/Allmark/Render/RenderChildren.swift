@@ -1,6 +1,5 @@
 import Foundation
 
-@MainActor
 func renderChildren(node: MarkdownNode, state: inout RendererState, decode: Bool = true) {
 	if let children = node.children, !children.isEmpty {
 		let trim = node.type != "code_block" && node.type != "code_fence" && node.type != "code_span"

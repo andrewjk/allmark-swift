@@ -15,4 +15,4 @@ let ansiCyan = "\u{001B}[36m"
 let ansiGray = "\u{001B}[90m"
 let ansiYellowBack = "\u{001B}[43m"
 
-	let consoleBullets = ["•", "◦", "▪", "‣"]
+let consoleBullets = ["•", "◦", "▪", "‣"]

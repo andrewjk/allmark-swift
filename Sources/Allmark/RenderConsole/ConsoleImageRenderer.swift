@@ -1,13 +1,11 @@
 import Foundation
 
-@MainActor
 let consoleImageRenderer = Renderer(
 	name: "image",
 	render: renderConsoleImage
 )
 
-@MainActor
-func renderConsoleImage(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderConsoleImage(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	let style = ansiGray
 	let reset = ansiReset
 	var alt = ""

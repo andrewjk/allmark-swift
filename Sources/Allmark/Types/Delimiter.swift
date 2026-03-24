@@ -10,4 +10,11 @@ public struct Delimiter {
 	public var length: Int
 	/// Whether this delimiter has been handled.
 	public var handled: Bool?
+
+	public init(markup: String, start: Int, length: Int, handled: Bool? = nil) {
+		self.markup = markup
+		self.start = start
+		self.length = length
+		self.handled = handled
+	}
 }

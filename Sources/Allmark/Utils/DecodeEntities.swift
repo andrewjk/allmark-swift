@@ -2,36 +2,36 @@ import Foundation
 
 func decodeEntities(text: String) -> String {
 	let pattern = "(?<!\\\\)&([a-zA-Z0-9]+|#[0-9]{1,7}|#[xX][a-fA-F0-9]{1,6});"
-	
+
 	guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
 		return text
 	}
-	
+
 	let nsRange = NSRange(text.startIndex..., in: text)
 	let matches = regex.matches(in: text, options: [], range: nsRange)
-	
+
 	var result = text
 	var offset = 0
-	
+
 	for match in matches {
 		let matchRange = match.range
 		let adjustedRange = NSRange(location: matchRange.location + offset, length: matchRange.length)
-		
+
 		guard let swiftRange = Range(adjustedRange, in: result) else {
 			continue
 		}
-		
+
 		let entityString = String(result[swiftRange])
 		let innerRange = match.range(at: 1)
 		let adjustedInnerRange = NSRange(location: innerRange.location + offset, length: innerRange.length)
-		
+
 		guard let swiftInnerRange = Range(adjustedInnerRange, in: result) else {
 			continue
 		}
-		
+
 		let inner = String(result[swiftInnerRange])
 		var replacement: String
-		
+
 		if inner.hasPrefix("#") {
 			if inner.hasPrefix("#x") || inner.hasPrefix("#X") {
 				let hexString = String(inner.dropFirst(2))
@@ -51,31 +51,31 @@ func decodeEntities(text: String) -> String {
 		} else {
 			replacement = entities[inner] ?? entityString
 		}
-		
+
 		result.replaceSubrange(swiftRange, with: replacement)
 		offset += replacement.count - entityString.count
 	}
-	
+
 	return result
 }
 
-let entities: [String:String] = [
+let entities: [String: String] = [
 	"AElig": "\u{00C6}",
 	"AMP": "\u{0026}",
 	"Aacute": "\u{00C1}",
 	"Abreve": "\u{0102}",
 	"Acirc": "\u{00C2}",
 	"Acy": "\u{0410}",
-	//Afr": "\u{D835}\u{DD04}
+	// Afr": "\u{D835}\u{DD04}
 	"Agrave": "\u{00C0}",
 	"Alpha": "\u{0391}",
 	"Amacr": "\u{0100}",
 	"And": "\u{2A53}",
 	"Aogon": "\u{0104}",
-	//Aopf": "\u{D835}\u{DD38}
+	// Aopf": "\u{D835}\u{DD38}
 	"ApplyFunction": "\u{2061}",
 	"Aring": "\u{00C5}",
-	//Ascr": "\u{D835}\u{DC9C}
+	// Ascr": "\u{D835}\u{DC9C}
 	"Assign": "\u{2254}",
 	"Atilde": "\u{00C3}",
 	"Auml": "\u{00C4}",
@@ -86,8 +86,8 @@ let entities: [String:String] = [
 	"Because": "\u{2235}",
 	"Bernoullis": "\u{212C}",
 	"Beta": "\u{0392}",
-	//Bfr": "\u{D835}\u{DD05}
-	//Bopf": "\u{D835}\u{DD39}
+	// Bfr": "\u{D835}\u{DD05}
+	// Bopf": "\u{D835}\u{DD39}
 	"Breve": "\u{02D8}",
 	"Bscr": "\u{212C}",
 	"Bumpeq": "\u{224E}",
@@ -122,7 +122,7 @@ let entities: [String:String] = [
 	"Coproduct": "\u{2210}",
 	"CounterClockwiseContourIntegral": "\u{2233}",
 	"Cross": "\u{2A2F}",
-	//Cscr": "\u{D835}\u{DC9E}
+	// Cscr": "\u{D835}\u{DC9E}
 	"Cup": "\u{22D3}",
 	"CupCap": "\u{224D}",
 	"DD": "\u{2145}",
@@ -137,7 +137,7 @@ let entities: [String:String] = [
 	"Dcy": "\u{0414}",
 	"Del": "\u{2207}",
 	"Delta": "\u{0394}",
-	//Dfr": "\u{D835}\u{DD07}
+	// Dfr": "\u{D835}\u{DD07}
 	"DiacriticalAcute": "\u{00B4}",
 	"DiacriticalDot": "\u{02D9}",
 	"DiacriticalDoubleAcute": "\u{02DD}",
@@ -145,7 +145,7 @@ let entities: [String:String] = [
 	"DiacriticalTilde": "\u{02DC}",
 	"Diamond": "\u{22C4}",
 	"DifferentialD": "\u{2146}",
-	//Dopf": "\u{D835}\u{DD3B}
+	// Dopf": "\u{D835}\u{DD3B}
 	"Dot": "\u{00A8}",
 	"DotDot": "\u{20DC}",
 	"DotEqual": "\u{2250}",
@@ -177,7 +177,7 @@ let entities: [String:String] = [
 	"DownTee": "\u{22A4}",
 	"DownTeeArrow": "\u{21A7}",
 	"Downarrow": "\u{21D3}",
-	//Dscr": "\u{D835}\u{DC9F}
+	// Dscr": "\u{D835}\u{DC9F}
 	"Dstrok": "\u{0110}",
 	"ENG": "\u{014A}",
 	"ETH": "\u{00D0}",
@@ -186,14 +186,14 @@ let entities: [String:String] = [
 	"Ecirc": "\u{00CA}",
 	"Ecy": "\u{042D}",
 	"Edot": "\u{0116}",
-	//Efr": "\u{D835}\u{DD08}
+	// Efr": "\u{D835}\u{DD08}
 	"Egrave": "\u{00C8}",
 	"Element": "\u{2208}",
 	"Emacr": "\u{0112}",
 	"EmptySmallSquare": "\u{25FB}",
 	"EmptyVerySmallSquare": "\u{25AB}",
 	"Eogon": "\u{0118}",
-	//Eopf": "\u{D835}\u{DD3C}
+	// Eopf": "\u{D835}\u{DD3C}
 	"Epsilon": "\u{0395}",
 	"Equal": "\u{2A75}",
 	"EqualTilde": "\u{2242}",
@@ -205,10 +205,10 @@ let entities: [String:String] = [
 	"Exists": "\u{2203}",
 	"ExponentialE": "\u{2147}",
 	"Fcy": "\u{0424}",
-	//Ffr": "\u{D835}\u{DD09}
+	// Ffr": "\u{D835}\u{DD09}
 	"FilledSmallSquare": "\u{25FC}",
 	"FilledVerySmallSquare": "\u{25AA}",
-	//Fopf": "\u{D835}\u{DD3D}
+	// Fopf": "\u{D835}\u{DD3D}
 	"ForAll": "\u{2200}",
 	"Fouriertrf": "\u{2131}",
 	"Fscr": "\u{2131}",
@@ -221,9 +221,9 @@ let entities: [String:String] = [
 	"Gcirc": "\u{011C}",
 	"Gcy": "\u{0413}",
 	"Gdot": "\u{0120}",
-	//Gfr": "\u{D835}\u{DD0A}
+	// Gfr": "\u{D835}\u{DD0A}
 	"Gg": "\u{22D9}",
-	//Gopf": "\u{D835}\u{DD3E}
+	// Gopf": "\u{D835}\u{DD3E}
 	"GreaterEqual": "\u{2265}",
 	"GreaterEqualLess": "\u{22DB}",
 	"GreaterFullEqual": "\u{2267}",
@@ -231,7 +231,7 @@ let entities: [String:String] = [
 	"GreaterLess": "\u{2277}",
 	"GreaterSlantEqual": "\u{2A7E}",
 	"GreaterTilde": "\u{2273}",
-	//Gscr": "\u{D835}\u{DCA2}
+	// Gscr": "\u{D835}\u{DCA2}
 	"Gt": "\u{226B}",
 	"HARDcy": "\u{042A}",
 	"Hacek": "\u{02C7}",
@@ -264,7 +264,7 @@ let entities: [String:String] = [
 	"InvisibleComma": "\u{2063}",
 	"InvisibleTimes": "\u{2062}",
 	"Iogon": "\u{012E}",
-	//Iopf": "\u{D835}\u{DD40}
+	// Iopf": "\u{D835}\u{DD40}
 	"Iota": "\u{0399}",
 	"Iscr": "\u{2110}",
 	"Itilde": "\u{0128}",
@@ -272,9 +272,9 @@ let entities: [String:String] = [
 	"Iuml": "\u{00CF}",
 	"Jcirc": "\u{0134}",
 	"Jcy": "\u{0419}",
-	//Jfr": "\u{D835}\u{DD0D}
-	//Jopf": "\u{D835}\u{DD41}
-	//Jscr": "\u{D835}\u{DCA5}
+	// Jfr": "\u{D835}\u{DD0D}
+	// Jopf": "\u{D835}\u{DD41}
+	// Jscr": "\u{D835}\u{DCA5}
 	"Jsercy": "\u{0408}",
 	"Jukcy": "\u{0404}",
 	"KHcy": "\u{0425}",
@@ -282,9 +282,9 @@ let entities: [String:String] = [
 	"Kappa": "\u{039A}",
 	"Kcedil": "\u{0136}",
 	"Kcy": "\u{041A}",
-	//Kfr": "\u{D835}\u{DD0E}
-	//Kopf": "\u{D835}\u{DD42}
-	//Kscr": "\u{D835}\u{DCA6}
+	// Kfr": "\u{D835}\u{DD0E}
+	// Kopf": "\u{D835}\u{DD42}
+	// Kscr": "\u{D835}\u{DCA6}
 	"LJcy": "\u{0409}",
 	"LT": "\u{003C}",
 	"Lacute": "\u{0139}",
@@ -327,7 +327,7 @@ let entities: [String:String] = [
 	"LessLess": "\u{2AA1}",
 	"LessSlantEqual": "\u{2A7D}",
 	"LessTilde": "\u{2272}",
-	//Lfr": "\u{D835}\u{DD0F}
+	// Lfr": "\u{D835}\u{DD0F}
 	"Ll": "\u{22D8}",
 	"Lleftarrow": "\u{21DA}",
 	"Lmidot": "\u{013F}",
@@ -337,7 +337,7 @@ let entities: [String:String] = [
 	"Longleftarrow": "\u{27F8}",
 	"Longleftrightarrow": "\u{27FA}",
 	"Longrightarrow": "\u{27F9}",
-	//Lopf": "\u{D835}\u{DD43}
+	// Lopf": "\u{D835}\u{DD43}
 	"LowerLeftArrow": "\u{2199}",
 	"LowerRightArrow": "\u{2198}",
 	"Lscr": "\u{2112}",
@@ -348,9 +348,9 @@ let entities: [String:String] = [
 	"Mcy": "\u{041C}",
 	"MediumSpace": "\u{205F}",
 	"Mellintrf": "\u{2133}",
-	//Mfr": "\u{D835}\u{DD10}
+	// Mfr": "\u{D835}\u{DD10}
 	"MinusPlus": "\u{2213}",
-	//Mopf": "\u{D835}\u{DD44}
+	// Mopf": "\u{D835}\u{DD44}
 	"Mscr": "\u{2133}",
 	"Mu": "\u{039C}",
 	"NJcy": "\u{040A}",
@@ -365,7 +365,7 @@ let entities: [String:String] = [
 	"NestedGreaterGreater": "\u{226B}",
 	"NestedLessLess": "\u{226A}",
 	"NewLine": "\u{000A}",
-	//Nfr": "\u{D835}\u{DD11}
+	// Nfr": "\u{D835}\u{DD11}
 	"NoBreak": "\u{2060}",
 	"NonBreakingSpace": "\u{00A0}",
 	"Nopf": "\u{2115}",
@@ -421,7 +421,7 @@ let entities: [String:String] = [
 	"NotTildeFullEqual": "\u{2247}",
 	"NotTildeTilde": "\u{2249}",
 	"NotVerticalBar": "\u{2224}",
-	//Nscr": "\u{D835}\u{DCA9}
+	// Nscr": "\u{D835}\u{DCA9}
 	"Ntilde": "\u{00D1}",
 	"Nu": "\u{039D}",
 	"OElig": "\u{0152}",
@@ -429,16 +429,16 @@ let entities: [String:String] = [
 	"Ocirc": "\u{00D4}",
 	"Ocy": "\u{041E}",
 	"Odblac": "\u{0150}",
-	//Ofr": "\u{D835}\u{DD12}
+	// Ofr": "\u{D835}\u{DD12}
 	"Ograve": "\u{00D2}",
 	"Omacr": "\u{014C}",
 	"Omega": "\u{03A9}",
 	"Omicron": "\u{039F}",
-	//Oopf": "\u{D835}\u{DD46}
+	// Oopf": "\u{D835}\u{DD46}
 	"OpenCurlyDoubleQuote": "\u{201C}",
 	"OpenCurlyQuote": "\u{2018}",
 	"Or": "\u{2A54}",
-	//Oscr": "\u{D835}\u{DCAA}
+	// Oscr": "\u{D835}\u{DCAA}
 	"Oslash": "\u{00D8}",
 	"Otilde": "\u{00D5}",
 	"Otimes": "\u{2A37}",
@@ -449,7 +449,7 @@ let entities: [String:String] = [
 	"OverParenthesis": "\u{23DC}",
 	"PartialD": "\u{2202}",
 	"Pcy": "\u{041F}",
-	//Pfr": "\u{D835}\u{DD13}
+	// Pfr": "\u{D835}\u{DD13}
 	"Phi": "\u{03A6}",
 	"Pi": "\u{03A0}",
 	"PlusMinus": "\u{00B1}",
@@ -464,12 +464,12 @@ let entities: [String:String] = [
 	"Product": "\u{220F}",
 	"Proportion": "\u{2237}",
 	"Proportional": "\u{221D}",
-	//Pscr": "\u{D835}\u{DCAB}
+	// Pscr": "\u{D835}\u{DCAB}
 	"Psi": "\u{03A8}",
 	"QUOT": "\u{0022}",
-	//Qfr": "\u{D835}\u{DD14}
+	// Qfr": "\u{D835}\u{DD14}
 	"Qopf": "\u{211A}",
-	//Qscr": "\u{D835}\u{DCAC}
+	// Qscr": "\u{D835}\u{DCAC}
 	"RBarr": "\u{2910}",
 	"REG": "\u{00AE}",
 	"Racute": "\u{0154}",
@@ -523,14 +523,14 @@ let entities: [String:String] = [
 	"Scedil": "\u{015E}",
 	"Scirc": "\u{015C}",
 	"Scy": "\u{0421}",
-	//Sfr": "\u{D835}\u{DD16}
+	// Sfr": "\u{D835}\u{DD16}
 	"ShortDownArrow": "\u{2193}",
 	"ShortLeftArrow": "\u{2190}",
 	"ShortRightArrow": "\u{2192}",
 	"ShortUpArrow": "\u{2191}",
 	"Sigma": "\u{03A3}",
 	"SmallCircle": "\u{2218}",
-	//Sopf": "\u{D835}\u{DD4A}
+	// Sopf": "\u{D835}\u{DD4A}
 	"Sqrt": "\u{221A}",
 	"Square": "\u{25A1}",
 	"SquareIntersection": "\u{2293}",
@@ -539,7 +539,7 @@ let entities: [String:String] = [
 	"SquareSuperset": "\u{2290}",
 	"SquareSupersetEqual": "\u{2292}",
 	"SquareUnion": "\u{2294}",
-	//Sscr": "\u{D835}\u{DCAE}
+	// Sscr": "\u{D835}\u{DCAE}
 	"Star": "\u{22C6}",
 	"Sub": "\u{22D0}",
 	"Subset": "\u{22D0}",
@@ -563,7 +563,7 @@ let entities: [String:String] = [
 	"Tcaron": "\u{0164}",
 	"Tcedil": "\u{0162}",
 	"Tcy": "\u{0422}",
-	//Tfr": "\u{D835}\u{DD17}
+	// Tfr": "\u{D835}\u{DD17}
 	"Therefore": "\u{2234}",
 	"Theta": "\u{0398}",
 	"ThickSpace": "\u{205F}\u{200A}",
@@ -572,9 +572,9 @@ let entities: [String:String] = [
 	"TildeEqual": "\u{2243}",
 	"TildeFullEqual": "\u{2245}",
 	"TildeTilde": "\u{2248}",
-	//Topf": "\u{D835}\u{DD4B}
+	// Topf": "\u{D835}\u{DD4B}
 	"TripleDot": "\u{20DB}",
-	//Tscr": "\u{D835}\u{DCAF}
+	// Tscr": "\u{D835}\u{DCAF}
 	"Tstrok": "\u{0166}",
 	"Uacute": "\u{00DA}",
 	"Uarr": "\u{219F}",
@@ -584,7 +584,7 @@ let entities: [String:String] = [
 	"Ucirc": "\u{00DB}",
 	"Ucy": "\u{0423}",
 	"Udblac": "\u{0170}",
-	//Ufr": "\u{D835}\u{DD18}
+	// Ufr": "\u{D835}\u{DD18}
 	"Ugrave": "\u{00D9}",
 	"Umacr": "\u{016A}",
 	"UnderBar": "\u{005F}",
@@ -594,7 +594,7 @@ let entities: [String:String] = [
 	"Union": "\u{22C3}",
 	"UnionPlus": "\u{228E}",
 	"Uogon": "\u{0172}",
-	//Uopf": "\u{D835}\u{DD4C}
+	// Uopf": "\u{D835}\u{DD4C}
 	"UpArrow": "\u{2191}",
 	"UpArrowBar": "\u{2912}",
 	"UpArrowDownArrow": "\u{21C5}",
@@ -609,7 +609,7 @@ let entities: [String:String] = [
 	"Upsi": "\u{03D2}",
 	"Upsilon": "\u{03A5}",
 	"Uring": "\u{016E}",
-	//Uscr": "\u{D835}\u{DCB0}
+	// Uscr": "\u{D835}\u{DCB0}
 	"Utilde": "\u{0168}",
 	"Uuml": "\u{00DC}",
 	"VDash": "\u{22AB}",
@@ -625,28 +625,28 @@ let entities: [String:String] = [
 	"VerticalSeparator": "\u{2758}",
 	"VerticalTilde": "\u{2240}",
 	"VeryThinSpace": "\u{200A}",
-	//Vfr": "\u{D835}\u{DD19}
-	//Vopf": "\u{D835}\u{DD4D}
-	//Vscr": "\u{D835}\u{DCB1}
+	// Vfr": "\u{D835}\u{DD19}
+	// Vopf": "\u{D835}\u{DD4D}
+	// Vscr": "\u{D835}\u{DCB1}
 	"Vvdash": "\u{22AA}",
 	"Wcirc": "\u{0174}",
 	"Wedge": "\u{22C0}",
-	//Wfr": "\u{D835}\u{DD1A}
-	//Wopf": "\u{D835}\u{DD4E}
-	//Wscr": "\u{D835}\u{DCB2}
-	//Xfr": "\u{D835}\u{DD1B}
+	// Wfr": "\u{D835}\u{DD1A}
+	// Wopf": "\u{D835}\u{DD4E}
+	// Wscr": "\u{D835}\u{DCB2}
+	// Xfr": "\u{D835}\u{DD1B}
 	"Xi": "\u{039E}",
-	//Xopf": "\u{D835}\u{DD4F}
-	//Xscr": "\u{D835}\u{DCB3}
+	// Xopf": "\u{D835}\u{DD4F}
+	// Xscr": "\u{D835}\u{DCB3}
 	"YAcy": "\u{042F}",
 	"YIcy": "\u{0407}",
 	"YUcy": "\u{042E}",
 	"Yacute": "\u{00DD}",
 	"Ycirc": "\u{0176}",
 	"Ycy": "\u{042B}",
-	//Yfr": "\u{D835}\u{DD1C}
-	//Yopf": "\u{D835}\u{DD50}
-	//Yscr": "\u{D835}\u{DCB4}
+	// Yfr": "\u{D835}\u{DD1C}
+	// Yopf": "\u{D835}\u{DD50}
+	// Yscr": "\u{D835}\u{DCB4}
 	"Yuml": "\u{0178}",
 	"ZHcy": "\u{0416}",
 	"Zacute": "\u{0179}",
@@ -657,7 +657,7 @@ let entities: [String:String] = [
 	"Zeta": "\u{0396}",
 	"Zfr": "\u{2128}",
 	"Zopf": "\u{2124}",
-	//Zscr": "\u{D835}\u{DCB5}
+	// Zscr": "\u{D835}\u{DCB5}
 	"aacute": "\u{00E1}",
 	"abreve": "\u{0103}",
 	"ac": "\u{223E}",
@@ -668,7 +668,7 @@ let entities: [String:String] = [
 	"acy": "\u{0430}",
 	"aelig": "\u{00E6}",
 	"af": "\u{2061}",
-	//afr": "\u{D835}\u{DD1E}
+	// afr": "\u{D835}\u{DD1E}
 	"agrave": "\u{00E0}",
 	"alefsym": "\u{2135}",
 	"aleph": "\u{2135}",
@@ -700,7 +700,7 @@ let entities: [String:String] = [
 	"angst": "\u{00C5}",
 	"angzarr": "\u{237C}",
 	"aogon": "\u{0105}",
-	//aopf": "\u{D835}\u{DD52}
+	// aopf": "\u{D835}\u{DD52}
 	"ap": "\u{2248}",
 	"apE": "\u{2A70}",
 	"apacir": "\u{2A6F}",
@@ -710,7 +710,7 @@ let entities: [String:String] = [
 	"approx": "\u{2248}",
 	"approxeq": "\u{224A}",
 	"aring": "\u{00E5}",
-	//ascr": "\u{D835}\u{DCB6}
+	// ascr": "\u{D835}\u{DCB6}
 	"ast": "\u{002A}",
 	"asymp": "\u{2248}",
 	"asympeq": "\u{224D}",
@@ -740,7 +740,7 @@ let entities: [String:String] = [
 	"beta": "\u{03B2}",
 	"beth": "\u{2136}",
 	"between": "\u{226C}",
-	//bfr": "\u{D835}\u{DD1F}
+	// bfr": "\u{D835}\u{DD1F}
 	"bigcap": "\u{22C2}",
 	"bigcirc": "\u{25EF}",
 	"bigcup": "\u{22C3}",
@@ -769,7 +769,7 @@ let entities: [String:String] = [
 	"bne": "\u{003D}\u{20E5}",
 	"bnequiv": "\u{2261}\u{20E5}",
 	"bnot": "\u{2310}",
-	//bopf": "\u{D835}\u{DD53}
+	// bopf": "\u{D835}\u{DD53}
 	"bot": "\u{22A5}",
 	"bottom": "\u{22A5}",
 	"bowtie": "\u{22C8}",
@@ -820,7 +820,7 @@ let entities: [String:String] = [
 	"bprime": "\u{2035}",
 	"breve": "\u{02D8}",
 	"brvbar": "\u{00A6}",
-	//bscr": "\u{D835}\u{DCB7}
+	// bscr": "\u{D835}\u{DCB7}
 	"bsemi": "\u{204F}",
 	"bsim": "\u{223D}",
 	"bsime": "\u{22CD}",
@@ -854,7 +854,7 @@ let entities: [String:String] = [
 	"cemptyv": "\u{29B2}",
 	"cent": "\u{00A2}",
 	"centerdot": "\u{00B7}",
-	//cfr": "\u{D835}\u{DD20}
+	// cfr": "\u{D835}\u{DD20}
 	"chcy": "\u{0447}",
 	"check": "\u{2713}",
 	"checkmark": "\u{2713}",
@@ -888,13 +888,13 @@ let entities: [String:String] = [
 	"cong": "\u{2245}",
 	"congdot": "\u{2A6D}",
 	"conint": "\u{222E}",
-	//copf": "\u{D835}\u{DD54}
+	// copf": "\u{D835}\u{DD54}
 	"coprod": "\u{2210}",
 	"copy": "\u{00A9}",
 	"copysr": "\u{2117}",
 	"crarr": "\u{21B5}",
 	"cross": "\u{2717}",
-	//cscr": "\u{D835}\u{DCB8}
+	// cscr": "\u{D835}\u{DCB8}
 	"csub": "\u{2ACF}",
 	"csube": "\u{2AD1}",
 	"csup": "\u{2AD0}",
@@ -946,7 +946,7 @@ let entities: [String:String] = [
 	"delta": "\u{03B4}",
 	"demptyv": "\u{29B1}",
 	"dfisht": "\u{297F}",
-	//dfr": "\u{D835}\u{DD21}
+	// dfr": "\u{D835}\u{DD21}
 	"dharl": "\u{21C3}",
 	"dharr": "\u{21C2}",
 	"diam": "\u{22C4}",
@@ -964,7 +964,7 @@ let entities: [String:String] = [
 	"dlcorn": "\u{231E}",
 	"dlcrop": "\u{230D}",
 	"dollar": "\u{0024}",
-	//dopf": "\u{D835}\u{DD55}
+	// dopf": "\u{D835}\u{DD55}
 	"dot": "\u{02D9}",
 	"doteq": "\u{2250}",
 	"doteqdot": "\u{2251}",
@@ -979,7 +979,7 @@ let entities: [String:String] = [
 	"drbkarow": "\u{2910}",
 	"drcorn": "\u{231F}",
 	"drcrop": "\u{230C}",
-	//dscr": "\u{D835}\u{DCB9}
+	// dscr": "\u{D835}\u{DCB9}
 	"dscy": "\u{0455}",
 	"dsol": "\u{29F6}",
 	"dstrok": "\u{0111}",
@@ -1003,7 +1003,7 @@ let entities: [String:String] = [
 	"edot": "\u{0117}",
 	"ee": "\u{2147}",
 	"efDot": "\u{2252}",
-	//efr": "\u{D835}\u{DD22}
+	// efr": "\u{D835}\u{DD22}
 	"eg": "\u{2A9A}",
 	"egrave": "\u{00E8}",
 	"egs": "\u{2A96}",
@@ -1023,7 +1023,7 @@ let entities: [String:String] = [
 	"eng": "\u{014B}",
 	"ensp": "\u{2002}",
 	"eogon": "\u{0119}",
-	//eopf": "\u{D835}\u{DD56}
+	// eopf": "\u{D835}\u{DD56}
 	"epar": "\u{22D5}",
 	"eparsl": "\u{29E3}",
 	"eplus": "\u{2A71}",
@@ -1059,14 +1059,14 @@ let entities: [String:String] = [
 	"ffilig": "\u{FB03}",
 	"fflig": "\u{FB00}",
 	"ffllig": "\u{FB04}",
-	//ffr": "\u{D835}\u{DD23}
+	// ffr": "\u{D835}\u{DD23}
 	"filig": "\u{FB01}",
 	"fjlig": "\u{0066}\u{006A}",
 	"flat": "\u{266D}",
 	"fllig": "\u{FB02}",
 	"fltns": "\u{25B1}",
 	"fnof": "\u{0192}",
-	//fopf": "\u{D835}\u{DD57}
+	// fopf": "\u{D835}\u{DD57}
 	"forall": "\u{2200}",
 	"fork": "\u{22D4}",
 	"forkv": "\u{2AD9}",
@@ -1088,7 +1088,7 @@ let entities: [String:String] = [
 	"frac78": "\u{215E}",
 	"frasl": "\u{2044}",
 	"frown": "\u{2322}",
-	//fscr": "\u{D835}\u{DCBB}
+	// fscr": "\u{D835}\u{DCBB}
 	"gE": "\u{2267}",
 	"gEl": "\u{2A8C}",
 	"gacute": "\u{01F5}",
@@ -1111,7 +1111,7 @@ let entities: [String:String] = [
 	"gesdotol": "\u{2A84}",
 	"gesl": "\u{22DB}\u{FE00}",
 	"gesles": "\u{2A94}",
-	//gfr": "\u{D835}\u{DD24}
+	// gfr": "\u{D835}\u{DD24}
 	"gg": "\u{226B}",
 	"ggg": "\u{22D9}",
 	"gimel": "\u{2137}",
@@ -1127,7 +1127,7 @@ let entities: [String:String] = [
 	"gneq": "\u{2A88}",
 	"gneqq": "\u{2269}",
 	"gnsim": "\u{22E7}",
-	//gopf": "\u{D835}\u{DD58}
+	// gopf": "\u{D835}\u{DD58}
 	"grave": "\u{0060}",
 	"gscr": "\u{210A}",
 	"gsim": "\u{2273}",
@@ -1162,16 +1162,16 @@ let entities: [String:String] = [
 	"heartsuit": "\u{2665}",
 	"hellip": "\u{2026}",
 	"hercon": "\u{22B9}",
-	//hfr": "\u{D835}\u{DD25}
+	// hfr": "\u{D835}\u{DD25}
 	"hksearow": "\u{2925}",
 	"hkswarow": "\u{2926}",
 	"hoarr": "\u{21FF}",
 	"homtht": "\u{223B}",
 	"hookleftarrow": "\u{21A9}",
 	"hookrightarrow": "\u{21AA}",
-	//hopf": "\u{D835}\u{DD59}
+	// hopf": "\u{D835}\u{DD59}
 	"horbar": "\u{2015}",
-	//hscr": "\u{D835}\u{DCBD}
+	// hscr": "\u{D835}\u{DCBD}
 	"hslash": "\u{210F}",
 	"hstrok": "\u{0127}",
 	"hybull": "\u{2043}",
@@ -1183,7 +1183,7 @@ let entities: [String:String] = [
 	"iecy": "\u{0435}",
 	"iexcl": "\u{00A1}",
 	"iff": "\u{21D4}",
-	//ifr": "\u{D835}\u{DD26}
+	// ifr": "\u{D835}\u{DD26}
 	"igrave": "\u{00EC}",
 	"ii": "\u{2148}",
 	"iiiint": "\u{2A0C}",
@@ -1211,11 +1211,11 @@ let entities: [String:String] = [
 	"intprod": "\u{2A3C}",
 	"iocy": "\u{0451}",
 	"iogon": "\u{012F}",
-	//iopf": "\u{D835}\u{DD5A}
+	// iopf": "\u{D835}\u{DD5A}
 	"iota": "\u{03B9}",
 	"iprod": "\u{2A3C}",
 	"iquest": "\u{00BF}",
-	//iscr": "\u{D835}\u{DCBE}
+	// iscr": "\u{D835}\u{DCBE}
 	"isin": "\u{2208}",
 	"isinE": "\u{22F9}",
 	"isindot": "\u{22F5}",
@@ -1228,22 +1228,22 @@ let entities: [String:String] = [
 	"iuml": "\u{00EF}",
 	"jcirc": "\u{0135}",
 	"jcy": "\u{0439}",
-	//jfr": "\u{D835}\u{DD27}
+	// jfr": "\u{D835}\u{DD27}
 	"jmath": "\u{0237}",
-	//jopf": "\u{D835}\u{DD5B}
-	//jscr": "\u{D835}\u{DCBF}
+	// jopf": "\u{D835}\u{DD5B}
+	// jscr": "\u{D835}\u{DCBF}
 	"jsercy": "\u{0458}",
 	"jukcy": "\u{0454}",
 	"kappa": "\u{03BA}",
 	"kappav": "\u{03F0}",
 	"kcedil": "\u{0137}",
 	"kcy": "\u{043A}",
-	//kfr": "\u{D835}\u{DD28}
+	// kfr": "\u{D835}\u{DD28}
 	"kgreen": "\u{0138}",
 	"khcy": "\u{0445}",
 	"kjcy": "\u{045C}",
-	//kopf": "\u{D835}\u{DD5C}
-	//kscr": "\u{D835}\u{DCC0}
+	// kopf": "\u{D835}\u{DD5C}
+	// kscr": "\u{D835}\u{DCC0}
 	"lAarr": "\u{21DA}",
 	"lArr": "\u{21D0}",
 	"lAtail": "\u{291B}",
@@ -1321,7 +1321,7 @@ let entities: [String:String] = [
 	"lesssim": "\u{2272}",
 	"lfisht": "\u{297C}",
 	"lfloor": "\u{230A}",
-	//lfr": "\u{D835}\u{DD29}
+	// lfr": "\u{D835}\u{DD29}
 	"lg": "\u{2276}",
 	"lgE": "\u{2A91}",
 	"lhard": "\u{21BD}",
@@ -1354,7 +1354,7 @@ let entities: [String:String] = [
 	"looparrowleft": "\u{21AB}",
 	"looparrowright": "\u{21AC}",
 	"lopar": "\u{2985}",
-	//lopf": "\u{D835}\u{DD5D}
+	// lopf": "\u{D835}\u{DD5D}
 	"loplus": "\u{2A2D}",
 	"lotimes": "\u{2A34}",
 	"lowast": "\u{2217}",
@@ -1371,7 +1371,7 @@ let entities: [String:String] = [
 	"lrm": "\u{200E}",
 	"lrtri": "\u{22BF}",
 	"lsaquo": "\u{2039}",
-	//lscr": "\u{D835}\u{DCC1}
+	// lscr": "\u{D835}\u{DCC1}
 	"lsh": "\u{21B0}",
 	"lsim": "\u{2272}",
 	"lsime": "\u{2A8D}",
@@ -1411,7 +1411,7 @@ let entities: [String:String] = [
 	"mcy": "\u{043C}",
 	"mdash": "\u{2014}",
 	"measuredangle": "\u{2221}",
-	//mfr": "\u{D835}\u{DD2A}
+	// mfr": "\u{D835}\u{DD2A}
 	"mho": "\u{2127}",
 	"micro": "\u{00B5}",
 	"mid": "\u{2223}",
@@ -1426,9 +1426,9 @@ let entities: [String:String] = [
 	"mldr": "\u{2026}",
 	"mnplus": "\u{2213}",
 	"models": "\u{22A7}",
-	//mopf": "\u{D835}\u{DD5E}
+	// mopf": "\u{D835}\u{DD5E}
 	"mp": "\u{2213}",
-	//mscr": "\u{D835}\u{DCC2}
+	// mscr": "\u{D835}\u{DCC2}
 	"mstpos": "\u{223E}",
 	"mu": "\u{03BC}",
 	"multimap": "\u{22B8}",
@@ -1477,7 +1477,7 @@ let entities: [String:String] = [
 	"nesim": "\u{2242}\u{0338}",
 	"nexist": "\u{2204}",
 	"nexists": "\u{2204}",
-	//nfr": "\u{D835}\u{DD2B}
+	// nfr": "\u{D835}\u{DD2B}
 	"ngE": "\u{2267}\u{0338}",
 	"nge": "\u{2271}",
 	"ngeq": "\u{2271}",
@@ -1512,7 +1512,7 @@ let entities: [String:String] = [
 	"nltri": "\u{22EA}",
 	"nltrie": "\u{22EC}",
 	"nmid": "\u{2224}",
-	//nopf": "\u{D835}\u{DD5F}
+	// nopf": "\u{D835}\u{DD5F}
 	"not": "\u{00AC}",
 	"notin": "\u{2209}",
 	"notinE": "\u{22F9}\u{0338}",
@@ -1544,7 +1544,7 @@ let entities: [String:String] = [
 	"nsc": "\u{2281}",
 	"nsccue": "\u{22E1}",
 	"nsce": "\u{2AB0}\u{0338}",
-	//nscr": "\u{D835}\u{DCC3}
+	// nscr": "\u{D835}\u{DCC3}
 	"nshortmid": "\u{2224}",
 	"nshortparallel": "\u{2226}",
 	"nsim": "\u{2241}",
@@ -1611,7 +1611,7 @@ let entities: [String:String] = [
 	"odsold": "\u{29BC}",
 	"oelig": "\u{0153}",
 	"ofcir": "\u{29BF}",
-	//ofr": "\u{D835}\u{DD2C}
+	// ofr": "\u{D835}\u{DD2C}
 	"ogon": "\u{02DB}",
 	"ograve": "\u{00F2}",
 	"ogt": "\u{29C1}",
@@ -1628,7 +1628,7 @@ let entities: [String:String] = [
 	"omicron": "\u{03BF}",
 	"omid": "\u{29B6}",
 	"ominus": "\u{2296}",
-	//oopf": "\u{D835}\u{DD60}
+	// oopf": "\u{D835}\u{DD60}
 	"opar": "\u{29B7}",
 	"operp": "\u{29B9}",
 	"oplus": "\u{2295}",
@@ -1663,7 +1663,7 @@ let entities: [String:String] = [
 	"permil": "\u{2030}",
 	"perp": "\u{22A5}",
 	"pertenk": "\u{2031}",
-	//pfr": "\u{D835}\u{DD2D}
+	// pfr": "\u{D835}\u{DD2D}
 	"phi": "\u{03C6}",
 	"phiv": "\u{03D5}",
 	"phmmat": "\u{2133}",
@@ -1686,7 +1686,7 @@ let entities: [String:String] = [
 	"plustwo": "\u{2A27}",
 	"pm": "\u{00B1}",
 	"pointint": "\u{2A15}",
-	//popf": "\u{D835}\u{DD61}
+	// popf": "\u{D835}\u{DD61}
 	"pound": "\u{00A3}",
 	"pr": "\u{227A}",
 	"prE": "\u{2AB3}",
@@ -1714,14 +1714,14 @@ let entities: [String:String] = [
 	"propto": "\u{221D}",
 	"prsim": "\u{227E}",
 	"prurel": "\u{22B0}",
-	//pscr": "\u{D835}\u{DCC5}
+	// pscr": "\u{D835}\u{DCC5}
 	"psi": "\u{03C8}",
 	"puncsp": "\u{2008}",
-	//qfr": "\u{D835}\u{DD2E}
+	// qfr": "\u{D835}\u{DD2E}
 	"qint": "\u{2A0C}",
-	//qopf": "\u{D835}\u{DD62}
+	// qopf": "\u{D835}\u{DD62}
 	"qprime": "\u{2057}",
-	//qscr": "\u{D835}\u{DCC6}
+	// qscr": "\u{D835}\u{DCC6}
 	"quaternions": "\u{210D}",
 	"quatint": "\u{2A16}",
 	"quest": "\u{003F}",
@@ -1781,7 +1781,7 @@ let entities: [String:String] = [
 	"reg": "\u{00AE}",
 	"rfisht": "\u{297D}",
 	"rfloor": "\u{230B}",
-	//rfr": "\u{D835}\u{DD2F}
+	// rfr": "\u{D835}\u{DD2F}
 	"rhard": "\u{21C1}",
 	"rharu": "\u{21C0}",
 	"rharul": "\u{296C}",
@@ -1808,7 +1808,7 @@ let entities: [String:String] = [
 	"roarr": "\u{21FE}",
 	"robrk": "\u{27E7}",
 	"ropar": "\u{2986}",
-	//ropf": "\u{D835}\u{DD63}
+	// ropf": "\u{D835}\u{DD63}
 	"roplus": "\u{2A2E}",
 	"rotimes": "\u{2A35}",
 	"rpar": "\u{0029}",
@@ -1816,7 +1816,7 @@ let entities: [String:String] = [
 	"rppolint": "\u{2A12}",
 	"rrarr": "\u{21C9}",
 	"rsaquo": "\u{203A}",
-	//rscr": "\u{D835}\u{DCC7}
+	// rscr": "\u{D835}\u{DCC7}
 	"rsh": "\u{21B1}",
 	"rsqb": "\u{005D}",
 	"rsquo": "\u{2019}",
@@ -1858,7 +1858,7 @@ let entities: [String:String] = [
 	"setminus": "\u{2216}",
 	"setmn": "\u{2216}",
 	"sext": "\u{2736}",
-	//sfr": "\u{D835}\u{DD30}
+	// sfr": "\u{D835}\u{DD30}
 	"sfrown": "\u{2322}",
 	"sharp": "\u{266F}",
 	"shchcy": "\u{0449}",
@@ -1893,7 +1893,7 @@ let entities: [String:String] = [
 	"sol": "\u{002F}",
 	"solb": "\u{29C4}",
 	"solbar": "\u{233F}",
-	//sopf": "\u{D835}\u{DD64}
+	// sopf": "\u{D835}\u{DD64}
 	"spades": "\u{2660}",
 	"spadesuit": "\u{2660}",
 	"spar": "\u{2225}",
@@ -1914,7 +1914,7 @@ let entities: [String:String] = [
 	"squarf": "\u{25AA}",
 	"squf": "\u{25AA}",
 	"srarr": "\u{2192}",
-	//sscr": "\u{D835}\u{DCC8}
+	// sscr": "\u{D835}\u{DCC8}
 	"ssetmn": "\u{2216}",
 	"ssmile": "\u{2323}",
 	"sstarf": "\u{22C6}",
@@ -1989,7 +1989,7 @@ let entities: [String:String] = [
 	"tcy": "\u{0442}",
 	"tdot": "\u{20DB}",
 	"telrec": "\u{2315}",
-	//tfr": "\u{D835}\u{DD31}
+	// tfr": "\u{D835}\u{DD31}
 	"there4": "\u{2234}",
 	"therefore": "\u{2234}",
 	"theta": "\u{03B8}",
@@ -2011,7 +2011,7 @@ let entities: [String:String] = [
 	"top": "\u{22A4}",
 	"topbot": "\u{2336}",
 	"topcir": "\u{2AF1}",
-	//topf": "\u{D835}\u{DD65}
+	// topf": "\u{D835}\u{DD65}
 	"topfork": "\u{2ADA}",
 	"tosa": "\u{2929}",
 	"tprime": "\u{2034}",
@@ -2030,7 +2030,7 @@ let entities: [String:String] = [
 	"trisb": "\u{29CD}",
 	"tritime": "\u{2A3B}",
 	"trpezium": "\u{23E2}",
-	//tscr": "\u{D835}\u{DCC9}
+	// tscr": "\u{D835}\u{DCC9}
 	"tscy": "\u{0446}",
 	"tshcy": "\u{045B}",
 	"tstrok": "\u{0167}",
@@ -2049,7 +2049,7 @@ let entities: [String:String] = [
 	"udblac": "\u{0171}",
 	"udhar": "\u{296E}",
 	"ufisht": "\u{297E}",
-	//ufr": "\u{D835}\u{DD32}
+	// ufr": "\u{D835}\u{DD32}
 	"ugrave": "\u{00F9}",
 	"uharl": "\u{21BF}",
 	"uharr": "\u{21BE}",
@@ -2061,7 +2061,7 @@ let entities: [String:String] = [
 	"umacr": "\u{016B}",
 	"uml": "\u{00A8}",
 	"uogon": "\u{0173}",
-	//uopf": "\u{D835}\u{DD66}
+	// uopf": "\u{D835}\u{DD66}
 	"uparrow": "\u{2191}",
 	"updownarrow": "\u{2195}",
 	"upharpoonleft": "\u{21BF}",
@@ -2076,7 +2076,7 @@ let entities: [String:String] = [
 	"urcrop": "\u{230E}",
 	"uring": "\u{016F}",
 	"urtri": "\u{25F9}",
-	//uscr": "\u{D835}\u{DCCA}
+	// uscr": "\u{D835}\u{DCCA}
 	"utdot": "\u{22F0}",
 	"utilde": "\u{0169}",
 	"utri": "\u{25B5}",
@@ -2113,14 +2113,14 @@ let entities: [String:String] = [
 	"vellip": "\u{22EE}",
 	"verbar": "\u{007C}",
 	"vert": "\u{007C}",
-	//vfr": "\u{D835}\u{DD33}
+	// vfr": "\u{D835}\u{DD33}
 	"vltri": "\u{22B2}",
 	"vnsub": "\u{2282}\u{20D2}",
 	"vnsup": "\u{2283}\u{20D2}",
-	//vopf": "\u{D835}\u{DD67}
+	// vopf": "\u{D835}\u{DD67}
 	"vprop": "\u{221D}",
 	"vrtri": "\u{22B3}",
-	//vscr": "\u{D835}\u{DCCB}
+	// vscr": "\u{D835}\u{DCCB}
 	"vsubnE": "\u{2ACB}\u{FE00}",
 	"vsubne": "\u{228A}\u{FE00}",
 	"vsupnE": "\u{2ACC}\u{FE00}",
@@ -2131,17 +2131,17 @@ let entities: [String:String] = [
 	"wedge": "\u{2227}",
 	"wedgeq": "\u{2259}",
 	"weierp": "\u{2118}",
-	//wfr": "\u{D835}\u{DD34}
-	//wopf": "\u{D835}\u{DD68}
+	// wfr": "\u{D835}\u{DD34}
+	// wopf": "\u{D835}\u{DD68}
 	"wp": "\u{2118}",
 	"wr": "\u{2240}",
 	"wreath": "\u{2240}",
-	//wscr": "\u{D835}\u{DCCC}
+	// wscr": "\u{D835}\u{DCCC}
 	"xcap": "\u{22C2}",
 	"xcirc": "\u{25EF}",
 	"xcup": "\u{22C3}",
 	"xdtri": "\u{25BD}",
-	//xfr": "\u{D835}\u{DD35}
+	// xfr": "\u{D835}\u{DD35}
 	"xhArr": "\u{27FA}",
 	"xharr": "\u{27F7}",
 	"xi": "\u{03BE}",
@@ -2150,12 +2150,12 @@ let entities: [String:String] = [
 	"xmap": "\u{27FC}",
 	"xnis": "\u{22FB}",
 	"xodot": "\u{2A00}",
-	//xopf": "\u{D835}\u{DD69}
+	// xopf": "\u{D835}\u{DD69}
 	"xoplus": "\u{2A01}",
 	"xotime": "\u{2A02}",
 	"xrArr": "\u{27F9}",
 	"xrarr": "\u{27F6}",
-	//xscr": "\u{D835}\u{DCCD}
+	// xscr": "\u{D835}\u{DCCD}
 	"xsqcup": "\u{2A06}",
 	"xuplus": "\u{2A04}",
 	"xutri": "\u{25B3}",
@@ -2166,10 +2166,10 @@ let entities: [String:String] = [
 	"ycirc": "\u{0177}",
 	"ycy": "\u{044B}",
 	"yen": "\u{00A5}",
-	//yfr": "\u{D835}\u{DD36}
+	// yfr": "\u{D835}\u{DD36}
 	"yicy": "\u{0457}",
-	//yopf": "\u{D835}\u{DD6A}
-	//yscr": "\u{D835}\u{DCCE}
+	// yopf": "\u{D835}\u{DD6A}
+	// yscr": "\u{D835}\u{DCCE}
 	"yucy": "\u{044E}",
 	"yuml": "\u{00FF}",
 	"zacute": "\u{017A}",
@@ -2178,11 +2178,11 @@ let entities: [String:String] = [
 	"zdot": "\u{017C}",
 	"zeetrf": "\u{2128}",
 	"zeta": "\u{03B6}",
-	//zfr": "\u{D835}\u{DD37}
+	// zfr": "\u{D835}\u{DD37}
 	"zhcy": "\u{0436}",
 	"zigrarr": "\u{21DD}",
-	//zopf": "\u{D835}\u{DD6B}
-	//zscr": "\u{D835}\u{DCCF}
+	// zopf": "\u{D835}\u{DD6B}
+	// zscr": "\u{D835}\u{DCCF}
 	"zwj": "\u{200D}",
 	"zwnj": "\u{200C}",
 ]

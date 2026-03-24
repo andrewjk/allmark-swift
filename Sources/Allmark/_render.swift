@@ -1,7 +1,6 @@
 import Foundation
 import OrderedCollections
 
-@MainActor
 func _render(doc: MarkdownNode, renderers: OrderedDictionary<String, Renderer> = htmlRenderers) -> String {
 	var state = RendererState(
 		renderers: renderers,
@@ -19,8 +18,8 @@ func _render(doc: MarkdownNode, renderers: OrderedDictionary<String, Renderer> =
 	}
 
 	if !state.output.isEmpty {
-        state.output = state.output.trimmingCharacters(in: .newlines)
-        state.output += "\n"
+		state.output = state.output.trimmingCharacters(in: .newlines)
+		state.output += "\n"
 	}
 
 	return state.output

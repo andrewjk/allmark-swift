@@ -1,14 +1,12 @@
 import Foundation
 
-@MainActor
 let codeBlockRenderer = Renderer(
 	name: "code_block",
 	render: renderCodeBlock
 )
 
-@MainActor
-func renderCodeBlock(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
-	if node.type == "code_block" && node.content.isEmpty {
+func renderCodeBlock(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+	if node.type == "code_block", node.content.isEmpty {
 		return
 	}
 
@@ -16,7 +14,7 @@ func renderCodeBlock(_ node: MarkdownNode, _ state: inout RendererState, _ first
 	var lang = ""
 	if let info = node.info {
 		let langParts = info.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ", maxSplits: 1)
-		if !langParts.isEmpty && !langParts[0].isEmpty {
+		if !langParts.isEmpty, !langParts[0].isEmpty {
 			lang = " class=\"language-\(escapeHtml(text: String(langParts[0])))\""
 		}
 	}

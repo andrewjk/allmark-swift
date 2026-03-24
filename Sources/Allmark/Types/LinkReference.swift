@@ -6,4 +6,9 @@ public struct LinkReference {
 	public var url: String
 	/// The title for the link.
 	public var title: String
+
+	public init(url: String, title: String) {
+		self.url = url
+		self.title = title
+	}
 }

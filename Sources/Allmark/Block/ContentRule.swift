@@ -1,7 +1,7 @@
 import Foundation
 
 /// Raw content capture for blocks that accept content
-@MainActor
+
 let contentRule = BlockRule(
 	name: "content",
 	testStart: testContentStart,
@@ -12,11 +12,11 @@ let contentRule = BlockRule(
 func testContentStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
 	let endOfLine = getEndOfLine(state: &state)
 	let src = state.src
-	
+
 	let startIndex = src.index(src.startIndex, offsetBy: state.i)
 	let endIndex = src.index(src.startIndex, offsetBy: endOfLine)
-	let content = String(src[startIndex..<endIndex])
-	
+	let content = String(src[startIndex ..< endIndex])
+
 	if parent.acceptsContent {
 		if !state.hasBlankLine {
 			parent.content += String(repeating: " ", count: state.indent)
@@ -26,11 +26,11 @@ func testContentStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 	} else {
 		parent.content += content
 	}
-	
+
 	state.i = endOfLine
 	return true
 }
 
-func testContentContinue(state: inout BlockParserState, node: MarkdownNode) -> Bool {
+func testContentContinue(state _: inout BlockParserState, node _: MarkdownNode) -> Bool {
 	return false
 }

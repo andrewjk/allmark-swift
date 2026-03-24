@@ -5,16 +5,16 @@ import Foundation
 func parseIndent(state: inout BlockParserState) {
 	let src = state.src
 	let startIndex = src.index(src.startIndex, offsetBy: state.i)
-	
+
 	// Check if current character is a space
-	guard state.i < src.count && isSpace(code: Int(src.unicodeScalars[startIndex].value)) else {
+	guard state.i < src.count, isSpace(code: Int(src.unicodeScalars[startIndex].value)) else {
 		return
 	}
-	
+
 	while state.i < src.count {
 		let currentIndex = src.index(src.startIndex, offsetBy: state.i)
 		let char = src[currentIndex]
-		
+
 		if char == " " {
 			state.indent += 1
 		} else if char == "\t" {
@@ -26,7 +26,7 @@ func parseIndent(state: inout BlockParserState) {
 		} else {
 			break
 		}
-		
+
 		state.i += 1
 	}
 }

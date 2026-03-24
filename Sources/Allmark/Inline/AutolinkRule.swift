@@ -1,6 +1,5 @@
 import Foundation
 
-@MainActor
 let autolinkRule = InlineRule(
 	name: "autolink",
 	test: testAutolink
@@ -20,23 +19,23 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 	if parent.type == "html_block" {
 		return false
 	}
-	
+
 	let src = state.src
 	guard state.i < src.count else { return false }
-	
+
 	let index = src.index(src.startIndex, offsetBy: state.i)
 	let char = src[index]
-	
+
 	if char == "<" && !isEscaped(text: src, i: state.i) {
 		let tail = String(src[index...])
-		
+
 		// Try link match
 		let linkRange = NSRange(location: 0, length: tail.utf16.count)
 		if let linkMatch = linkRegex.firstMatch(in: tail, options: [], range: linkRange) {
 			let matchRange = linkMatch.range(at: 1)
 			if let range = Range(matchRange, in: tail) {
 				let url = escapeHtml(text: String(tail[range]))
-				
+
 				// Check if URL contains spaces
 				let spaceRange = NSRange(location: 0, length: url.utf16.count)
 				if spaceRegex.firstMatch(in: url, options: [], range: spaceRange) != nil {
@@ -54,12 +53,13 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 							children: nil
 						)
 						text.markup = markup
+						text.length = tail[fullRange].count
 						parent.children?.append(text)
 						state.i += tail[fullRange].count
 						return true
 					}
 				}
-				
+
 				let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
 				let html = MarkdownNode(
 					type: "html_span",
@@ -73,22 +73,24 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 				)
 				html.content = "<a href=\"\(encodedUrl)\">\(url)</a>"
 				parent.children?.append(html)
-				
+
 				let fullMatchRange = linkMatch.range(at: 0)
 				if let fullRange = Range(fullMatchRange, in: tail) {
+					html.length = tail[fullRange].count
 					state.i += tail[fullRange].count
 				}
+
 				return true
 			}
 		}
-		
+
 		// Try email match
 		let emailMatchRange = NSRange(location: 0, length: tail.utf16.count)
 		if let emailMatch = emailRegex.firstMatch(in: tail, options: [], range: emailMatchRange) {
 			let matchRange = emailMatch.range(at: 1)
 			if let range = Range(matchRange, in: tail) {
 				let url = escapeHtml(text: String(tail[range]))
-				
+
 				// Check if URL contains spaces
 				let spaceRange = NSRange(location: 0, length: url.utf16.count)
 				if spaceRegex.firstMatch(in: url, options: [], range: spaceRange) != nil {
@@ -106,12 +108,13 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 							children: nil
 						)
 						text.markup = markup
+						text.length = tail[fullRange].count
 						parent.children?.append(text)
 						state.i += tail[fullRange].count
 						return true
 					}
 				}
-				
+
 				let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
 				let html = MarkdownNode(
 					type: "html_span",
@@ -125,15 +128,17 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 				)
 				html.content = "<a href=\"mailto:\(encodedUrl)\">\(url)</a>"
 				parent.children?.append(html)
-				
+
 				let fullMatchRange = emailMatch.range(at: 0)
 				if let fullRange = Range(fullMatchRange, in: tail) {
+					html.length = tail[fullRange].count
 					state.i += tail[fullRange].count
 				}
+
 				return true
 			}
 		}
 	}
-	
+
 	return false
 }

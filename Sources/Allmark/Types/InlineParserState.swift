@@ -22,7 +22,19 @@ public struct InlineParserState {
 	public var refs: [String: LinkReference]
 	/// Footnote reference definitions.
 	public var footnotes: [String: FootnoteReference]
+	/// The starting index of the parent node.
+	public var parentIndex: Int
 
-	// HACK:
-	public var debug: Bool?
+	public init(rules: OrderedDictionary<String, InlineRule>, src: String, i: Int, line: Int, lineStart: Int, indent: Int, delimiters: [Delimiter], refs: [String: LinkReference], footnotes: [String: FootnoteReference], parentIndex: Int) {
+		self.rules = rules
+		self.src = src
+		self.i = i
+		self.line = line
+		self.lineStart = lineStart
+		self.indent = indent
+		self.delimiters = delimiters
+		self.refs = refs
+		self.footnotes = footnotes
+		self.parentIndex = parentIndex
+	}
 }

@@ -1,13 +1,11 @@
 import Foundation
 
-@MainActor
 let listRenderer = Renderer(
 	name: "list",
 	render: renderList
 )
 
-@MainActor
-func renderList(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderList(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	let ordered = node.type == "list_ordered"
 	var start = ""
 	if ordered {
@@ -23,7 +21,7 @@ func renderList(_ node: MarkdownNode, _ state: inout RendererState, _ first: Boo
 
 	var loose = false
 	if let children = node.children {
-		for i in 0..<(children.count - 1) {
+		for i in 0 ..< (children.count - 1) {
 			let child = children[i]
 			if let grandchild = child.children?.last, grandchild.blankAfter {
 				child.blankAfter = true
@@ -36,10 +34,10 @@ func renderList(_ node: MarkdownNode, _ state: inout RendererState, _ first: Boo
 
 		for child in children {
 			if let childChildren = child.children, !childChildren.isEmpty {
-				for j in 0..<(childChildren.count - 1) {
+				for j in 0 ..< (childChildren.count - 1) {
 					let first = childChildren[j]
 					let second = childChildren[j + 1]
-					if first.block && first.blankAfter && second.block {
+					if first.block, first.blankAfter, second.block {
 						loose = true
 						break
 					}
@@ -51,17 +49,17 @@ func renderList(_ node: MarkdownNode, _ state: inout RendererState, _ first: Boo
 			state.output += "<li>"
 			if let itemChildren = item.children {
 				for (i, child) in itemChildren.enumerated() {
-					if !loose && child.type == "paragraph" {
+					if !loose, child.type == "paragraph" {
 						renderChildren(node: child, state: &state)
-				} else {
-					if i == 0 {
-						innerNewLine(node: item, state: &state)
+					} else {
+						if i == 0 {
+							innerNewLine(node: item, state: &state)
+						}
+						renderNode(node: child, state: &state, first: i == itemChildren.count - 1)
+						if i == itemChildren.count - 1, child.block, !state.output.hasSuffix("\n") {
+							state.output += "\n"
+						}
 					}
-					renderNode(node: child, state: &state, first: i == itemChildren.count - 1)
-					if i == itemChildren.count - 1 && child.block && !state.output.hasSuffix("\n") {
-						state.output += "\n"
-					}
-				}
 				}
 			}
 			state.output += "</li>"

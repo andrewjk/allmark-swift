@@ -1,13 +1,11 @@
 import Foundation
 
-@MainActor
 let consoleCodeFenceRenderer = Renderer(
 	name: "code_fence",
 	render: renderConsoleCodeFence
 )
 
-@MainActor
-func renderConsoleCodeFence(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderConsoleCodeFence(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	let content = node.content
 	let lines = content.split(separator: "\n", omittingEmptySubsequences: false)
 
@@ -16,7 +14,7 @@ func renderConsoleCodeFence(_ node: MarkdownNode, _ state: inout RendererState, 
 	} else {
 		state.output += "\u{001B}[2m┌─\u{001B}[0m\n"
 		for (index, line) in lines.enumerated() {
-			if index == lines.count - 1 && line.isEmpty {
+			if index == lines.count - 1, line.isEmpty {
 				continue
 			}
 			state.output += "\u{001B}[2m│\u{001B}[0m \(line)\n"

@@ -1,6 +1,5 @@
 import Foundation
 
-@MainActor
 let insertionRule = InlineRule(
 	name: "insertion",
 	test: testInsertion

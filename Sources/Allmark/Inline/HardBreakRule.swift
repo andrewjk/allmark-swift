@@ -1,6 +1,5 @@
 import Foundation
 
-@MainActor
 let hardBreakRule = InlineRule(
 	name: "hard_break",
 	test: testHardBreak
@@ -9,9 +8,9 @@ let hardBreakRule = InlineRule(
 func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
 	let src = state.src
 	guard state.i < src.count else { return false }
-	
+
 	let index = src.index(src.startIndex, offsetBy: state.i)
-	
+
 	if src[index] == "\\" && state.i + 1 < src.count {
 		let nextIndex = src.index(src.startIndex, offsetBy: state.i + 1)
 		if isNewLine(char: String(src[nextIndex])) {
@@ -25,11 +24,12 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 				indent: 0,
 				children: nil
 			)
+			hb.length = 2
 			state.i += 2
 			parent.children?.append(hb)
 			return true
 		}
 	}
-	
+
 	return false
 }

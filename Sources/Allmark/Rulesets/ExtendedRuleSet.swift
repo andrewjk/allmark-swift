@@ -1,7 +1,7 @@
 import Foundation
 
 /// The extended ruleset with additional features.
-@MainActor
+
 public let extendedRuleSet = RuleSet(
 	blocks: [
 		indentRule.name: indentRule,
@@ -41,5 +41,5 @@ public let extendedRuleSet = RuleSet(
 		deletionRule.name: deletionRule,
 		commentRule.name: commentRule,
 		textRule.name: textRule,
-	],
+	]
 )

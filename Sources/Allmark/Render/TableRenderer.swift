@@ -1,13 +1,11 @@
 import Foundation
 
-@MainActor
 let tableRenderer = Renderer(
 	name: "table",
 	render: renderTable
 )
 
-@MainActor
-func renderTable(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
+func renderTable(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	state.output += "<table>\n<thead>\n<tr>\n"
 	if let children = node.children, let firstRowChildren = children.first?.children {
@@ -33,7 +31,6 @@ func renderTable(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bo
 	endNewLine(node: node, state: &state)
 }
 
-@MainActor
 func renderTableCell(node: MarkdownNode, state: inout RendererState, tag: String) {
 	startNewLine(node: node, state: &state)
 	let align = node.info != nil && !node.info!.isEmpty ? " align=\"\(node.info!)\"" : ""

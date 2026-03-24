@@ -1,5 +1,5 @@
-import Testing
 @testable import Allmark
+import Testing
 
 struct FencedCodeTests {
 	@Test func simpleCodeFenceWithBackticks() async {
