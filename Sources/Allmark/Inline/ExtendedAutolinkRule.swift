@@ -52,17 +52,12 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 						if let fullRange = Range(fullMatchRange, in: tail) {
 							let originalLength = tail[fullRange].count
 							let markup = escapeHtml(text: String(tail[fullRange]))
-							let text = MarkdownNode(
-								type: "text",
-								block: false,
+							let text = newText(
 								index: state.parentIndex + state.i,
 								line: state.line,
-								column: 1,
-								markup: "",
-								indent: state.indent,
-								children: nil
+								content: markup,
+								indent: state.indent
 							)
-							text.markup = markup
 							text.length = originalLength
 							parent.children?.append(text)
 							state.i += originalLength
@@ -75,21 +70,9 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 
 					let fullMatchRange = urlMatch.range(at: 0)
 					if let fullRange = Range(fullMatchRange, in: tail) {
-						let originalLength = tail[fullRange].count
-						let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
-						let html = MarkdownNode(
-							type: "html_span",
-							block: false,
-							index: state.parentIndex + state.i,
-							line: state.line,
-							column: 1,
-							markup: "",
-							indent: state.indent,
-							children: nil
-						)
-						html.content = "<a href=\"http://\(encodedUrl)\">\(url)</a>"
-						html.length = originalLength
-						parent.children?.append(html)
+						let link = newLink(url: url, state: state)
+						link.info = "http://\(link.info ?? "")"
+						parent.children?.append(link)
 						state.i += url.count
 					}
 
@@ -112,17 +95,12 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 						let fullMatchRange = urlMatch.range(at: 0)
 						if let fullRange = Range(fullMatchRange, in: tail) {
 							let markup = escapeHtml(text: String(tail[fullRange]))
-							let text = MarkdownNode(
-								type: "text",
-								block: false,
+							let text = newText(
 								index: state.parentIndex + state.i,
 								line: state.line,
-								column: 1,
-								markup: "",
-								indent: state.indent,
-								children: nil
+								content: markup,
+								indent: state.indent
 							)
-							text.markup = markup
 							parent.children?.append(text)
 							state.i += tail[fullRange].count
 							return true
@@ -132,19 +110,8 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 					url = extendedValidation(url: url)
 					url = escapeHtml(text: url)
 
-					let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
-					let html = MarkdownNode(
-						type: "html_span",
-						block: false,
-						index: state.parentIndex + state.i,
-						line: state.line,
-						column: 1,
-						markup: "",
-						indent: state.indent,
-						children: nil
-					)
-					html.content = "<a href=\"\(encodedUrl)\">\(url)</a>"
-					parent.children?.append(html)
+					let link = newLink(url: url, state: state)
+					parent.children?.append(link)
 					state.i += url.count
 
 					return true
@@ -174,17 +141,12 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 							let fullMatchRange = emailMatch.range(at: 0)
 							if let fullRange = Range(fullMatchRange, in: tail) {
 								let markup = escapeHtml(text: String(tail[fullRange]))
-								let text = MarkdownNode(
-									type: "text",
-									block: false,
+								let text = newText(
 									index: state.parentIndex + state.i,
 									line: state.line,
-									column: 1,
-									markup: "",
-									indent: state.indent,
-									children: nil
+									content: markup,
+									indent: state.indent
 								)
-								text.markup = markup
 								parent.children?.append(text)
 								state.i += tail[fullRange].count
 								return true
@@ -197,17 +159,12 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 								let fullMatchRange = emailMatch.range(at: 0)
 								if let fullRange = Range(fullMatchRange, in: tail) {
 									let markup = escapeHtml(text: String(tail[fullRange]))
-									let text = MarkdownNode(
-										type: "text",
-										block: false,
+									let text = newText(
 										index: state.parentIndex + state.i,
 										line: state.line,
-										column: 1,
-										markup: "",
-										indent: state.indent,
-										children: nil
+										content: markup,
+										indent: state.indent
 									)
-									text.markup = markup
 									parent.children?.append(text)
 									state.i += tail[fullRange].count
 									return true
@@ -217,19 +174,9 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 
 						url = url.replacingOccurrences(of: "\\.$", with: "", options: .regularExpression)
 
-						let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
-						let html = MarkdownNode(
-							type: "html_span",
-							block: false,
-							index: state.parentIndex + state.i,
-							line: state.line,
-							column: 1,
-							markup: "",
-							indent: state.indent,
-							children: nil
-						)
-						html.content = "<a href=\"mailto:\(encodedUrl)\">\(url)</a>"
-						parent.children?.append(html)
+						let link = newLink(url: url, state: state)
+						link.info = "mailto:\(link.info ?? "")"
+						parent.children?.append(link)
 						state.i += url.count
 
 						return true
@@ -255,17 +202,12 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 						let fullMatchRange = emailMatch.range(at: 0)
 						if let fullRange = Range(fullMatchRange, in: tail) {
 							let markup = escapeHtml(text: String(tail[fullRange]))
-							let text = MarkdownNode(
-								type: "text",
-								block: false,
+							let text = newText(
 								index: state.parentIndex + state.i,
 								line: state.line,
-								column: 1,
-								markup: "",
-								indent: state.indent,
-								children: nil
+								content: markup,
+								indent: state.indent
 							)
-							text.markup = markup
 							parent.children?.append(text)
 							state.i += tail[fullRange].count
 							return true
@@ -278,17 +220,12 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 							let fullMatchRange = emailMatch.range(at: 0)
 							if let fullRange = Range(fullMatchRange, in: tail) {
 								let markup = escapeHtml(text: String(tail[fullRange]))
-								let text = MarkdownNode(
-									type: "text",
-									block: false,
+								let text = newText(
 									index: state.parentIndex + state.i,
 									line: state.line,
-									column: 1,
-									markup: "",
-									indent: state.indent,
-									children: nil
+									content: markup,
+									indent: state.indent
 								)
-								text.markup = markup
 								parent.children?.append(text)
 								state.i += tail[fullRange].count
 								return true
@@ -298,19 +235,8 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 
 					url = url.replacingOccurrences(of: "\\.$", with: "", options: .regularExpression)
 
-					let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
-					let html = MarkdownNode(
-						type: "html_span",
-						block: false,
-						index: state.parentIndex + state.i,
-						line: state.line,
-						column: 1,
-						markup: "",
-						indent: state.indent,
-						children: nil
-					)
-					html.content = "<a href=\"\(encodedUrl)\">\(url)</a>"
-					parent.children?.append(html)
+					let link = newLink(url: url, state: state)
+					parent.children?.append(link)
 					state.i += url.count
 
 					return true
@@ -374,4 +300,30 @@ func extendedValidation(url: String) -> String {
 	}
 
 	return result
+}
+
+func newLink(url: String, state: InlineParserState) -> MarkdownNode {
+	let escapedUrl = url.replacingOccurrences(of: "\\", with: "\\\\")
+	let decodedUrl = decodeEntities(text: url)
+	let encodedUrl = decodedUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? decodedUrl
+
+	let text = newText(
+		index: state.parentIndex + state.i,
+		line: state.line,
+		content: escapedUrl,
+		indent: state.indent
+	)
+
+	let link = newInline(
+		type: "link",
+		index: state.parentIndex + state.i,
+		line: state.line,
+		markup: "",
+		indent: state.indent
+	)
+	link.info = encodedUrl
+	link.length = url.count
+	link.children = [text]
+
+	return link
 }

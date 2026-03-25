@@ -5,6 +5,6 @@ let consoleHtmlRenderer = Renderer(
 	render: renderConsoleHtml
 )
 
-func renderConsoleHtml(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleHtml(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	state.output += node.content
 }

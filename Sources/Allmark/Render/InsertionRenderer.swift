@@ -5,7 +5,7 @@ let insertionRenderer = Renderer(
 	render: renderInsertion
 )
 
-func renderInsertion(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderInsertion(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	state.output += "<ins class=\"markdown-insertion\">"
 	renderChildren(node: node, state: &state)

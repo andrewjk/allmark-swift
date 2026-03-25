@@ -88,15 +88,12 @@ func testThematicBreakStart(state: inout BlockParserState, parent: MarkdownNode)
 			let markupEnd = src.index(src.startIndex, offsetBy: end)
 			let markup = String(src[markupStart ..< markupEnd])
 
-			let tbr = MarkdownNode(
+			let tbr = newBlock(
 				type: "thematic_break",
-				block: true,
 				index: state.i,
 				line: state.line,
-				column: 1,
 				markup: markup,
-				indent: 0,
-				children: []
+				indent: 0
 			)
 			tbr.length = end - state.i
 			currentParent.children?.append(tbr)

@@ -114,28 +114,22 @@ func testListStart(state: inout BlockParserState, parent: MarkdownNode, info: Li
 	if haveList {
 		list = currentParent
 	} else {
-		list = MarkdownNode(
+		list = newBlock(
 			type: info.type,
-			block: true,
 			index: state.i,
 			line: state.line,
-			column: 1,
 			markup: info.markup,
-			indent: state.indent,
-			children: []
+			indent: state.indent
 		)
 	}
 	list.delimiter = info.delimiter
 
-	let item = MarkdownNode(
+	let item = newBlock(
 		type: "list_item",
-		block: true,
 		index: state.i,
 		line: state.line,
-		column: 1,
 		markup: info.markup,
-		indent: state.indent,
-		children: []
+		indent: state.indent
 	)
 	item.delimiter = info.delimiter
 	item.subindent = state.indent + info.markup.count + spaces

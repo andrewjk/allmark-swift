@@ -12,8 +12,6 @@ public class MarkdownNode {
 	public var length: Int
 	/// The line number where this node starts.
 	public var line: Int
-	/// The column number where this node starts.
-	public var column: Int
 	/// The markdown-specific markup for this node as it has been entered by the user.
 	public var markup: String
 	/// The delimiter that has determined this node's type.
@@ -43,7 +41,6 @@ public class MarkdownNode {
 		block: Bool,
 		index: Int,
 		line: Int,
-		column: Int,
 		markup: String,
 		indent: Int,
 		children: [MarkdownNode]?
@@ -53,7 +50,6 @@ public class MarkdownNode {
 		self.index = index
 		length = 0
 		self.line = line
-		self.column = column
 		self.markup = markup
 		delimiter = ""
 		content = ""

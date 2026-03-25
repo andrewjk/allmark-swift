@@ -33,7 +33,6 @@ public let gfmRuleSet = RuleSet(
 		footnoteRule.name: footnoteRule,
 		linkRule.name: linkRule,
 		hardBreakRule.name: hardBreakRule,
-		lineBreakRule.name: lineBreakRule,
 		textRule.name: textRule,
 	]
 )

@@ -36,7 +36,6 @@ public let extendedRuleSet = RuleSet(
 		footnoteRule.name: footnoteRule,
 		linkRule.name: linkRule,
 		hardBreakRule.name: hardBreakRule,
-		lineBreakRule.name: lineBreakRule,
 		insertionRule.name: insertionRule,
 		deletionRule.name: deletionRule,
 		commentRule.name: commentRule,

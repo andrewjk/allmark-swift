@@ -5,7 +5,7 @@ let consoleHeadingRenderer = Renderer(
 	render: renderConsoleHeading
 )
 
-func renderConsoleHeading(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleHeading(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	var level = 0
 	var isUnderline = false
 	if node.markup.hasPrefix("#") {
@@ -29,7 +29,7 @@ func renderConsoleHeading(_ node: MarkdownNode, _ state: inout RendererState, _:
 		var headingText = ""
 		for child in node.children ?? [] {
 			if child.type == "text" {
-				headingText += child.markup
+				headingText += child.content
 			} else {
 				var childState = RendererState(
 					renderers: state.renderers,

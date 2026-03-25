@@ -33,15 +33,12 @@ func testListTaskItemStart(state: inout BlockParserState, parent: MarkdownNode) 
 					let markup = "[\(char2)]"
 
 					// HACK: It should be a block, but it's not for output reasons
-					let task = MarkdownNode(
+					let task = newInline(
 						type: "list_task_item",
-						block: false,
 						index: state.i,
 						line: state.line,
-						column: 1,
 						markup: markup,
-						indent: 0,
-						children: []
+						indent: 0
 					)
 
 					parent.children?.append(task)

@@ -5,7 +5,7 @@ let tableRenderer = Renderer(
 	render: renderTable
 )
 
-func renderTable(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderTable(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	state.output += "<table>\n<thead>\n<tr>\n"
 	if let children = node.children, let firstRowChildren = children.first?.children {

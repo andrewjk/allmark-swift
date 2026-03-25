@@ -2,7 +2,8 @@ import Foundation
 
 let superscriptRule = InlineRule(
 	name: "superscript",
-	test: testSuperscript
+	test: testSuperscript,
+	precedence: 5
 )
 
 func testSuperscript(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
@@ -13,7 +14,7 @@ func testSuperscript(state: inout InlineParserState, parent: inout MarkdownNode)
 	let char = src[index]
 
 	if char == "^" && !isEscaped(text: src, i: state.i) {
-		return testTagMarks(name: "superscript", char: "^", state: &state, parent: &parent)
+		return testTagMarks(name: "superscript", char: "^", state: &state, parent: &parent, precedence: superscriptRule.precedence!)
 	}
 
 	return false

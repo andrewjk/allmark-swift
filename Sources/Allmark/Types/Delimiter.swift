@@ -10,11 +10,14 @@ public struct Delimiter {
 	public var length: Int
 	/// Whether this delimiter has been handled.
 	public var handled: Bool?
+	/// Precedence for delimiter matching (higher = takes precedence).
+	public var precedence: Int?
 
-	public init(markup: String, start: Int, length: Int, handled: Bool? = nil) {
+	public init(markup: String, start: Int, length: Int, handled: Bool? = nil, precedence: Int? = nil) {
 		self.markup = markup
 		self.start = start
 		self.length = length
 		self.handled = handled
+		self.precedence = precedence
 	}
 }

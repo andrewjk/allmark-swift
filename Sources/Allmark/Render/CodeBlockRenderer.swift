@@ -5,7 +5,7 @@ let codeBlockRenderer = Renderer(
 	render: renderCodeBlock
 )
 
-func renderCodeBlock(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderCodeBlock(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	if node.type == "code_block", node.content.isEmpty {
 		return
 	}

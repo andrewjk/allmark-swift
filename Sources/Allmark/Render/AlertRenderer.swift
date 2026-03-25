@@ -5,7 +5,7 @@ let alertRenderer = Renderer(
 	render: renderAlert
 )
 
-func renderAlert(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderAlert(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	let title = String(node.markup.prefix(1)).uppercased() + String(node.markup.dropFirst())
 	state.output += "<div class=\"markdown-alert markdown-alert-\(node.markup)\">\n<p class=\"markdown-alert-title\">\(title)</p>"

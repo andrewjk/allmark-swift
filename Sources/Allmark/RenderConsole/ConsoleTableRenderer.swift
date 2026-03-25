@@ -5,7 +5,7 @@ let consoleTableRenderer = Renderer(
 	render: renderConsoleTable
 )
 
-func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiDim
 	if !state.output.isEmpty, !state.output.hasSuffix("\n") {
 		state.output += "\n"
@@ -90,7 +90,7 @@ func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: B
 
 func getTextFromConsoleNode(node: MarkdownNode) -> String {
 	if node.type == "text" {
-		return node.markup
+		return node.content
 	}
 	if let children = node.children {
 		return children.map { getTextFromConsoleNode(node: $0) }.joined()

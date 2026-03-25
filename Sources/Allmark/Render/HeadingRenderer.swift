@@ -5,7 +5,7 @@ let headingRenderer = Renderer(
 	render: renderHeading
 )
 
-func renderHeading(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderHeading(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	var level = 0
 	if node.markup.hasPrefix("#") {

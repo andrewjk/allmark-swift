@@ -5,7 +5,7 @@ let consoleParagraphRenderer = Renderer(
 	render: renderConsoleParagraph
 )
 
-func renderConsoleParagraph(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleParagraph(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	if !state.output.isEmpty, !state.output.hasSuffix("\n") {
 		state.output += "\n"
 	}

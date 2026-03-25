@@ -5,7 +5,7 @@ let consoleAlertRenderer = Renderer(
 	render: renderConsoleAlert
 )
 
-func renderConsoleAlert(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleAlert(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let reset = ansiReset
 	let type = node.markup.lowercased()
 	let styles: [String: String] = [

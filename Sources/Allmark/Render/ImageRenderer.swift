@@ -5,7 +5,7 @@ let imageRenderer = Renderer(
 	render: renderImage
 )
 
-func renderImage(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderImage(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	let alt = getChildText(node: node)
 	var title = ""
@@ -21,7 +21,7 @@ func getChildText(node: MarkdownNode) -> String {
 	if let children = node.children {
 		for child in children {
 			if child.type == "text" {
-				text += child.markup
+				text += child.content
 			} else {
 				text += getChildText(node: child)
 			}

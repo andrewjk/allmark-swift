@@ -5,6 +5,6 @@ let consoleListBulletedRenderer = Renderer(
 	render: renderConsoleListBulleted
 )
 
-func renderConsoleListBulleted(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleListBulleted(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	return renderConsoleList(node, &state, ordered: false)
 }

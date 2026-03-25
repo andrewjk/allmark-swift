@@ -5,7 +5,7 @@ let listTaskItemRenderer = Renderer(
 	render: renderListTaskItem
 )
 
-func renderListTaskItem(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderListTaskItem(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let checked = node.markup.count > 1 && node.markup[node.markup.index(node.markup.startIndex, offsetBy: 1)] != " " ? " checked=\"\"" : ""
 	state.output += "<input type=\"checkbox\"\(checked) disabled=\"\" /> "
 }

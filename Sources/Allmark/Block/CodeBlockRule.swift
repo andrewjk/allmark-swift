@@ -61,15 +61,12 @@ func testCodeBlockStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 
 		let codeIndent = state.indent - 4
 
-		let code = MarkdownNode(
+		let code = newBlock(
 			type: "code_block",
-			block: true,
 			index: state.i - state.indent,
 			line: state.line,
-			column: 1,
 			markup: "    ",
-			indent: codeIndent,
-			children: []
+			indent: codeIndent
 		)
 		code.acceptsContent = true
 		code.content = String(repeating: " ", count: codeIndent)

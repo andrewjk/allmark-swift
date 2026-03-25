@@ -38,7 +38,7 @@ func renderConsoleList(_ node: MarkdownNode, _ state: inout RendererState, order
 							state.output += "\(indent)\(ansiDim)\(prefix)\(ansiReset) "
 						}
 						if let renderer = state.renderers[child.type] {
-							renderer.render(child, &state, false, false, true)
+							renderer.render(child, &state, true)
 						}
 					}
 				}

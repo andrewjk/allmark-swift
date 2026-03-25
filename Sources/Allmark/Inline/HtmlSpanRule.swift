@@ -32,15 +32,12 @@ func testHtmlSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 			let matchRange = match.range(at: 0)
 			if let swiftRange = Range(matchRange, in: tail) {
 				let content = String(tail[swiftRange])
-				let html = MarkdownNode(
+				let html = newInline(
 					type: "html_span",
-					block: false,
 					index: state.parentIndex + state.i,
 					line: state.line,
-					column: 1,
 					markup: "",
-					indent: state.indent,
-					children: nil
+					indent: state.indent
 				)
 				html.content = content
 				html.length = content.count

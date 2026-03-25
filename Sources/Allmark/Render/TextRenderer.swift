@@ -5,22 +5,12 @@ let textRenderer = Renderer(
 	render: renderText
 )
 
-func renderText(_ node: MarkdownNode, _ state: inout RendererState, _ first: Bool?, _ last: Bool?, _ decode: Bool?) {
-	var markup = node.markup
-	if first == true {
-		while !markup.isEmpty, markup.first?.isWhitespace ?? false {
-			markup.removeFirst()
-		}
-	}
-	if last == true {
-		while !markup.isEmpty, markup.last?.isWhitespace ?? false {
-			markup.removeLast()
-		}
-	}
+func renderText(_ node: MarkdownNode, _ state: inout RendererState, _ decode: Bool?) {
+	var content = node.content
 	if decode == true {
-		markup = decodeEntities(text: markup)
-		markup = escapePunctuation(text: markup)
+		content = decodeEntities(text: content)
+		content = escapePunctuation(text: content)
 	}
-	markup = escapeHtml(text: markup)
-	state.output += markup
+	content = escapeHtml(text: content)
+	state.output += content
 }

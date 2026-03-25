@@ -90,15 +90,12 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 			return true
 		}
 
-		let ref = MarkdownNode(
+		let ref = newBlock(
 			type: "footnote_ref",
-			block: true,
 			index: originalIndex,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 0,
-			children: []
+			indent: 0
 		)
 		state.footnotes[label] = FootnoteReference(label: label, content: ref)
 

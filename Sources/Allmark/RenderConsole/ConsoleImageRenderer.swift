@@ -5,14 +5,14 @@ let consoleImageRenderer = Renderer(
 	render: renderConsoleImage
 )
 
-func renderConsoleImage(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleImage(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiGray
 	let reset = ansiReset
 	var alt = ""
 	if let children = node.children {
 		for child in children {
 			if child.type == "text" {
-				alt += child.markup
+				alt += child.content
 			}
 		}
 	}

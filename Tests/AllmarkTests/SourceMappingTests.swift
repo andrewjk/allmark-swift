@@ -264,7 +264,7 @@ struct SourceMappingTests {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let paragraph = doc.children![1]
 			let autolink = paragraph.children![0]
-			#expect(autolink.type == "html_span")
+			#expect(autolink.type == "link")
 			#expect(autolink.index == 8)
 			#expect(autolink.length == 21)
 		}
@@ -276,7 +276,7 @@ struct SourceMappingTests {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let paragraph = doc.children![1]
 			let autolink = paragraph.children![0]
-			#expect(autolink.type == "html_span")
+			#expect(autolink.type == "link")
 			#expect(autolink.index == 8)
 			#expect(autolink.length == 18)
 		}
@@ -288,7 +288,7 @@ struct SourceMappingTests {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let paragraph = doc.children![1]
 			let extendedAutolink = paragraph.children![0]
-			#expect(extendedAutolink.type == "html_span")
+			#expect(extendedAutolink.type == "link")
 			#expect(extendedAutolink.index == 8)
 			#expect(extendedAutolink.length == 15)
 		}

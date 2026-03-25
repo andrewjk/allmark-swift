@@ -5,7 +5,7 @@ let consoleBlockQuoteRenderer = Renderer(
 	render: renderConsoleBlockQuote
 )
 
-func renderConsoleBlockQuote(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleBlockQuote(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiDim
 	let reset = ansiReset
 	state.quoteDepth += 1
@@ -34,7 +34,7 @@ func renderNodeToStringConsole(node: MarkdownNode, state: inout RendererState) -
 	let output = state.output
 	state.output = ""
 	if let renderer = state.renderers[node.type] {
-		renderer.render(node, &state, false, false, true)
+		renderer.render(node, &state, true)
 	}
 	let result = state.output
 	state.output = output

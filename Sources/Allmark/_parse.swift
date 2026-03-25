@@ -1,15 +1,12 @@
 import Foundation
 
 func _parse(src: String, rules: RuleSet) -> MarkdownNode {
-	var document = MarkdownNode(
+	var document = newBlock(
 		type: "document",
-		block: true,
 		index: 0,
 		line: 1,
-		column: 1,
 		markup: "",
-		indent: 0,
-		children: []
+		indent: 0
 	)
 
 	// Skip empty lines at the start

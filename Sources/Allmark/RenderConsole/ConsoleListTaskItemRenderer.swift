@@ -5,7 +5,7 @@ let consoleListTaskItemRenderer = Renderer(
 	render: renderConsoleListTaskItem
 )
 
-func renderConsoleListTaskItem(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleListTaskItem(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let isChecked = node.markup.count > 1 && node.markup[node.markup.index(node.markup.startIndex, offsetBy: 1)] != " "
 	let emoji = isChecked ? "[✓]" : "[ ]"
 	state.output += "\(emoji) "

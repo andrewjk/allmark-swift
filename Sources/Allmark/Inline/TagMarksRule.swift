@@ -4,7 +4,8 @@ func testTagMarks(
 	name: String,
 	char: String,
 	state: inout InlineParserState,
-	parent: inout MarkdownNode
+	parent: inout MarkdownNode,
+	precedence: Int
 ) -> Bool {
 	let src = state.src
 	let start = state.i
@@ -54,7 +55,6 @@ func testTagMarks(
 			(!punctuationBefore || (punctuationBefore && (spaceAfter || punctuationAfter)))
 
 		if rightFlanking {
-			// TODO: Precedence
 			// Loop backwards through delimiters to find a matching one that does
 			// not take precedence
 			var startDelimiter: Delimiter?
@@ -65,10 +65,12 @@ func testTagMarks(
 					if prevDelimiter.markup == char && prevDelimiter.length == markup.count {
 						startDelimiter = prevDelimiter
 						break
-					} else if prevDelimiter.markup == "*" || prevDelimiter.markup == "_" {
+					} else if (prevDelimiter.precedence ?? 0) <= precedence {
+						// Same or lower precedence delimiters can be skipped over
 						i -= 1
 						continue
 					} else {
+						// Higher precedence delimiters block
 						break
 					}
 				}
@@ -82,17 +84,12 @@ func testTagMarks(
 				var i = (parent.children?.count ?? 0) - 1
 				while i >= 0 {
 					if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
-						let text = MarkdownNode(
-							type: "text",
-							block: false,
+						let text = newText(
 							index: lastNode.index,
 							line: lastNode.line,
-							column: 1,
-							markup: char,
-							indent: 0,
-							children: nil
+							content: String(lastNode.content.dropFirst(startDel.length)),
+							indent: 0
 						)
-						text.markup = String(lastNode.markup.dropFirst(startDel.length))
 
 						lastNode.type = name
 						lastNode.markup = markup
@@ -126,20 +123,16 @@ func testTagMarks(
 
 		if leftFlanking {
 			// Add a new text node which may turn into a delimiter
-			let text = MarkdownNode(
-				type: "text",
-				block: false,
+			let text = newText(
 				index: state.parentIndex + start,
 				line: state.line,
-				column: 1,
-				markup: markup,
-				indent: 0,
-				children: nil
+				content: markup,
+				indent: 0
 			)
 			parent.children?.append(text)
 
 			state.i += markup.count
-			state.delimiters.append(Delimiter(markup: char, start: start, length: markup.count, handled: nil))
+			state.delimiters.append(Delimiter(markup: char, start: start, length: markup.count, handled: nil, precedence: precedence))
 
 			return true
 		}

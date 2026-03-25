@@ -54,15 +54,12 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 					closeNode(state: &state, node: closedNode!)
 				}
 
-				let heading = MarkdownNode(
+				let heading = newBlock(
 					type: "heading",
-					block: true,
 					index: state.i,
 					line: state.line,
-					column: 1,
 					markup: String(repeating: "#", count: level),
-					indent: 0,
-					children: []
+					indent: 0
 				)
 
 				if state.hasBlankLine && currentParent.children != nil && !currentParent.children!.isEmpty {

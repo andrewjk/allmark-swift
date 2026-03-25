@@ -5,7 +5,7 @@ let consoleThematicBreakRenderer = Renderer(
 	render: renderConsoleThematicBreak
 )
 
-func renderConsoleThematicBreak(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleThematicBreak(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiDim
 	let reset = ansiReset
 	if !state.output.isEmpty, !state.output.hasSuffix("\n") {

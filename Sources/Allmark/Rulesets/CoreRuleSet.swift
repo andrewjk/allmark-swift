@@ -26,7 +26,6 @@ public let coreRuleSet = RuleSet(
 		emphasisRule.name: emphasisRule,
 		linkRule.name: linkRule,
 		hardBreakRule.name: hardBreakRule,
-		lineBreakRule.name: lineBreakRule,
 		textRule.name: textRule,
 	]
 )

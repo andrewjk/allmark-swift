@@ -5,7 +5,7 @@ let consoleLinkRenderer = Renderer(
 	render: renderConsoleLink
 )
 
-func renderConsoleLink(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleLink(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiBlue + ansiUnderline
 	let reset = ansiReset
 	state.output += style

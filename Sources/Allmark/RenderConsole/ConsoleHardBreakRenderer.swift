@@ -5,6 +5,6 @@ let consoleHardBreakRenderer = Renderer(
 	render: renderConsoleHardBreak
 )
 
-func renderConsoleHardBreak(_: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleHardBreak(_: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	state.output += "\n"
 }

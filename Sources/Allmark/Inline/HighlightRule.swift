@@ -2,7 +2,8 @@ import Foundation
 
 let highlightRule = InlineRule(
 	name: "highlight",
-	test: testHighlight
+	test: testHighlight,
+	precedence: 5
 )
 
 func testHighlight(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
@@ -13,7 +14,7 @@ func testHighlight(state: inout InlineParserState, parent: inout MarkdownNode) -
 	let char = src[index]
 
 	if char == "=" && !isEscaped(text: src, i: state.i) {
-		return testTagMarks(name: "highlight", char: "=", state: &state, parent: &parent)
+		return testTagMarks(name: "highlight", char: "=", state: &state, parent: &parent, precedence: highlightRule.precedence!)
 	}
 
 	return false

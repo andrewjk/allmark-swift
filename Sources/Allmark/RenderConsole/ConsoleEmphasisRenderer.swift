@@ -5,7 +5,7 @@ let consoleEmphasisRenderer = Renderer(
 	render: renderConsoleEmphasis
 )
 
-func renderConsoleEmphasis(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleEmphasis(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiItalic + ansiYellow
 	let reset = ansiReset
 	state.output += style

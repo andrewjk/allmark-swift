@@ -5,7 +5,7 @@ let deletionRenderer = Renderer(
 	render: renderDeletion
 )
 
-func renderDeletion(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderDeletion(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	state.output += "<del class=\"markdown-deletion\">"
 	renderChildren(node: node, state: &state)

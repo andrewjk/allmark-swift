@@ -5,7 +5,7 @@ let footnoteListRenderer = Renderer(
 	render: renderFootnoteList
 )
 
-func renderFootnoteList(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderFootnoteList(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	state.output += "<section class=\"footnotes\">\n<ol>\n"
 	var number = 1
 	for node in state.footnotes {

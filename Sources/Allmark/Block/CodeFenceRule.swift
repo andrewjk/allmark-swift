@@ -98,15 +98,12 @@ func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 				closeNode(state: &state, node: closedNode!)
 			}
 
-			let code = MarkdownNode(
+			let code = newBlock(
 				type: "code_fence",
-				block: true,
 				index: state.i,
 				line: state.line,
-				column: 1,
 				markup: markup,
-				indent: state.indent,
-				children: []
+				indent: state.indent
 			)
 			code.acceptsContent = true
 			code.info = info

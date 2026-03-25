@@ -53,15 +53,12 @@ func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 			let alertType = (tail as NSString).substring(with: alertTypeRange).lowercased()
 
 			let quoteIndent = state.indent + 1
-			let quote = MarkdownNode(
+			let quote = newBlock(
 				type: "alert",
-				block: true,
 				index: state.i,
 				line: state.line,
-				column: 1,
 				markup: alertType,
-				indent: quoteIndent,
-				children: []
+				indent: quoteIndent
 			)
 
 			currentParent.children!.append(quote)

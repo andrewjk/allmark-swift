@@ -5,7 +5,7 @@ let consoleStrongRenderer = Renderer(
 	render: renderConsoleStrong
 )
 
-func renderConsoleStrong(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleStrong(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiBold + ansiYellow
 	let reset = ansiReset
 	state.output += style

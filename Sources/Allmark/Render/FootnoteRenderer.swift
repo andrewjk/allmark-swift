@@ -5,7 +5,7 @@ let footnoteRenderer = Renderer(
 	render: renderFootnote
 )
 
-func renderFootnote(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderFootnote(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	if state.footnotes.first(where: { $0.info == node.info }) == nil {
 		state.footnotes.append(node)
 	}

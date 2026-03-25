@@ -2,7 +2,8 @@ import Foundation
 
 let emphasisRule = InlineRule(
 	name: "emphasis",
-	test: testEmphasis
+	test: testEmphasis,
+	precedence: 10
 )
 
 func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
@@ -57,7 +58,6 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 			!spaceBefore &&
 			(!punctuationBefore || (punctuationBefore && (spaceAfter || punctuationAfter)))
 
-		// TODO: Precedence
 		// Loop backwards through delimiters to find a matching one that does
 		// not take precedence, and ideally has the same length
 		var startDelimiter: Delimiter?
@@ -75,10 +75,12 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 						startDelimiter = prevDelimiter
 						startIndex = i
 					}
-				} else if prevDelimiter.markup == "*" || prevDelimiter.markup == "_" {
+				} else if (prevDelimiter.precedence ?? 0) <= emphasisRule.precedence! {
+					// Same or lower precedence delimiters can be skipped over
 					i -= 1
 					continue
 				} else {
+					// Higher precedence delimiters block
 					break
 				}
 			}
@@ -113,17 +115,12 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 						let useLength = min(startDel.length, 2)
 						let useMarkup = String(markup.prefix(useLength))
 
-						let text = MarkdownNode(
-							type: "text",
-							block: false,
+						let text = newText(
 							index: lastNode.index,
 							line: lastNode.line,
-							column: 1,
-							markup: String(char),
-							indent: 0,
-							children: nil
+							content: String(lastNode.content.dropFirst(startDel.length)),
+							indent: 0
 						)
-						text.markup = String(lastNode.markup.dropFirst(startDel.length))
 
 						let movedNodes = Array(parent.children?.suffix(from: i + 1) ?? [])
 						if let childCount = parent.children?.count {
@@ -131,18 +128,16 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 						}
 
 						if useMarkup.count < startDel.length {
-							lastNode.markup = String(lastNode.markup.prefix(startDel.length - useMarkup.count))
-							let emphasis = MarkdownNode(
+							lastNode.content = String(lastNode.content.prefix(startDel.length - useMarkup.count))
+							let emphasis = newInline(
 								type: useMarkup.count == 2 ? "strong" : "emphasis",
-								block: false,
 								index: lastNode.index + useMarkup.count,
 								line: lastNode.line,
-								column: 1,
 								markup: useMarkup,
-								indent: 0,
-								children: [text] + movedNodes
+								indent: 0
 							)
 							emphasis.length = state.parentIndex + state.i - emphasis.index + useMarkup.count
+							emphasis.children = [text] + movedNodes
 							parent.children?.append(emphasis)
 						} else {
 							lastNode.type = useMarkup.count == 2 ? "strong" : "emphasis"
@@ -190,20 +185,16 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 
 		if canOpen {
 			// Add a new text node which may turn into emphasis
-			let text = MarkdownNode(
-				type: "text",
-				block: false,
+			let text = newText(
 				index: state.parentIndex + start,
 				line: state.line,
-				column: 1,
-				markup: markup,
-				indent: 0,
-				children: nil
+				content: markup,
+				indent: 0
 			)
 			parent.children?.append(text)
 
 			state.i += markup.count
-			state.delimiters.append(Delimiter(markup: String(char), start: start, length: markup.count, handled: nil))
+			state.delimiters.append(Delimiter(markup: String(char), start: start, length: markup.count, handled: nil, precedence: emphasisRule.precedence))
 
 			return true
 		}

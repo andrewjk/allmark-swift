@@ -27,15 +27,12 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 			return false
 		}
 
-		let row = MarkdownNode(
+		let row = newBlock(
 			type: "table_row",
-			block: true,
 			index: state.i,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 0,
-			children: []
+			indent: 0
 		)
 		lastNode.children?.append(row)
 
@@ -56,15 +53,12 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 
 		var ri = 0
 		for text in rowParts {
-			let cell = MarkdownNode(
+			let cell = newBlock(
 				type: "table_cell",
-				block: true,
 				index: state.i,
 				line: state.line,
-				column: 1,
 				markup: "",
-				indent: 0,
-				children: []
+				indent: 0
 			)
 			cell.content = text.trimmingCharacters(in: CharacterSet.whitespaces)
 				.replacingOccurrences(of: "\\|", with: "|")
@@ -174,30 +168,24 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 				closeNode(state: &state, node: closed)
 			}
 
-			let header = MarkdownNode(
+			let header = newBlock(
 				type: "table_header",
-				block: true,
 				index: state.i,
 				line: state.line,
-				column: 1,
 				markup: "",
-				indent: 0,
-				children: []
+				indent: 0
 			)
 			mutableParent.children?.append(header)
 
 			let headerParts = splitByUnescapedPipe(headerContent)
 			var hi = 0
 			for text in headerParts {
-				let cell = MarkdownNode(
+				let cell = newBlock(
 					type: "table_cell",
-					block: true,
 					index: state.i,
 					line: state.line,
-					column: 1,
 					markup: "",
-					indent: 0,
-					children: []
+					indent: 0
 				)
 				cell.content = text.trimmingCharacters(in: .whitespaces)
 					.replacingOccurrences(of: "\\|", with: "|")

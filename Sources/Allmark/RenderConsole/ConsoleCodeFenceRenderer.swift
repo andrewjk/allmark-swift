@@ -5,7 +5,7 @@ let consoleCodeFenceRenderer = Renderer(
 	render: renderConsoleCodeFence
 )
 
-func renderConsoleCodeFence(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleCodeFence(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let content = node.content
 	let lines = content.split(separator: "\n", omittingEmptySubsequences: false)
 

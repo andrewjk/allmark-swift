@@ -80,15 +80,12 @@ func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode)
 
 		state.refs[label] = linkInfo
 
-		let ref = MarkdownNode(
+		let ref = newBlock(
 			type: "link_ref",
-			block: true,
 			index: originalIndex,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 0,
-			children: []
+			indent: 0
 		)
 
 		if state.hasBlankLine && parent.children != nil && !parent.children!.isEmpty {

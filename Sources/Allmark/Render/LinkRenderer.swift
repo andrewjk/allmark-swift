@@ -5,7 +5,7 @@ let linkRenderer = Renderer(
 	render: renderLink
 )
 
-func renderLink(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderLink(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	var title = ""
 	if let nodeTitle = node.title, !nodeTitle.isEmpty {

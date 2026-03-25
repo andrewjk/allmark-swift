@@ -35,17 +35,12 @@ func parseBlockInlines(
 				content += "\n"
 			}
 		}
-		let text = MarkdownNode(
-			type: "text",
-			block: false,
+		let text = newText(
 			index: parent.index,
 			line: parent.line,
-			column: 1,
-			markup: content,
-			indent: 0,
-			children: nil
+			content: content,
+			indent: 0
 		)
-		text.content = content
 		parent.children?.append(text)
 		return
 	}
@@ -75,17 +70,12 @@ func parseBlockInlines(
 				content += "\n"
 			}
 		}
-		let text = MarkdownNode(
-			type: "text",
-			block: false,
+		let text = newText(
 			index: parent.index,
 			line: parent.line,
-			column: 1,
-			markup: content,
-			indent: 0,
-			children: nil
+			content: content,
+			indent: 0
 		)
-		text.content = content
 		parent.children?.append(text)
 		return
 	}
@@ -93,7 +83,7 @@ func parseBlockInlines(
 	var state = InlineParserState(
 		rules: rules,
 		// "Final spaces are stripped before inline parsing"
-		src: parent.content.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression),
+		src: parent.content.trimmingCharacters(in: .whitespacesAndNewlines),
 		i: 0,
 		line: parent.line,
 		lineStart: 0,

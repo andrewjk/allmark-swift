@@ -5,7 +5,7 @@ let consoleCodeSpanRenderer = Renderer(
 	render: renderConsoleCodeSpan
 )
 
-func renderConsoleCodeSpan(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderConsoleCodeSpan(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiGreen
 	let reset = ansiReset
 	state.output += style

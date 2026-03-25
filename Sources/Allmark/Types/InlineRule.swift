@@ -6,9 +6,12 @@ public struct InlineRule: Sendable {
 	public var name: String
 	/// Tests whether this rule matches at the current position.
 	public var test: @Sendable (inout InlineParserState, inout MarkdownNode) -> Bool
+	/// Precedence for delimiter matching (higher = takes precedence).
+	public var precedence: Int?
 
-	public init(name: String, test: @escaping @Sendable (inout InlineParserState, inout MarkdownNode) -> Bool) {
+	public init(name: String, test: @escaping @Sendable (inout InlineParserState, inout MarkdownNode) -> Bool, precedence: Int? = nil) {
 		self.name = name
 		self.test = test
+		self.precedence = precedence
 	}
 }

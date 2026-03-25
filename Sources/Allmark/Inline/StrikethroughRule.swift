@@ -2,7 +2,8 @@ import Foundation
 
 let strikethroughRule = InlineRule(
 	name: "strikethrough",
-	test: testStrikethrough
+	test: testStrikethrough,
+	precedence: 5
 )
 
 /**
@@ -17,7 +18,7 @@ func testStrikethrough(state: inout InlineParserState, parent: inout MarkdownNod
 	let char = src[index]
 
 	if char == "~" && !isEscaped(text: src, i: state.i) {
-		return testTagMarks(name: "strikethrough", char: "~", state: &state, parent: &parent)
+		return testTagMarks(name: "strikethrough", char: "~", state: &state, parent: &parent, precedence: strikethroughRule.precedence!)
 	}
 
 	return false

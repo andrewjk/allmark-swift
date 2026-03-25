@@ -5,6 +5,7 @@ func testCriticMarks(
 	delimiter: String,
 	state: inout InlineParserState,
 	parent: inout MarkdownNode,
+	precedence: Int,
 	closingDelimiter: String? = nil
 ) -> Bool {
 	let closeDel = closingDelimiter ?? delimiter
@@ -34,21 +35,17 @@ func testCriticMarks(
 
 		if markup.count == 2 || markup.count == 3 {
 			// Add a new text node which may turn into deletion
-			let text = MarkdownNode(
-				type: "text",
-				block: false,
+			let text = newText(
 				index: state.parentIndex + start,
 				line: state.line,
-				column: 1,
-				markup: markup,
-				indent: 0,
-				children: nil
+				content: markup,
+				indent: 0
 			)
 			parent.children?.append(text)
 
 			// Add the start delimiter
 			state.i += markup.count
-			state.delimiters.append(Delimiter(markup: markup, start: start, length: markup.count, handled: nil))
+			state.delimiters.append(Delimiter(markup: markup, start: start, length: markup.count, handled: nil, precedence: precedence))
 
 			return true
 		}
@@ -87,16 +84,12 @@ func testCriticMarks(
 				var i = (parent.children?.count ?? 0) - 1
 				while i >= 0 {
 					if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
-						let newText = String(lastNode.markup.dropFirst(startDel.length))
-						let text = MarkdownNode(
-							type: "text",
-							block: false,
+						let newContent = String(lastNode.content.dropFirst(startDel.length))
+						let text = newText(
 							index: lastNode.index,
 							line: lastNode.line,
-							column: 1,
-							markup: newText,
-							indent: 0,
-							children: nil
+							content: newContent,
+							indent: 0
 						)
 
 						lastNode.type = name

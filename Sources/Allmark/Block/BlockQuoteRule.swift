@@ -42,15 +42,12 @@ func testBlockQuoteStart(state: inout BlockParserState, parent: MarkdownNode) ->
 		}
 
 		let quoteIndent = state.indent + 1
-		let quote = MarkdownNode(
+		let quote = newBlock(
 			type: "block_quote",
-			block: true,
 			index: state.i,
 			line: state.line,
-			column: 1,
 			markup: String(char),
-			indent: quoteIndent,
-			children: []
+			indent: quoteIndent
 		)
 
 		currentParent.children!.append(quote)

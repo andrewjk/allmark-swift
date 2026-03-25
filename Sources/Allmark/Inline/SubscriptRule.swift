@@ -2,7 +2,8 @@ import Foundation
 
 let subscriptRule = InlineRule(
 	name: "subscript",
-	test: testSubscript
+	test: testSubscript,
+	precedence: 5
 )
 
 func testSubscript(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
@@ -20,7 +21,7 @@ func testSubscript(state: inout InlineParserState, parent: inout MarkdownNode) -
 				return false
 			}
 		}
-		return testTagMarks(name: "subscript", char: "~", state: &state, parent: &parent)
+		return testTagMarks(name: "subscript", char: "~", state: &state, parent: &parent, precedence: subscriptRule.precedence!)
 	}
 
 	return false

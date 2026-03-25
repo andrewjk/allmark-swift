@@ -42,17 +42,12 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 					let fullMatchRange = linkMatch.range(at: 0)
 					if let fullRange = Range(fullMatchRange, in: tail) {
 						let markup = escapeHtml(text: String(tail[fullRange]))
-						let text = MarkdownNode(
-							type: "text",
-							block: false,
+						let text = newText(
 							index: state.parentIndex + state.i,
 							line: state.line,
-							column: 1,
-							markup: "",
-							indent: state.indent,
-							children: nil
+							content: markup,
+							indent: state.indent
 						)
-						text.markup = markup
 						text.length = tail[fullRange].count
 						parent.children?.append(text)
 						state.i += tail[fullRange].count
@@ -60,25 +55,34 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 					}
 				}
 
-				let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
-				let html = MarkdownNode(
-					type: "html_span",
-					block: false,
+				let escapedUrl = url.replacingOccurrences(of: "\\", with: "\\\\")
+				let decodedUrl = decodeEntities(text: url)
+				let encodedUrl = decodedUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? decodedUrl
+
+				let text = newText(
 					index: state.parentIndex + state.i,
 					line: state.line,
-					column: 1,
-					markup: "",
-					indent: state.indent,
-					children: nil
+					content: escapedUrl,
+					indent: state.indent
 				)
-				html.content = "<a href=\"\(encodedUrl)\">\(url)</a>"
-				parent.children?.append(html)
+
+				let link = newInline(
+					type: "link",
+					index: state.parentIndex + state.i,
+					line: state.line,
+					markup: "",
+					indent: state.indent
+				)
+				link.info = encodedUrl
 
 				let fullMatchRange = linkMatch.range(at: 0)
 				if let fullRange = Range(fullMatchRange, in: tail) {
-					html.length = tail[fullRange].count
+					link.length = tail[fullRange].count
 					state.i += tail[fullRange].count
 				}
+
+				link.children = [text]
+				parent.children?.append(link)
 
 				return true
 			}
@@ -97,17 +101,12 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 					let fullMatchRange = emailMatch.range(at: 0)
 					if let fullRange = Range(fullMatchRange, in: tail) {
 						let markup = escapeHtml(text: String(tail[fullRange]))
-						let text = MarkdownNode(
-							type: "text",
-							block: false,
+						let text = newText(
 							index: state.parentIndex + state.i,
 							line: state.line,
-							column: 1,
-							markup: "",
-							indent: state.indent,
-							children: nil
+							content: markup,
+							indent: state.indent
 						)
-						text.markup = markup
 						text.length = tail[fullRange].count
 						parent.children?.append(text)
 						state.i += tail[fullRange].count
@@ -115,25 +114,33 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 					}
 				}
 
-				let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? url
-				let html = MarkdownNode(
-					type: "html_span",
-					block: false,
+				let decodedUrl = decodeEntities(text: url)
+				let encodedUrl = decodedUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? decodedUrl
+
+				let text = newText(
 					index: state.parentIndex + state.i,
 					line: state.line,
-					column: 1,
-					markup: "",
-					indent: state.indent,
-					children: nil
+					content: url,
+					indent: state.indent
 				)
-				html.content = "<a href=\"mailto:\(encodedUrl)\">\(url)</a>"
-				parent.children?.append(html)
+
+				let link = newInline(
+					type: "link",
+					index: state.parentIndex + state.i,
+					line: state.line,
+					markup: "",
+					indent: state.indent
+				)
+				link.info = "mailto:\(encodedUrl)"
 
 				let fullMatchRange = emailMatch.range(at: 0)
 				if let fullRange = Range(fullMatchRange, in: tail) {
-					html.length = tail[fullRange].count
+					link.length = tail[fullRange].count
 					state.i += tail[fullRange].count
 				}
+
+				link.children = [text]
+				parent.children?.append(link)
 
 				return true
 			}

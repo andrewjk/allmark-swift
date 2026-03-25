@@ -35,15 +35,12 @@ func testParagraphStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 		return true
 	}
 
-	let paragraph = MarkdownNode(
+	let paragraph = newBlock(
 		type: "paragraph",
-		block: true,
 		index: state.i,
 		line: state.line,
-		column: 1,
 		markup: "",
-		indent: 0,
-		children: []
+		indent: 0
 	)
 	paragraph.content = content
 	state.i = endOfLine

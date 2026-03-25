@@ -2,7 +2,8 @@ import Foundation
 
 let linkRule = InlineRule(
 	name: "link",
-	test: testLink
+	test: testLink,
+	precedence: 15
 )
 
 func testLink(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
@@ -37,20 +38,16 @@ func testLinkOpen(state: inout InlineParserState, parent: inout MarkdownNode) ->
 	let markup = "["
 
 	// Add a new text node which may turn into a link
-	let text = MarkdownNode(
-		type: "text",
-		block: false,
+	let text = newText(
 		index: state.parentIndex + start,
 		line: state.line,
-		column: 1,
-		markup: markup,
-		indent: 0,
-		children: nil
+		content: markup,
+		indent: 0
 	)
 	parent.children?.append(text)
 
 	state.i += 1
-	state.delimiters.append(Delimiter(markup: markup, start: start, length: 1, handled: nil))
+	state.delimiters.append(Delimiter(markup: markup, start: start, length: 1, handled: nil, precedence: linkRule.precedence))
 
 	return true
 }
@@ -60,20 +57,16 @@ func testImageOpen(state: inout InlineParserState, parent: inout MarkdownNode) -
 	let markup = "!["
 
 	// Add a new text node which may turn into an image
-	let text = MarkdownNode(
-		type: "text",
-		block: false,
+	let text = newText(
 		index: state.parentIndex + start,
 		line: state.line,
-		column: 1,
-		markup: markup,
-		indent: 0,
-		children: nil
+		content: markup,
+		indent: 0
 	)
 	parent.children?.append(text)
 
 	state.i += markup.count
-	state.delimiters.append(Delimiter(markup: markup, start: start, length: 1, handled: nil))
+	state.delimiters.append(Delimiter(markup: markup, start: start, length: 1, handled: nil, precedence: linkRule.precedence))
 
 	return true
 }
@@ -81,7 +74,8 @@ func testImageOpen(state: inout InlineParserState, parent: inout MarkdownNode) -
 func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
 	let markup = "]"
 
-	// TODO: Standardize precedence
+	// Loop backwards through delimiters to find a matching one that does
+	// not take precedence
 	var startDelimiter: Delimiter?
 	var startIndex = -1
 	var i = state.delimiters.count - 1
@@ -92,10 +86,12 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 				startDelimiter = prevDelimiter
 				startIndex = i
 				break
-			} else if prevDelimiter.markup == "*" || prevDelimiter.markup == "_" {
+			} else if (prevDelimiter.precedence ?? 0) <= linkRule.precedence! {
+				// Same or lower precedence delimiters can be skipped over
 				i -= 1
 				continue
 			} else {
+				// Higher precedence delimiters block
 				break
 			}
 		}
@@ -172,18 +168,13 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 				}
 
 				if let foundLink = link {
-					let text = MarkdownNode(
-						type: "text",
-						block: false,
+					let text = newText(
 						index: lastNode.index,
 						line: lastNode.line,
-						column: 1,
-						markup: markup,
-						indent: 0,
-						children: nil
+						content: String(lastNode.content.dropFirst(startDel.markup.count)),
+						indent: 0
 					)
-					text.markup = String(lastNode.markup.dropFirst(startDel.markup.count))
-					text.length = text.markup.count
+					text.length = text.content.count
 
 					lastNode.type = isLink ? "link" : "image"
 					lastNode.info = foundLink.url

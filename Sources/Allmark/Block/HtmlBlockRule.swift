@@ -85,15 +85,12 @@ func testHtmlCondition1(state: inout BlockParserState, parent: MarkdownNode, tai
 			end += 1
 		}
 
-		let html = MarkdownNode(
+		let html = newBlock(
 			type: "html_block",
-			block: true,
 			index: start,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 1,
-			children: []
+			indent: 1
 		)
 		html.content = String(repeating: " ", count: state.indent) + String(state.src[state.src.index(state.src.startIndex, offsetBy: start) ..< state.src.index(state.src.startIndex, offsetBy: end)])
 
@@ -128,15 +125,12 @@ func testHtmlCondition2(state: inout BlockParserState, parent: MarkdownNode, tai
 		state.i += match.range.length
 		let endOfLine = getEndOfLine(state: &state)
 
-		let html = MarkdownNode(
+		let html = newBlock(
 			type: "html_block",
-			block: true,
 			index: start,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 2,
-			children: []
+			indent: 2
 		)
 		html.content = String(repeating: " ", count: state.indent) + String(state.src[state.src.index(state.src.startIndex, offsetBy: start) ..< state.src.index(state.src.startIndex, offsetBy: endOfLine)])
 
@@ -171,15 +165,12 @@ func testHtmlCondition3(state: inout BlockParserState, parent: MarkdownNode, tai
 		state.i += match.range.length
 		let endOfLine = getEndOfLine(state: &state)
 
-		let html = MarkdownNode(
+		let html = newBlock(
 			type: "html_block",
-			block: true,
 			index: start,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 3,
-			children: []
+			indent: 3
 		)
 		html.content = String(repeating: " ", count: state.indent) + String(state.src[state.src.index(state.src.startIndex, offsetBy: start) ..< state.src.index(state.src.startIndex, offsetBy: endOfLine)])
 
@@ -214,15 +205,12 @@ func testHtmlCondition4(state: inout BlockParserState, parent: MarkdownNode, tai
 		state.i += match.range.length
 		let endOfLine = getEndOfLine(state: &state)
 
-		let html = MarkdownNode(
+		let html = newBlock(
 			type: "html_block",
-			block: true,
 			index: start,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 4,
-			children: []
+			indent: 4
 		)
 		html.content = String(repeating: " ", count: state.indent) + String(state.src[state.src.index(state.src.startIndex, offsetBy: start) ..< state.src.index(state.src.startIndex, offsetBy: endOfLine)])
 
@@ -257,15 +245,12 @@ func testHtmlCondition5(state: inout BlockParserState, parent: MarkdownNode, tai
 		state.i += match.range.length
 		let endOfLine = getEndOfLine(state: &state)
 
-		let html = MarkdownNode(
+		let html = newBlock(
 			type: "html_block",
-			block: true,
 			index: start,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 5,
-			children: []
+			indent: 5
 		)
 		html.content = String(repeating: " ", count: state.indent) + String(state.src[state.src.index(state.src.startIndex, offsetBy: start) ..< state.src.index(state.src.startIndex, offsetBy: endOfLine)])
 
@@ -298,15 +283,12 @@ func testHtmlCondition6(state: inout BlockParserState, parent: MarkdownNode, tai
 
 		let endOfLine = getEndOfLine(state: &state)
 
-		let html = MarkdownNode(
+		let html = newBlock(
 			type: "html_block",
-			block: true,
 			index: state.i,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 6,
-			children: []
+			indent: 6
 		)
 		html.content = String(repeating: " ", count: state.indent) + String(state.src[state.src.index(state.src.startIndex, offsetBy: state.i) ..< state.src.index(state.src.startIndex, offsetBy: endOfLine)])
 		html.acceptsContent = true
@@ -357,15 +339,12 @@ func testHtmlCondition7(state: inout BlockParserState, parent: MarkdownNode, tai
 
 		let endOfLine = getEndOfLine(state: &state)
 
-		let html = MarkdownNode(
+		let html = newBlock(
 			type: "html_block",
-			block: true,
 			index: state.i,
 			line: state.line,
-			column: 1,
 			markup: "",
-			indent: 7,
-			children: []
+			indent: 7
 		)
 		html.content = String(repeating: " ", count: state.indent) + String(state.src[state.src.index(state.src.startIndex, offsetBy: state.i) ..< state.src.index(state.src.startIndex, offsetBy: endOfLine)])
 		html.acceptsContent = true

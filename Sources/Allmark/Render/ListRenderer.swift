@@ -5,7 +5,7 @@ let listRenderer = Renderer(
 	render: renderList
 )
 
-func renderList(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _: Bool?, _: Bool?) {
+func renderList(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let ordered = node.type == "list_ordered"
 	var start = ""
 	if ordered {
@@ -55,7 +55,7 @@ func renderList(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?, _:
 						if i == 0 {
 							innerNewLine(node: item, state: &state)
 						}
-						renderNode(node: child, state: &state, first: i == itemChildren.count - 1)
+						renderNode(node: child, state: &state)
 						if i == itemChildren.count - 1, child.block, !state.output.hasSuffix("\n") {
 							state.output += "\n"
 						}
