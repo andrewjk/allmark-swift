@@ -59,12 +59,19 @@ func testHeadingUnderlineStart(state: inout BlockParserState, parent: MarkdownNo
 			end += 1
 		}
 
+		// NOTE: We break from the spec here and require at least two underline
+		// chars to prevent things from jumping around when typing a list under
+		// a paragraph
+		if matched < 2 {
+			return false
+		}
+
 		let contentPattern = try! NSRegularExpression(pattern: "[^\\s]")
 		let contentRange = NSRange(location: 0, length: parent.content.utf16.count)
 		let haveParagraph = parent.type == "paragraph" && !parent.blankAfter && contentPattern.firstMatch(in: parent.content, options: [], range: contentRange) != nil
 
 		if haveParagraph {
-			parent.type = "heading"
+			parent.type = "heading_underline"
 			let markupStart = src.index(src.startIndex, offsetBy: state.i)
 			let markupEnd = src.index(src.startIndex, offsetBy: end)
 			parent.markup = String(src[markupStart ..< markupEnd])

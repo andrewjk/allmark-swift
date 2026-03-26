@@ -24,12 +24,27 @@ struct SourceMappingTests {
 		}
 	}
 
+	@Test func headingWithEmphasis() async {
+		let input = "# Heading *bold* 1"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let heading = doc.children![0]
+			#expect(heading.type == "heading")
+			#expect(heading.index == 0)
+			#expect(heading.length == 18)
+			let emphasis = heading.children![0].children![1]
+			#expect(emphasis.type == "emphasis")
+			#expect(emphasis.index == 10)
+			#expect(emphasis.length == 6)
+		}
+	}
+
 	@Test func headingUnderline() async {
 		let input = "Heading\n====="
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 			let heading = doc.children![0]
-			#expect(heading.type == "heading")
+			#expect(heading.type == "heading_underline")
 			#expect(heading.index == 0)
 			#expect(heading.length == 13)
 		}
@@ -64,6 +79,21 @@ struct SourceMappingTests {
 			#expect(blockQuote.type == "block_quote")
 			#expect(blockQuote.index == 0)
 			#expect(blockQuote.length == 15)
+		}
+	}
+
+	@Test func blockQuoteWithEmphasis() async {
+		let input = "> Quote *content*"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let blockQuote = doc.children![0]
+			#expect(blockQuote.type == "block_quote")
+			#expect(blockQuote.index == 0)
+			#expect(blockQuote.length == 17)
+			let emphasis = blockQuote.children![0].children![1]
+			#expect(emphasis.type == "emphasis")
+			#expect(emphasis.index == 8)
+			#expect(emphasis.length == 9)
 		}
 	}
 
@@ -175,6 +205,22 @@ struct SourceMappingTests {
 			#expect(listItem.type == "list_item")
 			#expect(listItem.index == 0)
 			#expect(listItem.length == 11)
+		}
+	}
+
+	@Test func listItemWithEmphasis() async {
+		let input = "1. Item *one*"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let list = doc.children![0]
+			let listItem = list.children![0]
+			#expect(listItem.type == "list_item")
+			#expect(listItem.index == 0)
+			#expect(listItem.length == 13)
+			let emphasis = listItem.children![0].children![1]
+			#expect(emphasis.type == "emphasis")
+			#expect(emphasis.index == 8)
+			#expect(emphasis.length == 5)
 		}
 	}
 

@@ -16,8 +16,10 @@ func renderHeading(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?)
 		level = 2
 	}
 	state.output += "<h\(level)>"
-	innerNewLine(node: node, state: &state)
-	renderChildren(node: node, state: &state)
+	// Render the children of the dummy paragraph directly (not the paragraph itself)
+	if let children = node.children, children.count > 0 {
+		renderChildren(node: children[0], state: &state)
+	}
 	state.output += "</h\(level)>"
 	endNewLine(node: node, state: &state)
 }

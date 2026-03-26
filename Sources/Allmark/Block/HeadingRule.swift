@@ -70,8 +70,7 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 
 				currentParent.children!.append(heading)
 
-				// HACK: ignore optional end heading marks and spaces, destructively
-				state.i += level
+				movePastMarker(markerLength: level, state: &state)
 				let endOfLine = getEndOfLine(state: &state)
 				var end = endOfLine - 1
 
@@ -93,12 +92,29 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 					}
 					end -= 1
 				}
+				end += 1
 
+				let paragraph = newBlock(
+					type: "paragraph",
+					index: state.i,
+					line: state.line,
+					markup: "",
+					indent: 0
+				)
 				let contentStart = src.index(src.startIndex, offsetBy: state.i)
-				let contentEnd = src.index(src.startIndex, offsetBy: end + 1)
-				heading.content = String(src[contentStart ..< contentEnd])
-				heading.length = endOfLine - heading.index
+				let contentEnd = src.index(src.startIndex, offsetBy: end)
+				paragraph.content = String(src[contentStart ..< contentEnd])
+				heading.children = [paragraph]
+
+				if end < endOfLine {
+					let infoStart = src.index(src.startIndex, offsetBy: end)
+					let infoEnd = src.index(src.startIndex, offsetBy: endOfLine)
+					heading.info = String(src[infoStart ..< infoEnd])
+				}
+
 				state.i = endOfLine
+				heading.length = state.i - heading.index
+				paragraph.length = state.i - paragraph.index
 
 				return true
 			}

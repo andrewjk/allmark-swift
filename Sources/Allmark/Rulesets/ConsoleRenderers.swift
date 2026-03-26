@@ -15,7 +15,7 @@ public let consoleRenderers: OrderedDictionary<String, Renderer> = [
 	consoleFootnoteRenderer.name: consoleFootnoteRenderer,
 	consoleHardBreakRenderer.name: consoleHardBreakRenderer,
 	consoleHeadingRenderer.name: consoleHeadingRenderer,
-	headingUnderlineRenderer.name: headingUnderlineRenderer,
+	consoleHeadingUnderlineRenderer.name: consoleHeadingUnderlineRenderer,
 	consoleHighlightRenderer.name: consoleHighlightRenderer,
 	htmlBlockRenderer.name: htmlBlockRenderer,
 	htmlSpanRenderer.name: htmlSpanRenderer,

@@ -1350,13 +1350,16 @@ struct SpecCmTests {
 		}
 	}
 
+	// NOTE: We break from the spec here and require at least two underline
+	// chars to prevent things from jumping around when typing a list under
+	// a paragraph
 	@Test func example83() async {
 		let input = """
 		Foo
 		-------------------------
 
 		Foo
-		=
+		==
 		"""
 		let expected = """
 		<h2>Foo</h2>
