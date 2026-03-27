@@ -94,8 +94,8 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 				}
 				end += 1
 
-				let paragraph = newBlock(
-					type: "paragraph",
+				let content = newBlock(
+					type: "heading_content",
 					index: state.i,
 					line: state.line,
 					markup: "",
@@ -103,8 +103,8 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 				)
 				let contentStart = src.index(src.startIndex, offsetBy: state.i)
 				let contentEnd = src.index(src.startIndex, offsetBy: end)
-				paragraph.content = String(src[contentStart ..< contentEnd])
-				heading.children = [paragraph]
+				content.content = String(src[contentStart ..< contentEnd])
+				heading.children = [content]
 
 				if end < endOfLine {
 					let infoStart = src.index(src.startIndex, offsetBy: end)
@@ -114,7 +114,7 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 
 				state.i = endOfLine
 				heading.length = state.i - heading.index
-				paragraph.length = state.i - paragraph.index
+				content.length = state.i - content.index
 
 				return true
 			}

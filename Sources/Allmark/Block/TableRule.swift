@@ -1,5 +1,13 @@
 import Foundation
 
+extension String {
+	func substring(from start: Int, to end: Int) -> String {
+		let startIdx = self.index(self.startIndex, offsetBy: start)
+		let endIdx = self.index(self.startIndex, offsetBy: end)
+		return String(self[startIdx ..< endIdx])
+	}
+}
+
 /// GFM tables (pipe-delimited)
 
 let tableRule = BlockRule(
@@ -22,9 +30,14 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 		let endOfLine = getEndOfLine(state: &state)
 
 		guard let headerRow = lastNode.children?.first,
-		      let headers = headerRow.children?.map({ $0.info ?? "" })
+ 		      let headers = headerRow.children?.map({ $0.info ?? "" })
 		else {
 			return false
+		}
+
+		var rowLength = endOfLine - state.i
+		if endOfLine > 0, state.src[state.src.index(state.src.startIndex, offsetBy: endOfLine - 1)] == "\n" {
+			rowLength -= 1
 		}
 
 		let row = newBlock(
@@ -34,37 +47,29 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 			markup: "",
 			indent: 0
 		)
+		row.length = rowLength
 		lastNode.children?.append(row)
 
-		// Get row content, trim it, and remove leading/trailing pipes
-		let rowStart = state.src.index(state.src.startIndex, offsetBy: state.i)
-		let rowEnd = state.src.index(state.src.startIndex, offsetBy: endOfLine)
-		let rowContent = String(state.src[rowStart ..< rowEnd])
-			.trimmingCharacters(in: .whitespaces)
-			.replacingOccurrences(of: "(^\\||\\|$)", with: "", options: .regularExpression)
+		let rowSrc = state.src.substring(from: state.i, to: state.i + rowLength)
+		let pipePositions = loadPipePositions(line: rowSrc)
 
-		// Split by unescaped pipe
+		let rowContent = rowSrc.trimmingCharacters(in: .whitespaces)
+			.replacingOccurrences(of: "(^\\||\\|$)", with: "", options: .regularExpression)
 		var rowParts = splitByUnescapedPipe(rowContent)
-		// Pad with empty strings to match header count
 		while rowParts.count < headers.count {
 			rowParts.append("")
 		}
 		rowParts = Array(rowParts.prefix(headers.count))
 
-		var ri = 0
-		for text in rowParts {
-			let cell = newBlock(
-				type: "table_cell",
-				index: state.i,
-				line: state.line,
-				markup: "",
-				indent: 0
+		for j in 0 ..< rowParts.count {
+			parseTableCell(
+				row: row,
+				state: &state,
+				index: j,
+				parts: rowParts,
+				headers: headers,
+				pipePositions: pipePositions
 			)
-			cell.content = text.trimmingCharacters(in: CharacterSet.whitespaces)
-				.replacingOccurrences(of: "\\|", with: "|")
-			cell.info = headers[ri]
-			row.children?.append(cell)
-			ri += 1
 		}
 
 		lastNode.length = endOfLine - lastNode.index
@@ -168,30 +173,34 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 				closeNode(state: &state, node: closed)
 			}
 
+			let headerIndex = parent.index
+			var headerLength = parent.content.count
+			if parent.content.hasSuffix("\n") {
+				headerLength -= 1
+			}
 			let header = newBlock(
 				type: "table_header",
-				index: state.i,
+				index: headerIndex,
 				line: state.line,
 				markup: "",
 				indent: 0
 			)
+			header.length = headerLength
 			mutableParent.children?.append(header)
 
+			let headerSrc = parent.content.substring(from: 0, to: headerLength)
+			let pipePositions = loadPipePositions(line: headerSrc)
+
 			let headerParts = splitByUnescapedPipe(headerContent)
-			var hi = 0
-			for text in headerParts {
-				let cell = newBlock(
-					type: "table_cell",
-					index: state.i,
-					line: state.line,
-					markup: "",
-					indent: 0
+			for j in 0 ..< headerParts.count {
+				parseTableCell(
+					row: header,
+					state: &state,
+					index: j,
+					parts: headerParts,
+					headers: cells,
+					pipePositions: pipePositions
 				)
-				cell.content = text.trimmingCharacters(in: .whitespaces)
-					.replacingOccurrences(of: "\\|", with: "|")
-				cell.info = cells[hi]
-				header.children?.append(cell)
-				hi += 1
 			}
 
 			mutableParent.type = "table"
@@ -238,4 +247,69 @@ private func splitByUnescapedPipe(_ text: String) -> [String] {
 
 	result.append(current)
 	return result
+}
+
+/// Loads pipe positions from a line for accurate source mapping
+private func loadPipePositions(line: String) -> [Int] {
+	var pipePositions: [Int] = []
+	var haveEndPipe = false
+	for i in 0 ..< line.count {
+		let idx = line.index(line.startIndex, offsetBy: i)
+		let char = line[idx]
+		if char == "|", !isEscaped(text: line, i: i) {
+			pipePositions.append(i)
+			haveEndPipe = true
+		} else if !isSpace(code: Int(char.asciiValue ?? 0)) {
+			// Make sure there's a start pipe position
+			if pipePositions.isEmpty {
+				pipePositions.append(0)
+			}
+			haveEndPipe = false
+		}
+	}
+	// Make sure there's an end pipe position
+	if !haveEndPipe {
+		pipePositions.append(line.count - 1)
+	}
+	return pipePositions
+}
+
+private func parseTableCell(
+	row: MarkdownNode,
+	state: inout BlockParserState,
+	index: Int,
+	parts: [String],
+	headers: [String],
+	pipePositions: [Int]
+) {
+	let text = parts[index]
+
+	let cellStart = index < pipePositions.count ? pipePositions[index] : 0
+	let cellEnd = index + 1 < pipePositions.count ? pipePositions[index + 1] : 0
+	let cellLength = cellEnd - cellStart + 1
+
+	let trimmedText = text.trimmingCharacters(in: .whitespaces)
+	let contentStartOffset = trimmedText.count > 0 ? (text as NSString).range(of: trimmedText).location + 1 : 0
+	let contentStart = row.index + cellStart + contentStartOffset
+
+	let cell = newBlock(
+		type: "table_cell",
+		index: row.index + cellStart,
+		line: state.line,
+		markup: "",
+		indent: 0
+	)
+	cell.length = cellLength
+	cell.info = headers[index]
+	row.children?.append(cell)
+
+	let content = newBlock(
+		type: "table_cell_content",
+		index: contentStart,
+		line: state.line,
+		markup: "",
+		indent: 0
+	)
+	content.content = trimmedText.replacingOccurrences(of: "\\|", with: "|")
+	cell.children = [content]
 }

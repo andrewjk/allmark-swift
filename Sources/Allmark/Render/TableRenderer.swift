@@ -35,8 +35,10 @@ func renderTableCell(node: MarkdownNode, state: inout RendererState, tag: String
 	startNewLine(node: node, state: &state)
 	let align = node.info != nil && !node.info!.isEmpty ? " align=\"\(node.info!)\"" : ""
 	state.output += "<\(tag)\(align)>"
-	innerNewLine(node: node, state: &state)
-	renderChildren(node: node, state: &state)
+	// Render the children of the dummy paragraph directly (not the paragraph itself)
+	if let children = node.children, children.count > 0 {
+		renderChildren(node: children[0], state: &state)
+	}
 	state.output += "</\(tag)>"
 	endNewLine(node: node, state: &state)
 }

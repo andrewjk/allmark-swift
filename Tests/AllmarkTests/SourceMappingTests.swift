@@ -248,6 +248,47 @@ struct SourceMappingTests {
 		}
 	}
 
+	@Test func listTaskItemWithEmphasis() async {
+		let input = "- [ ] very *quick* task"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let list = doc.children![0]
+
+			let listItem = list.children![0]
+			#expect(listItem.type == "list_item")
+			#expect(listItem.index == 0)
+			#expect(listItem.length == 23)
+
+			let taskItem = listItem.children![0]
+			#expect(taskItem.type == "list_task_item")
+			#expect(taskItem.index == 2)
+			#expect(taskItem.length == 3)
+
+			let emphasis = listItem.children![1].children![1]
+			#expect(emphasis.type == "emphasis")
+			#expect(emphasis.index == 11)
+			#expect(emphasis.length == 7)
+		}
+	}
+
+	@Test func linkWithEmphasis() async {
+		let input = "# Test\n\n[link *text*](url)"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let paragraph = doc.children![1]
+
+			let link = paragraph.children![0]
+			#expect(link.type == "link")
+			#expect(link.index == 8)
+			#expect(link.length == 18)
+
+			let emphasis = link.children![1]
+			#expect(emphasis.type == "emphasis")
+			#expect(emphasis.index == 14)
+			#expect(emphasis.length == 6)
+		}
+	}
+
 	@Test func footnoteReference() async {
 		let input = "[^1]: Footnote content"
 		await MainActor.run {
@@ -263,10 +304,64 @@ struct SourceMappingTests {
 		let input = "| A | B |\n|---|---|\n| 1 | 2 |"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
+
 			let table = doc.children![0]
 			#expect(table.type == "table")
 			#expect(table.index == 0)
 			#expect(table.length == 29)
+
+			let header = table.children![0]
+			#expect(header.type == "table_header")
+			#expect(header.index == 0)
+			#expect(header.length == 9)
+
+			let hc1 = header.children![0]
+			#expect(hc1.type == "table_cell")
+			#expect(hc1.index == 0)
+			#expect(hc1.length == 5)
+
+			let hc2 = header.children![1]
+			#expect(hc2.type == "table_cell")
+			#expect(hc2.index == 4)
+			#expect(hc2.length == 5)
+
+			let row = table.children![1]
+			#expect(row.type == "table_row")
+			#expect(row.index == 20)
+			#expect(row.length == 9)
+
+			let rc1 = row.children![0]
+			#expect(rc1.type == "table_cell")
+			#expect(rc1.index == 20)
+			#expect(rc1.length == 5)
+
+			let rc2 = row.children![1]
+			#expect(rc2.type == "table_cell")
+			#expect(rc2.index == 24)
+			#expect(rc2.length == 5)
+		}
+	}
+
+	@Test func tableWithEmphasis() async {
+		let input = "| A | B |\n|---|---|\n| item *one* | 2 |"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+
+			let table = doc.children![0]
+			#expect(table.type == "table")
+			#expect(table.index == 0)
+			#expect(table.length == 38)
+
+			let row = table.children![1]
+			#expect(row.type == "table_row")
+
+			let cell = row.children![0]
+			#expect(cell.type == "table_cell")
+
+			let emphasis = cell.children![0].children![1]
+			#expect(emphasis.type == "emphasis")
+			#expect(emphasis.index == 27)
+			#expect(emphasis.length == 5)
 		}
 	}
 
