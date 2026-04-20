@@ -7,10 +7,6 @@ let consoleTableRenderer = Renderer(
 
 func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiDim
-	if !state.output.isEmpty, !state.output.hasSuffix("\n") {
-		state.output += "\n"
-	}
-
 	guard let children = node.children, !children.isEmpty else { return }
 
 	let headerRow = children[0]
@@ -21,6 +17,7 @@ func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: B
 
 	let maxColumns = max(headerCells.count, dataRows.map { $0.children?.count ?? 0 }.max() ?? 0)
 	var columnWidths = [Int](repeating: 0, count: maxColumns)
+	var alignments = [String](repeating: "", count: maxColumns)
 
 	for i in 0 ..< headerCells.count {
 		let text = getTextFromConsoleNode(node: headerCells[i])
@@ -29,6 +26,7 @@ func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: B
 		}
 		cellTexts[0].append(text)
 		columnWidths[i] = max(columnWidths[i], text.count + 2)
+		alignments[i] = headerCells[i].info ?? ""
 	}
 
 	for r in 0 ..< dataRows.count {
@@ -61,14 +59,26 @@ func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: B
 		return "\(style)\(line)\(ansiReset)\n"
 	}
 
+	func padText(text: String, width: Int, align: String) -> String {
+		if align == "right" {
+			return String(repeating: " ", count: width - text.count) + text + " "
+		}
+		if align == "center" {
+			let leftPad = (width - text.count) / 2
+			let rightPad = width - text.count - leftPad
+			return String(repeating: " ", count: leftPad) + text + String(repeating: " ", count: rightPad)
+		}
+		return text + String(repeating: " ", count: width - text.count) + " "
+	}
+
 	state.output += makeLine(left: "┌", mid: "┬", right: "┐", sep: "┬")
 
 	if !headerCells.isEmpty {
 		state.output += "\(style)│\(ansiReset)"
 		for i in 0 ..< headerCells.count {
 			let text = i < cellTexts[0].count ? cellTexts[0][i] : ""
-			let padding = String(repeating: " ", count: columnWidths[i] - text.count - 1)
-			state.output += " \(text)\(padding)\(style)│\(ansiReset)"
+			let align = alignments[i]
+			state.output += " \(padText(text: text, width: columnWidths[i] - 2, align: align))\(style)│\(ansiReset)"
 		}
 		state.output += "\n"
 	}
@@ -79,13 +89,15 @@ func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: B
 		state.output += "\(style)│\(ansiReset)"
 		for c in 0 ..< columnWidths.count {
 			let text = (r + 1) < cellTexts.count && c < cellTexts[r + 1].count ? cellTexts[r + 1][c] : ""
-			let padding = String(repeating: " ", count: columnWidths[c] - text.count - 1)
-			state.output += " \(text)\(padding)\(style)│\(ansiReset)"
+			let rowCells = dataRows[r].children ?? []
+			let align = c < rowCells.count ? (rowCells[c].info ?? "") : ""
+			state.output += " \(padText(text: text, width: columnWidths[c] - 2, align: align))\(style)│\(ansiReset)"
 		}
 		state.output += "\n"
 	}
 
 	state.output += makeLine(left: "└", mid: "┴", right: "┘", sep: "┴")
+	state.output += "\n"
 }
 
 func getTextFromConsoleNode(node: MarkdownNode) -> String {

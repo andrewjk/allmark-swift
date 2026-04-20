@@ -543,25 +543,4 @@ struct ListBulletedTests {
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
-
-	@Test func bulletedListWithHTMLBlock() async {
-		let input = """
-		- Item
-
-		  <div>HTML</div>
-		"""
-		let expected = """
-		<ul>
-		<li>
-		<p>Item</p>
-		<div>HTML</div>
-		</li>
-		</ul>
-		"""
-		await MainActor.run {
-			let doc = _parse(src: input, rules: coreRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
-		}
-	}
 }

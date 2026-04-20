@@ -9,16 +9,13 @@ public struct RendererState {
 	public var output: String
 	/// Footnote nodes to render at the end.
 	public var footnotes: [MarkdownNode]
-	/// Current nesting depth.
-	public var depth: Int
-	/// Current quote nesting depth.
-	public var quoteDepth: Int
+	/// Current list nesting depth.
+	public var listDepth: Int
 
-	public init(renderers: OrderedDictionary<String, Renderer>, output: String, footnotes: [MarkdownNode], depth: Int, quoteDepth: Int) {
+	public init(renderers: OrderedDictionary<String, Renderer>, output: String, footnotes: [MarkdownNode], listDepth: Int = 0) {
 		self.renderers = renderers
 		self.output = output
 		self.footnotes = footnotes
-		self.depth = depth
-		self.quoteDepth = quoteDepth
+		self.listDepth = listDepth
 	}
 }

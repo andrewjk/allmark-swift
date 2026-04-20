@@ -715,4 +715,63 @@ struct FencedCodeTests {
 			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
+
+	@Test func codeFenceInBlockquote() async {
+		let input = """
+		> ```
+		code
+		```
+		"""
+		let expected = """
+		<blockquote>
+		<pre><code></code></pre>
+		</blockquote>
+		<p>code</p>
+		<pre><code></code></pre>
+		"""
+		await MainActor.run {
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
+			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
+
+	@Test func codeFenceInListItem() async {
+		let input = """
+		- ```
+		code
+		```
+		"""
+		let expected = """
+		<ul>
+		<li>
+		<pre><code></code></pre>
+		</li>
+		</ul>
+		<p>code</p>
+		<pre><code></code></pre>
+		"""
+		await MainActor.run {
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
+			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
+
+	@Test func codeFenceWithTrailingWhitespaceOnClosingFence() async {
+		let input = """
+		```
+		code
+		```   
+		"""
+		let expected = """
+		<pre><code>code
+		</code></pre>
+		"""
+		await MainActor.run {
+			let doc = _parse(src: input, rules: coreRuleSet)
+			let html = _render(doc: doc, renderers: htmlRenderers)
+			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
 }

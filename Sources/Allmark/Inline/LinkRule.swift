@@ -72,8 +72,6 @@ func testImageOpen(state: inout InlineParserState, parent: inout MarkdownNode) -
 }
 
 func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
-	let markup = "]"
-
 	// Loop backwards through delimiters to find a matching one that does
 	// not take precedence
 	var startDelimiter: Delimiter?

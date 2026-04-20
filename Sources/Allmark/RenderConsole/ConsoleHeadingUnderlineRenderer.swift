@@ -29,8 +29,7 @@ func renderConsoleHeadingUnderline(_ node: MarkdownNode, _ state: inout Renderer
 				renderers: state.renderers,
 				output: "",
 				footnotes: state.footnotes,
-				depth: state.depth,
-				quoteDepth: state.quoteDepth
+				listDepth: state.listDepth
 			)
 			renderChildren(node: child, state: &childState)
 			headingText += childState.output

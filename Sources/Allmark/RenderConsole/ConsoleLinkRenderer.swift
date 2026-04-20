@@ -6,7 +6,7 @@ let consoleLinkRenderer = Renderer(
 )
 
 func renderConsoleLink(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
-	let style = ansiBlue + ansiUnderline
+	let style = ansiUnderline + ansiBlue
 	let reset = ansiReset
 	state.output += style
 	renderChildren(node: node, state: &state)

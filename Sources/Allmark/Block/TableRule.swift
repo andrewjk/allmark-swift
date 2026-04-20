@@ -2,8 +2,8 @@ import Foundation
 
 extension String {
 	func substring(from start: Int, to end: Int) -> String {
-		let startIdx = self.index(self.startIndex, offsetBy: start)
-		let endIdx = self.index(self.startIndex, offsetBy: end)
+		let startIdx = index(startIndex, offsetBy: start)
+		let endIdx = index(startIndex, offsetBy: end)
 		return String(self[startIdx ..< endIdx])
 	}
 }
@@ -30,7 +30,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 		let endOfLine = getEndOfLine(state: &state)
 
 		guard let headerRow = lastNode.children?.first,
- 		      let headers = headerRow.children?.map({ $0.info ?? "" })
+		      let headers = headerRow.children?.map({ $0.info ?? "" })
 		else {
 			return false
 		}

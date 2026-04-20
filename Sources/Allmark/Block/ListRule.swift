@@ -53,7 +53,6 @@ func testListStart(state: inout BlockParserState, parent: MarkdownNode, info: Li
 				node.maybeContinuing = false
 				closedNode = node
 				state.openNodes.removeSubrange(i...)
-				break
 			}
 			i -= 1
 		}

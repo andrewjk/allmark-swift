@@ -69,7 +69,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 					url = escapeHtml(text: url)
 
 					let fullMatchRange = urlMatch.range(at: 0)
-					if let fullRange = Range(fullMatchRange, in: tail) {
+					if let _ = Range(fullMatchRange, in: tail) {
 						let link = newLink(url: url, state: state)
 						link.info = "http://\(link.info ?? "")"
 						parent.children?.append(link)

@@ -22,6 +22,11 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 	let index = src.index(src.startIndex, offsetBy: state.i)
 	let char = src[index]
 
+	if state.indent >= node.subindent {
+		state.indent -= node.subindent
+		return true
+	}
+
 	// This only applies to the lowest list_item
 	var itemNode: MarkdownNode? = nil
 	var i = state.openNodes.count - 1
@@ -30,7 +35,7 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 		let openNode = state.openNodes[i]
 		if openNode.type == "list_item" {
 			itemNode = openNode
-		} else if state.openNodes[i].type == "list_ordered" {
+		} else if openNode.type == "list_ordered" {
 			var numbers = ""
 			var end = state.i
 
@@ -54,21 +59,24 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 					}
 				}
 			}
-			break
-		} else if state.openNodes[i].type == "list_bulleted" {
+			// Break only when content is inside this nesting level, otherwise
+			// continue walking up to check ancestor lists
+			if let item = itemNode, state.indent >= item.subindent {
+				break
+			}
+		} else if openNode.type == "list_bulleted" {
 			if let item = itemNode {
 				if state.indent <= 3 && state.indent < item.subindent && char == node.delimiter.first {
 					return false
 				}
 			}
-			break
+			// Break only when content is inside this nesting level, otherwise
+			// continue walking up to check ancestor lists
+			if let item = itemNode, state.indent >= item.subindent {
+				break
+			}
 		}
 		i -= 1
-	}
-
-	if state.indent >= node.subindent {
-		state.indent -= node.subindent
-		return true
 	}
 
 	if state.hasBlankLine {

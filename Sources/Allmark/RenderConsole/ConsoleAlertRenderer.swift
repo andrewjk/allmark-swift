@@ -24,9 +24,6 @@ func renderConsoleAlert(_ node: MarkdownNode, _ state: inout RendererState, _: B
 		"caution": "🚨",
 	]
 	let icon = icons[type] ?? "📝"
-	if !state.output.isEmpty, !state.output.hasSuffix("\n") {
-		state.output += "\n"
-	}
-	state.output += "\(style)\(icon) \(type.capitalized):\(reset)\n"
+	state.output += "\(style)\(icon) \(type.capitalized):\(reset)\n\n"
 	renderChildren(node: node, state: &state)
 }
