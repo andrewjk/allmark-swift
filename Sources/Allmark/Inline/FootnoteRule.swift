@@ -9,15 +9,14 @@ func testFootnote(state: inout InlineParserState, parent: inout MarkdownNode) ->
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if !isEscaped(text: src, i: state.i) {
-		if char == "[" {
+	if !state.isEscaped {
+		if char == 0x5B /* [ */ {
 			return testFootnoteOpen(state: &state, parent: &parent)
 		}
 
-		if char == "]" {
+		if char == 0x5D /* ] */ {
 			return testFootnoteClose(state: &state, parent: &parent)
 		}
 	}
@@ -34,8 +33,7 @@ func testFootnoteOpen(state: inout InlineParserState, parent: inout MarkdownNode
 		return false
 	}
 
-	let nextIndex = src.index(src.startIndex, offsetBy: start + 1)
-	if src[nextIndex] != "^" {
+	if src[start + 1] != 0x5E /* ^ */ {
 		return false
 	}
 
@@ -48,7 +46,7 @@ func testFootnoteOpen(state: inout InlineParserState, parent: inout MarkdownNode
 		content: markup,
 		indent: 0
 	)
-	parent.children?.append(text)
+	parent.children.append(text)
 
 	state.i += 2
 	state.delimiters.append(Delimiter(markup: markup, start: start, length: 2, handled: nil))
@@ -75,14 +73,13 @@ func testFootnoteClose(state: inout InlineParserState, parent: inout MarkdownNod
 
 	if let startDel = startDelimiter {
 		// Convert the text node into a footnote node
-		var i = (parent.children?.count ?? 0) - 1
+		var i = parent.children.count - 1
 		while i >= 0 {
-			if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
+			let lastNode = parent.children[i]
+			if lastNode.index == state.parentIndex + startDel.start {
 				let labelStart = startDel.start + startDel.markup.count
 				let src = state.src
-				let labelEndIndex = src.index(src.startIndex, offsetBy: state.i)
-				let labelStartIndex = src.index(src.startIndex, offsetBy: labelStart)
-				var label = String(src[labelStartIndex ..< labelEndIndex])
+				var label = charToString(src, from: labelStart, to: state.i)
 
 				// No special characters
 				if label.range(of: "[^a-zA-Z0-9]", options: .regularExpression) != nil {
@@ -110,14 +107,11 @@ func testFootnoteClose(state: inout InlineParserState, parent: inout MarkdownNod
 				// Swallow anything in brackets afterwards
 				// Unless it's a link reference, in which case it should be treated as a link instead
 				if state.i + 1 < src.count {
-					let nextIndex = src.index(src.startIndex, offsetBy: state.i + 1)
-					if src[nextIndex] == "[" {
+					if src[state.i + 1] == 0x5B /* [ */ {
 						let linkStart = state.i + 2
 						for i in linkStart ..< src.count {
-							let iIndex = src.index(src.startIndex, offsetBy: i)
-							if src[iIndex] == "]" {
-								let linkStartIndex = src.index(src.startIndex, offsetBy: linkStart)
-								var linkRef = String(src[linkStartIndex ..< iIndex])
+							if src[i] == 0x5D /* ] */ {
+								var linkRef = charToString(src, from: linkStart, to: i)
 								linkRef = normalizeLabel(text: linkRef)
 								if state.refs[linkRef] != nil {
 									// Change delimiter to [ for link processing
@@ -151,16 +145,17 @@ func testFootnoteClose(state: inout InlineParserState, parent: inout MarkdownNod
 					lastNode.markup = "[^\(label)]"
 					lastNode.length = state.parentIndex + state.i - lastNode.index
 					lastNode.children = footnote.content.children
-					parent.children?[i] = lastNode
+					parent.children[i] = lastNode
 
 					// Parse the footnote content for inline elements
 					var tempState = InlineParserState(
 						rules: state.rules,
-						src: footnote.content.content,
+						src: Array(footnote.content.content.utf8),
 						i: 0,
 						line: lastNode.line,
 						lineStart: 0,
 						indent: 0,
+						isEscaped: false,
 						delimiters: [],
 						refs: state.refs,
 						footnotes: state.footnotes,

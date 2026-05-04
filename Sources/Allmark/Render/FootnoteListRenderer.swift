@@ -14,7 +14,9 @@ func renderFootnoteList(_ node: MarkdownNode, _ state: inout RendererState, _: B
 		let id = "fn\(label)"
 		let href = "#fnref\(label)"
 		state.output += "<li id=\"\(id)\">"
-		renderChildren(node: node, state: &state)
+		if let info = node.info, let refNode = state.footnoteRefs[info] {
+			renderChildren(node: refNode, state: &state)
+		}
 		if state.output.hasSuffix("</p>\n") {
 			state.output = String(state.output.dropLast(5))
 		}

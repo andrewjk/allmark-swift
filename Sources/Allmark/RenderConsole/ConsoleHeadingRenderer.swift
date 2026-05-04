@@ -9,8 +9,8 @@ func renderConsoleHeading(_ node: MarkdownNode, _ state: inout RendererState, _:
 	let level = node.markup.count
 	let style = ansiBold + ansiMagenta
 	state.output += "\(ansiDim)\(String(repeating: "#", count: level))\(ansiReset) \(style)"
-	if let children = node.children, children.count > 0 {
-		renderChildren(node: children[0], state: &state)
+	if !node.children.isEmpty {
+		renderChildren(node: node.children[0], state: &state)
 	}
 	state.output += "\(ansiReset)\n\n"
 }

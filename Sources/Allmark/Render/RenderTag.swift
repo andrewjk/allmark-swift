@@ -3,7 +3,7 @@ import Foundation
 func renderTag(node: MarkdownNode, state: inout RendererState, tag: String, decode: Bool = true) {
 	startNewLine(node: node, state: &state)
 	state.output += "<\(tag)>"
-	if node.block, node.children?.isEmpty ?? true {
+	if node.block, node.children.isEmpty {
 		state.output += "\n"
 	} else {
 		innerNewLine(node: node, state: &state)

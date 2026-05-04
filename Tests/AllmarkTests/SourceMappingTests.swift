@@ -6,7 +6,7 @@ struct SourceMappingTests {
 		let input = "# Heading 1"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let heading = doc.children![0]
+			let heading = doc.children[0]
 			#expect(heading.type == "heading")
 			#expect(heading.index == 0)
 			#expect(heading.length == 11)
@@ -17,7 +17,7 @@ struct SourceMappingTests {
 		let input = "### Heading 3"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let heading = doc.children![0]
+			let heading = doc.children[0]
 			#expect(heading.type == "heading")
 			#expect(heading.index == 0)
 			#expect(heading.length == 13)
@@ -28,11 +28,11 @@ struct SourceMappingTests {
 		let input = "# Heading *bold* 1"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let heading = doc.children![0]
+			let heading = doc.children[0]
 			#expect(heading.type == "heading")
 			#expect(heading.index == 0)
 			#expect(heading.length == 18)
-			let emphasis = heading.children![0].children![1]
+			let emphasis = heading.children[0].children[1]
 			#expect(emphasis.type == "emphasis")
 			#expect(emphasis.index == 10)
 			#expect(emphasis.length == 6)
@@ -43,7 +43,7 @@ struct SourceMappingTests {
 		let input = "Heading\n====="
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let heading = doc.children![0]
+			let heading = doc.children[0]
 			#expect(heading.type == "heading_underline")
 			#expect(heading.index == 0)
 			#expect(heading.length == 13)
@@ -54,7 +54,7 @@ struct SourceMappingTests {
 		let input = "---"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let thematicBreak = doc.children![0]
+			let thematicBreak = doc.children[0]
 			#expect(thematicBreak.type == "thematic_break")
 			#expect(thematicBreak.index == 0)
 			#expect(thematicBreak.length == 3)
@@ -65,7 +65,7 @@ struct SourceMappingTests {
 		let input = "> [!NOTE]\n> Alert content"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let alert = doc.children![0]
+			let alert = doc.children[0]
 			#expect(alert.index == 0)
 			#expect(alert.length == 25)
 		}
@@ -75,7 +75,7 @@ struct SourceMappingTests {
 		let input = "> Quote content"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let blockQuote = doc.children![0]
+			let blockQuote = doc.children[0]
 			#expect(blockQuote.type == "block_quote")
 			#expect(blockQuote.index == 0)
 			#expect(blockQuote.length == 15)
@@ -86,11 +86,11 @@ struct SourceMappingTests {
 		let input = "> Quote *content*"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let blockQuote = doc.children![0]
+			let blockQuote = doc.children[0]
 			#expect(blockQuote.type == "block_quote")
 			#expect(blockQuote.index == 0)
 			#expect(blockQuote.length == 17)
-			let emphasis = blockQuote.children![0].children![1]
+			let emphasis = blockQuote.children[0].children[1]
 			#expect(emphasis.type == "emphasis")
 			#expect(emphasis.index == 8)
 			#expect(emphasis.length == 9)
@@ -101,7 +101,7 @@ struct SourceMappingTests {
 		let input = "\n    code\n    here"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let codeBlock = doc.children![0]
+			let codeBlock = doc.children[0]
 			#expect(codeBlock.type == "code_block")
 			#expect(codeBlock.index == 1)
 			#expect(codeBlock.length == 17)
@@ -112,7 +112,7 @@ struct SourceMappingTests {
 		let input = "```\ncode\n```"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let codeFence = doc.children![0]
+			let codeFence = doc.children[0]
 			#expect(codeFence.type == "code_fence")
 			#expect(codeFence.index == 0)
 			#expect(codeFence.length == 12)
@@ -123,7 +123,7 @@ struct SourceMappingTests {
 		let input = "~~~\ncode\n~~~"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let codeFence = doc.children![0]
+			let codeFence = doc.children[0]
 			#expect(codeFence.type == "code_fence")
 			#expect(codeFence.index == 0)
 			#expect(codeFence.length == 12)
@@ -134,7 +134,7 @@ struct SourceMappingTests {
 		let input = "```javascript\ncode\n```"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let codeFence = doc.children![0]
+			let codeFence = doc.children[0]
 			#expect(codeFence.type == "code_fence")
 			#expect(codeFence.index == 0)
 			#expect(codeFence.length == 22)
@@ -145,7 +145,7 @@ struct SourceMappingTests {
 		let input = "<div>content</div>"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let htmlBlock = doc.children![0]
+			let htmlBlock = doc.children[0]
 			#expect(htmlBlock.type == "html_block")
 			#expect(htmlBlock.index == 0)
 			#expect(htmlBlock.length == 18)
@@ -156,7 +156,7 @@ struct SourceMappingTests {
 		let input = "<div>\ncontent\n</div>"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let htmlBlock = doc.children![0]
+			let htmlBlock = doc.children[0]
 			#expect(htmlBlock.type == "html_block")
 			#expect(htmlBlock.index == 0)
 			#expect(htmlBlock.length == 20)
@@ -167,7 +167,7 @@ struct SourceMappingTests {
 		let input = "[link]: url"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let linkReference = doc.children![0]
+			let linkReference = doc.children[0]
 			#expect(linkReference.type == "link_ref")
 			#expect(linkReference.index == 0)
 			#expect(linkReference.length == 11)
@@ -178,7 +178,7 @@ struct SourceMappingTests {
 		let input = "1. Item one"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let list = doc.children![0]
+			let list = doc.children[0]
 			#expect(list.type == "list_ordered")
 			#expect(list.index == 0)
 			#expect(list.length == 11)
@@ -189,7 +189,7 @@ struct SourceMappingTests {
 		let input = "- Item one"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let list = doc.children![0]
+			let list = doc.children[0]
 			#expect(list.type == "list_bulleted")
 			#expect(list.index == 0)
 			#expect(list.length == 10)
@@ -200,8 +200,8 @@ struct SourceMappingTests {
 		let input = "1. Item one"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let list = doc.children![0]
-			let listItem = list.children![0]
+			let list = doc.children[0]
+			let listItem = list.children[0]
 			#expect(listItem.type == "list_item")
 			#expect(listItem.index == 0)
 			#expect(listItem.length == 11)
@@ -212,12 +212,12 @@ struct SourceMappingTests {
 		let input = "1. Item *one*"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let list = doc.children![0]
-			let listItem = list.children![0]
+			let list = doc.children[0]
+			let listItem = list.children[0]
 			#expect(listItem.type == "list_item")
 			#expect(listItem.index == 0)
 			#expect(listItem.length == 13)
-			let emphasis = listItem.children![0].children![1]
+			let emphasis = listItem.children[0].children[1]
 			#expect(emphasis.type == "emphasis")
 			#expect(emphasis.index == 8)
 			#expect(emphasis.length == 5)
@@ -228,8 +228,8 @@ struct SourceMappingTests {
 		let input = "- [x] Done task"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let list = doc.children![0]
-			let taskItem = list.children![0]
+			let list = doc.children[0]
+			let taskItem = list.children[0]
 			#expect(taskItem.type == "list_item")
 			#expect(taskItem.index == 0)
 			#expect(taskItem.length == 15)
@@ -240,8 +240,8 @@ struct SourceMappingTests {
 		let input = "- [ ] Todo task"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let list = doc.children![0]
-			let taskItem = list.children![0]
+			let list = doc.children[0]
+			let taskItem = list.children[0]
 			#expect(taskItem.type == "list_item")
 			#expect(taskItem.index == 0)
 			#expect(taskItem.length == 15)
@@ -252,19 +252,19 @@ struct SourceMappingTests {
 		let input = "- [ ] very *quick* task"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let list = doc.children![0]
+			let list = doc.children[0]
 
-			let listItem = list.children![0]
+			let listItem = list.children[0]
 			#expect(listItem.type == "list_item")
 			#expect(listItem.index == 0)
 			#expect(listItem.length == 23)
 
-			let taskItem = listItem.children![0]
+			let taskItem = listItem.children[0]
 			#expect(taskItem.type == "list_task_item")
 			#expect(taskItem.index == 2)
 			#expect(taskItem.length == 3)
 
-			let emphasis = listItem.children![1].children![1]
+			let emphasis = listItem.children[1].children[1]
 			#expect(emphasis.type == "emphasis")
 			#expect(emphasis.index == 11)
 			#expect(emphasis.length == 7)
@@ -275,14 +275,14 @@ struct SourceMappingTests {
 		let input = "# Test\n\n[link *text*](url)"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
+			let paragraph = doc.children[1]
 
-			let link = paragraph.children![0]
+			let link = paragraph.children[0]
 			#expect(link.type == "link")
 			#expect(link.index == 8)
 			#expect(link.length == 18)
 
-			let emphasis = link.children![1]
+			let emphasis = link.children[1]
 			#expect(emphasis.type == "emphasis")
 			#expect(emphasis.index == 14)
 			#expect(emphasis.length == 6)
@@ -293,7 +293,7 @@ struct SourceMappingTests {
 		let input = "[^1]: Footnote content"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let footnoteReference = doc.children![0]
+			let footnoteReference = doc.children[0]
 			#expect(footnoteReference.type == "footnote_ref")
 			#expect(footnoteReference.index == 0)
 			#expect(footnoteReference.length == 22)
@@ -305,37 +305,37 @@ struct SourceMappingTests {
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 
-			let table = doc.children![0]
+			let table = doc.children[0]
 			#expect(table.type == "table")
 			#expect(table.index == 0)
 			#expect(table.length == 29)
 
-			let header = table.children![0]
+			let header = table.children[0]
 			#expect(header.type == "table_header")
 			#expect(header.index == 0)
 			#expect(header.length == 9)
 
-			let hc1 = header.children![0]
+			let hc1 = header.children[0]
 			#expect(hc1.type == "table_cell")
 			#expect(hc1.index == 0)
 			#expect(hc1.length == 5)
 
-			let hc2 = header.children![1]
+			let hc2 = header.children[1]
 			#expect(hc2.type == "table_cell")
 			#expect(hc2.index == 4)
 			#expect(hc2.length == 5)
 
-			let row = table.children![1]
+			let row = table.children[1]
 			#expect(row.type == "table_row")
 			#expect(row.index == 20)
 			#expect(row.length == 9)
 
-			let rc1 = row.children![0]
+			let rc1 = row.children[0]
 			#expect(rc1.type == "table_cell")
 			#expect(rc1.index == 20)
 			#expect(rc1.length == 5)
 
-			let rc2 = row.children![1]
+			let rc2 = row.children[1]
 			#expect(rc2.type == "table_cell")
 			#expect(rc2.index == 24)
 			#expect(rc2.length == 5)
@@ -347,18 +347,18 @@ struct SourceMappingTests {
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 
-			let table = doc.children![0]
+			let table = doc.children[0]
 			#expect(table.type == "table")
 			#expect(table.index == 0)
 			#expect(table.length == 38)
 
-			let row = table.children![1]
+			let row = table.children[1]
 			#expect(row.type == "table_row")
 
-			let cell = row.children![0]
+			let cell = row.children[0]
 			#expect(cell.type == "table_cell")
 
-			let emphasis = cell.children![0].children![1]
+			let emphasis = cell.children[0].children[1]
 			#expect(emphasis.type == "emphasis")
 			#expect(emphasis.index == 27)
 			#expect(emphasis.length == 5)
@@ -369,7 +369,7 @@ struct SourceMappingTests {
 		let input = "A paragraph."
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![0]
+			let paragraph = doc.children[0]
 			#expect(paragraph.type == "paragraph")
 			#expect(paragraph.index == 0)
 			#expect(paragraph.length == 12)
@@ -380,7 +380,7 @@ struct SourceMappingTests {
 		let input = "  indented paragraph"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let indent = doc.children![0]
+			let indent = doc.children[0]
 			#expect(indent.type == "paragraph")
 			#expect(indent.index == 2)
 			#expect(indent.length == 18)
@@ -391,7 +391,7 @@ struct SourceMappingTests {
 		let input = "\\# Not a heading"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let escaped = doc.children![0]
+			let escaped = doc.children[0]
 			#expect(escaped.type == "paragraph")
 			#expect(escaped.index == 0)
 			#expect(escaped.length == 16)
@@ -403,8 +403,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n<https://example.com>"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let autolink = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let autolink = paragraph.children[0]
 			#expect(autolink.type == "link")
 			#expect(autolink.index == 8)
 			#expect(autolink.length == 21)
@@ -415,8 +415,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n<user@example.com>"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let autolink = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let autolink = paragraph.children[0]
 			#expect(autolink.type == "link")
 			#expect(autolink.index == 8)
 			#expect(autolink.length == 18)
@@ -427,8 +427,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\nwww.example.com"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let extendedAutolink = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let extendedAutolink = paragraph.children[0]
 			#expect(extendedAutolink.type == "link")
 			#expect(extendedAutolink.index == 8)
 			#expect(extendedAutolink.length == 15)
@@ -439,8 +439,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n`code`"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let codeSpan = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let codeSpan = paragraph.children[0]
 			#expect(codeSpan.type == "code_span")
 			#expect(codeSpan.index == 8)
 			#expect(codeSpan.length == 6)
@@ -451,8 +451,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n*emphasis*"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let emphasis = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let emphasis = paragraph.children[0]
 			#expect(emphasis.type == "emphasis")
 			#expect(emphasis.index == 8)
 			#expect(emphasis.length == 10)
@@ -463,8 +463,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\nhere: _emphasis_"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let emphasis = paragraph.children![1]
+			let paragraph = doc.children[1]
+			let emphasis = paragraph.children[1]
 			#expect(emphasis.type == "emphasis")
 			#expect(emphasis.index == 14)
 			#expect(emphasis.length == 10)
@@ -475,8 +475,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n**strong**"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let strong = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let strong = paragraph.children[0]
 			#expect(strong.type == "strong")
 			#expect(strong.index == 8)
 			#expect(strong.length == 10)
@@ -487,8 +487,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n[link](url)"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let link = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let link = paragraph.children[0]
 			#expect(link.type == "link")
 			#expect(link.index == 8)
 			#expect(link.length == 11)
@@ -499,8 +499,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n[link](url \"title\")"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let link = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let link = paragraph.children[0]
 			#expect(link.type == "link")
 			#expect(link.index == 8)
 			#expect(link.length == 19)
@@ -511,8 +511,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n[^1]"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let footnote = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let footnote = paragraph.children[0]
 			#expect(footnote.index == 8)
 			#expect(footnote.length == 4)
 		}
@@ -522,8 +522,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\nline  \nbreak"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let hardBreak = paragraph.children![1]
+			let paragraph = doc.children[1]
+			let hardBreak = paragraph.children[1]
 			#expect(hardBreak.index == 12)
 			#expect(hardBreak.length == 2)
 		}
@@ -533,8 +533,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n~~strikethrough~~"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let strikethrough = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let strikethrough = paragraph.children[0]
 			#expect(strikethrough.type == "strikethrough")
 			#expect(strikethrough.index == 8)
 			#expect(strikethrough.length == 17)
@@ -545,8 +545,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n==highlight=="
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let highlight = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let highlight = paragraph.children[0]
 			#expect(highlight.type == "highlight")
 			#expect(highlight.index == 8)
 			#expect(highlight.length == 13)
@@ -557,8 +557,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n~subscript~"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let subscriptNode = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let subscriptNode = paragraph.children[0]
 			#expect(subscriptNode.type == "subscript")
 			#expect(subscriptNode.index == 8)
 			#expect(subscriptNode.length == 11)
@@ -569,8 +569,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n^superscript^"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let superscript = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let superscript = paragraph.children[0]
 			#expect(superscript.type == "superscript")
 			#expect(superscript.index == 8)
 			#expect(superscript.length == 13)
@@ -581,8 +581,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\n{++inserted++}"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let insertion = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let insertion = paragraph.children[0]
 			#expect(insertion.type == "insertion")
 			#expect(insertion.index == 8)
 			#expect(insertion.length == 14)
@@ -593,8 +593,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\ndel: {--deleted--}"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let deletion = paragraph.children![1]
+			let paragraph = doc.children[1]
+			let deletion = paragraph.children[1]
 			#expect(deletion.type == "deletion")
 			#expect(deletion.index == 13)
 			#expect(deletion.length == 13)
@@ -605,9 +605,9 @@ struct SourceMappingTests {
 		let input = "# Test\n\n<span>content</span>"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let htmlStart = paragraph.children![0]
-			let htmlEnd = paragraph.children![2]
+			let paragraph = doc.children[1]
+			let htmlStart = paragraph.children[0]
+			let htmlEnd = paragraph.children[2]
 			#expect(htmlStart.type == "html_span")
 			#expect(htmlStart.index == 8)
 			#expect(htmlStart.length == 6)
@@ -621,7 +621,7 @@ struct SourceMappingTests {
 		let input = "# Test\n\n<!-- comment -->"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let comment = doc.children![1]
+			let comment = doc.children[1]
 			#expect(comment.index == 8)
 			#expect(comment.length == 16)
 		}
@@ -631,8 +631,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\nplain text"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let text = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let text = paragraph.children[0]
 			#expect(text.type == "text")
 			#expect(text.index == 8)
 			#expect(text.length == 10)
@@ -643,8 +643,8 @@ struct SourceMappingTests {
 		let input = "# Test\n\ntext with & chars"
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
-			let paragraph = doc.children![1]
-			let text = paragraph.children![0]
+			let paragraph = doc.children[1]
+			let text = paragraph.children[0]
 			#expect(text.type == "text")
 			#expect(text.index == 8)
 			#expect(text.length == 17)
@@ -656,27 +656,27 @@ struct SourceMappingTests {
 		await MainActor.run {
 			let doc = _parse(src: input, rules: extendedRuleSet)
 
-			let heading = doc.children![0]
+			let heading = doc.children[0]
 			#expect(heading.type == "heading")
 			#expect(heading.index == 0)
 			#expect(heading.length == 12)
 
-			let paragraph = doc.children![1]
+			let paragraph = doc.children[1]
 			#expect(paragraph.type == "paragraph")
 			#expect(paragraph.index == 13)
 			#expect(paragraph.length == 52)
 
-			let strong = paragraph.children![1]
+			let strong = paragraph.children[1]
 			#expect(strong.type == "strong")
 			#expect(strong.index == 18)
 			#expect(strong.length == 8)
 
-			let strikethrough = paragraph.children![3]
+			let strikethrough = paragraph.children[3]
 			#expect(strikethrough.type == "strikethrough")
 			#expect(strikethrough.index == 37)
 			#expect(strikethrough.length == 11)
 
-			let deletion = paragraph.children![5]
+			let deletion = paragraph.children[5]
 			#expect(deletion.type == "insertion")
 			#expect(deletion.index == 57)
 			#expect(deletion.length == 8)

@@ -15,26 +15,25 @@ func getBulletedListMarkup(state: BlockParserState) -> ListInfo? {
 		return nil
 	}
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if char == "-" || char == "+" || char == "*" {
+	if char == 0x2D /* - */ || char == 0x2B /* + */ || char == 0x2A /* * */ {
 		// Check if next char is space or end of line
 		if state.i == src.count - 1 {
 			return ListInfo(
-				delimiter: String(char),
-				markup: String(char),
+				delimiter: String(UnicodeScalar(char)),
+				markup: String(UnicodeScalar(char)),
 				isBlank: true,
 				type: "list_bulleted"
 			)
 		}
 
-		let nextIndex = src.index(src.startIndex, offsetBy: state.i + 1)
-		if isSpace(code: Int(src[nextIndex].asciiValue ?? 0)) {
-			let isBlank = isNewLine(char: String(src[nextIndex]))
+		let nextChar = src[state.i + 1]
+		if isSpace(code: nextChar) {
+			let isBlank = isNewLine(code: nextChar)
 			return ListInfo(
-				delimiter: String(char),
-				markup: String(char),
+				delimiter: String(UnicodeScalar(char)),
+				markup: String(UnicodeScalar(char)),
 				isBlank: isBlank,
 				type: "list_bulleted"
 			)

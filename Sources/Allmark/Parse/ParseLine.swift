@@ -15,7 +15,7 @@ func parseLine(state: inout BlockParserState) {
 	for i in 1 ..< state.openNodes.count {
 		let node = state.openNodes[i]
 
-		guard let rule = state.rules[node.type] else {
+		guard let rule = state.rulesMap[node.type] else {
 			continue
 		}
 

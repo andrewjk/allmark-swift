@@ -1,13 +1,11 @@
-import Foundation
-
-func isAlpha(code: Int) -> Bool {
+@inlinable func isAlpha(code: UInt8) -> Bool {
 	return (code > 64 && code < 91) || (code > 96 && code < 123)
 }
 
-func isNumeric(code: Int) -> Bool {
+@inlinable func isNumeric(code: UInt8) -> Bool {
 	return code > 47 && code < 58
 }
 
-func isAlphaNumeric(code: Int) -> Bool {
+@inlinable func isAlphaNumeric(code: UInt8) -> Bool {
 	return isAlpha(code: code) || isNumeric(code: code)
 }

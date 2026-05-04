@@ -11,8 +11,8 @@ let blockQuoteRule = BlockRule(
 	closeNode: closeBlockQuote
 )
 
-func hasBlockQuoteMarkup(char: Character, state: BlockParserState) -> Bool {
-	return state.indent <= 3 && char == ">"
+func hasBlockQuoteMarkup(char: UInt8, state: BlockParserState) -> Bool {
+	return state.indent <= 3 && char == 0x3E /* > */
 }
 
 func testBlockQuoteStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
@@ -25,8 +25,7 @@ func testBlockQuoteStart(state: inout BlockParserState, parent: MarkdownNode) ->
 		return false
 	}
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
 	if hasBlockQuoteMarkup(char: char, state: state) {
 		var closedNode: MarkdownNode? = nil
@@ -46,11 +45,11 @@ func testBlockQuoteStart(state: inout BlockParserState, parent: MarkdownNode) ->
 			type: "block_quote",
 			index: state.i,
 			line: state.line,
-			markup: String(char),
+			markup: String(UnicodeScalar(char)),
 			indent: quoteIndent
 		)
 
-		currentParent.children!.append(quote)
+		currentParent.children.append(quote)
 		state.openNodes.append(quote)
 
 		movePastMarker(markerLength: 1, state: &state)
@@ -70,8 +69,7 @@ func testBlockQuoteContinue(state: inout BlockParserState, node: MarkdownNode) -
 		return false
 	}
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
 	if hasBlockQuoteMarkup(char: char, state: state) {
 		movePastMarker(markerLength: 1, state: &state)
@@ -93,8 +91,8 @@ func testBlockQuoteContinue(state: inout BlockParserState, node: MarkdownNode) -
 }
 
 func closeBlockQuote(state: inout BlockParserState, node: MarkdownNode) {
-	if state.hasBlankLine, node.children != nil, !node.children!.isEmpty {
-		let lastChild = node.children![node.children!.count - 1]
+	if state.hasBlankLine, !node.children.isEmpty {
+		let lastChild = node.children[node.children.count - 1]
 		lastChild.blankAfter = true
 		state.hasBlankLine = false
 	}

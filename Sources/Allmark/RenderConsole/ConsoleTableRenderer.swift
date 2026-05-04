@@ -7,15 +7,15 @@ let consoleTableRenderer = Renderer(
 
 func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	let style = ansiDim
-	guard let children = node.children, !children.isEmpty else { return }
+	guard !node.children.isEmpty else { return }
 
-	let headerRow = children[0]
-	let dataRows = Array(children.dropFirst())
+	let headerRow = node.children[0]
+	let dataRows = Array(node.children.dropFirst())
 
-	let headerCells = headerRow.children ?? []
+	let headerCells = headerRow.children
 	var cellTexts: [[String]] = []
 
-	let maxColumns = max(headerCells.count, dataRows.map { $0.children?.count ?? 0 }.max() ?? 0)
+	let maxColumns = max(headerCells.count, dataRows.map { $0.children.count }.max() ?? 0)
 	var columnWidths = [Int](repeating: 0, count: maxColumns)
 	var alignments = [String](repeating: "", count: maxColumns)
 
@@ -31,7 +31,7 @@ func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: B
 
 	for r in 0 ..< dataRows.count {
 		let row = dataRows[r]
-		let rowCells = row.children ?? []
+		let rowCells = row.children
 		if cellTexts.count <= r + 1 {
 			cellTexts.append([])
 		}
@@ -89,7 +89,7 @@ func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: B
 		state.output += "\(style)│\(ansiReset)"
 		for c in 0 ..< columnWidths.count {
 			let text = (r + 1) < cellTexts.count && c < cellTexts[r + 1].count ? cellTexts[r + 1][c] : ""
-			let rowCells = dataRows[r].children ?? []
+			let rowCells = dataRows[r].children
 			let align = c < rowCells.count ? (rowCells[c].info ?? "") : ""
 			state.output += " \(padText(text: text, width: columnWidths[c] - 2, align: align))\(style)│\(ansiReset)"
 		}
@@ -104,8 +104,5 @@ func getTextFromConsoleNode(node: MarkdownNode) -> String {
 	if node.type == "text" {
 		return node.content
 	}
-	if let children = node.children {
-		return children.map { getTextFromConsoleNode(node: $0) }.joined()
-	}
-	return ""
+	return node.children.map { getTextFromConsoleNode(node: $0) }.joined()
 }

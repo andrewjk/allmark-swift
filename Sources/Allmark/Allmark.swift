@@ -1,5 +1,4 @@
 import Foundation
-import OrderedCollections
 
 /// The main entry point for the Allmark Markdown parser.
 
@@ -33,9 +32,9 @@ public enum Allmark {
 	/// Render a parsed AST to the specified output format.
 	/// - Parameters:
 	///   - doc: The root node of the AST to render.
-	///   - renderers: The renderer dictionary to use (defaults to HTML).
+	///   - renderers: The renderer array to use (defaults to HTML).
 	/// - Returns: The rendered output string.
-	public static func render(doc: MarkdownNode, renderers: OrderedDictionary<String, Renderer> = htmlRenderers) -> String {
+	public static func render(doc: MarkdownNode, renderers: [Renderer] = htmlRenderers) -> String {
 		return _render(doc: doc, renderers: renderers)
 	}
 
@@ -43,9 +42,9 @@ public enum Allmark {
 	/// - Parameters:
 	///   - src: The Markdown source text to parse.
 	///   - rules: The ruleset to use for parsing.
-	///   - renderers: The renderer dictionary to use.
+	///   - renderers: The renderer array to use.
 	/// - Returns: The rendered output string.
-	public static func transform(src: String, rules: RuleSet, renderers: OrderedDictionary<String, Renderer>) -> String {
+	public static func transform(src: String, rules: RuleSet, renderers: [Renderer]) -> String {
 		return _transform(src: src, rules: rules, renderers: renderers)
 	}
 }

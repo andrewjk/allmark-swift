@@ -1,5 +1,4 @@
 import Foundation
-import OrderedCollections
 
 /// Parses block inlines by processing inline rules for a block node's content
 /// - Parameters:
@@ -10,7 +9,7 @@ import OrderedCollections
 
 func parseBlockInlines(
 	parent: inout MarkdownNode,
-	rules: OrderedDictionary<String, InlineRule>,
+	rules: [InlineRule],
 	refs: [String: LinkReference],
 	footnotes: [String: FootnoteReference]
 ) {
@@ -41,7 +40,7 @@ func parseBlockInlines(
 			content: content,
 			indent: 0
 		)
-		parent.children?.append(text)
+		parent.children.append(text)
 		return
 	}
 
@@ -76,18 +75,18 @@ func parseBlockInlines(
 			content: content,
 			indent: 0
 		)
-		parent.children?.append(text)
+		parent.children.append(text)
 		return
 	}
 
 	var state = InlineParserState(
 		rules: rules,
-		// "Final spaces are stripped before inline parsing"
-		src: parent.content.trimmingCharacters(in: .whitespacesAndNewlines),
+		src: Array(parent.content.trimmingCharacters(in: .whitespacesAndNewlines).utf8),
 		i: 0,
 		line: parent.line,
 		lineStart: 0,
 		indent: 0,
+		isEscaped: false,
 		delimiters: [],
 		refs: refs,
 		footnotes: footnotes,
@@ -97,12 +96,9 @@ func parseBlockInlines(
 	parseInline(state: &state, parent: parent)
 
 	// Recursively parse inlines for block children
-	if var children = parent.children {
-		for i in 0 ..< children.count {
-			if children[i].block {
-				parseBlockInlines(parent: &children[i], rules: rules, refs: refs, footnotes: footnotes)
-			}
+	for i in 0 ..< parent.children.count {
+		if parent.children[i].block {
+			parseBlockInlines(parent: &parent.children[i], rules: rules, refs: refs, footnotes: footnotes)
 		}
-		parent.children = children
 	}
 }

@@ -23,11 +23,10 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if char == "<" && !isEscaped(text: src, i: state.i) {
-		let tail = String(src[index...])
+	if !state.isEscaped && char == 0x3C /* < */ {
+		let tail = charToString(src, from: state.i)
 
 		// Try link match
 		let linkRange = NSRange(location: 0, length: tail.utf16.count)
@@ -49,7 +48,7 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 							indent: state.indent
 						)
 						text.length = tail[fullRange].count
-						parent.children?.append(text)
+						parent.children.append(text)
 						state.i += tail[fullRange].count
 						return true
 					}
@@ -82,7 +81,7 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 				}
 
 				link.children = [text]
-				parent.children?.append(link)
+				parent.children.append(link)
 
 				return true
 			}
@@ -108,7 +107,7 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 							indent: state.indent
 						)
 						text.length = tail[fullRange].count
-						parent.children?.append(text)
+						parent.children.append(text)
 						state.i += tail[fullRange].count
 						return true
 					}
@@ -140,7 +139,7 @@ func testAutolink(state: inout InlineParserState, parent: inout MarkdownNode) ->
 				}
 
 				link.children = [text]
-				parent.children?.append(link)
+				parent.children.append(link)
 
 				return true
 			}

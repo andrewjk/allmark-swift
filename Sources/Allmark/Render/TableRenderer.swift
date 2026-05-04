@@ -8,20 +8,17 @@ let tableRenderer = Renderer(
 func renderTable(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	startNewLine(node: node, state: &state)
 	state.output += "<table>\n<thead>\n<tr>\n"
-	if let children = node.children, let firstRowChildren = children.first?.children {
-		for cell in firstRowChildren {
-			renderTableCell(node: cell, state: &state, tag: "th")
-		}
+	let firstRowChildren = node.children.first?.children ?? []
+	for cell in firstRowChildren {
+		renderTableCell(node: cell, state: &state, tag: "th")
 	}
 	state.output += "</tr>\n</thead>\n"
-	if let children = node.children, children.count > 1 {
+	if node.children.count > 1 {
 		state.output += "<tbody>\n"
-		for row in children.dropFirst() {
+		for row in node.children.dropFirst() {
 			state.output += "<tr>\n"
-			if let rowChildren = row.children {
-				for cell in rowChildren {
-					renderTableCell(node: cell, state: &state, tag: "td")
-				}
+			for cell in row.children {
+				renderTableCell(node: cell, state: &state, tag: "td")
 			}
 			state.output += "</tr>\n"
 		}
@@ -36,8 +33,8 @@ func renderTableCell(node: MarkdownNode, state: inout RendererState, tag: String
 	let align = node.info != nil && !node.info!.isEmpty ? " align=\"\(node.info!)\"" : ""
 	state.output += "<\(tag)\(align)>"
 	// Render the children of the dummy paragraph directly (not the paragraph itself)
-	if let children = node.children, children.count > 0 {
-		renderChildren(node: children[0], state: &state)
+	if !node.children.isEmpty {
+		renderChildren(node: node.children[0], state: &state)
 	}
 	state.output += "</\(tag)>"
 	endNewLine(node: node, state: &state)

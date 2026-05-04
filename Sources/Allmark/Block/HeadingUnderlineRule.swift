@@ -11,6 +11,8 @@ let headingUnderlineRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
+let headingUnderlineContentPattern = try! NSRegularExpression(pattern: "[^\\s]")
+
 func testHeadingUnderlineStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
 	if state.maybeContinue {
 		var i = state.openNodes.count - 1
@@ -28,30 +30,27 @@ func testHeadingUnderlineStart(state: inout BlockParserState, parent: MarkdownNo
 		return false
 	}
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if state.indent <= 3 && (char == "=" || char == "-") {
+	if state.indent <= 3 && (char == 0x3D /* = */ || char == 0x2D /* - */ ) {
 		var matched = 1
 		var end = state.i + 1
 
 		while end < src.count {
-			let endIndex = src.index(src.startIndex, offsetBy: end)
-			let nextChar = src[endIndex]
+			let nextChar = src[end]
 
 			if nextChar == char {
 				// The setext heading underline cannot contain internal spaces
 				if matched > 0 && end > 0 {
-					let prevIndex = src.index(src.startIndex, offsetBy: end - 1)
-					if isSpace(code: Int(src[prevIndex].asciiValue ?? 0)) {
+					if isSpace(code: src[end - 1]) {
 						return false
 					}
 				}
 				matched += 1
-			} else if isNewLine(char: String(nextChar)) {
+			} else if isNewLine(code: nextChar) {
 				end += 1
 				break
-			} else if isSpace(code: Int(nextChar.asciiValue ?? 0)) {
+			} else if isSpace(code: nextChar) {
 				// continue
 			} else {
 				return false
@@ -66,15 +65,12 @@ func testHeadingUnderlineStart(state: inout BlockParserState, parent: MarkdownNo
 			return false
 		}
 
-		let contentPattern = try! NSRegularExpression(pattern: "[^\\s]")
 		let contentRange = NSRange(location: 0, length: parent.content.utf16.count)
-		let haveParagraph = parent.type == "paragraph" && !parent.blankAfter && contentPattern.firstMatch(in: parent.content, options: [], range: contentRange) != nil
+		let haveParagraph = parent.type == "paragraph" && !parent.blankAfter && headingUnderlineContentPattern.firstMatch(in: parent.content, options: [], range: contentRange) != nil
 
 		if haveParagraph {
 			parent.type = "heading_underline"
-			let markupStart = src.index(src.startIndex, offsetBy: state.i)
-			let markupEnd = src.index(src.startIndex, offsetBy: end)
-			parent.markup = String(src[markupStart ..< markupEnd])
+			parent.markup = charToString(src, from: state.i, to: end)
 			parent.length = end - parent.index
 			state.i = end
 			return true

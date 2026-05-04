@@ -20,10 +20,9 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 		return false
 	}
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if state.indent <= 3 && char == "[" && !isEscaped(text: src, i: state.i) {
+	if !state.isEscaped && state.indent <= 3 && char == 0x5B /* [ */ {
 		// A footnote definition cannot interrupt a paragraph
 		if parent.type == "paragraph" && !parent.blankAfter {
 			return false
@@ -33,7 +32,7 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 		var start = state.i + 1
 
 		// Check for ^ that indicates a footnote (not a regular link reference)
-		if start >= src.count || src[src.index(src.startIndex, offsetBy: start)] != "^" {
+		if start >= src.count || src[start] != 0x5E /* ^ */ {
 			return false
 		}
 		start += 1
@@ -42,17 +41,14 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 		var label = ""
 		for i in start ..< src.count {
 			if !isEscaped(text: src, i: i) {
-				let iIndex = src.index(src.startIndex, offsetBy: i)
-				if src[iIndex] == "]" {
-					let labelStart = src.index(src.startIndex, offsetBy: start)
-					let labelEnd = src.index(src.startIndex, offsetBy: i)
-					label = String(src[labelStart ..< labelEnd])
+				if src[i] == 0x5D /* ] */ {
+					label = charToString(src, from: start, to: i)
 					start = i + 1
 					break
 				}
 
 				// Labels cannot contain brackets, unless they are backslash-escaped
-				if src[iIndex] == "[" {
+				if src[i] == 0x5B /* [ */ {
 					return false
 				}
 			}
@@ -65,15 +61,14 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 			return false
 		}
 
-		if start >= src.count || src[src.index(src.startIndex, offsetBy: start)] != ":" {
+		if start >= src.count || src[start] != 0x3A /* : */ {
 			return false
 		}
 		start += 1
 
 		// Skip whitespace after colon
 		while start < src.count {
-			let startIndex = src.index(src.startIndex, offsetBy: start)
-			if isSpace(code: Int(src[startIndex].asciiValue ?? 0)) {
+			if isSpace(code: src[start]) {
 				start += 1
 			} else {
 				break
@@ -97,15 +92,16 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 			markup: "",
 			indent: 0
 		)
+		ref.info = label
 		state.footnotes[label] = FootnoteReference(label: label, content: ref)
 
-		if state.hasBlankLine && parent.children != nil && !parent.children!.isEmpty {
-			let lastChild = parent.children![parent.children!.count - 1]
+		if state.hasBlankLine && !parent.children.isEmpty {
+			let lastChild = parent.children[parent.children.count - 1]
 			lastChild.blankAfter = true
 			state.hasBlankLine = false
 		}
 
-		parent.children!.append(ref)
+		parent.children.append(ref)
 		state.openNodes.append(ref)
 
 		state.hasBlankLine = false
@@ -117,7 +113,7 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 	// Add another paragraph if there is an indent of at least 4 characters
 	if state.hasBlankLine && state.indent >= 4 {
 		let currentParent = parent
-		if let lastChild = currentParent.children?.last, lastChild.type == "footnote_ref" {
+		if let lastChild = currentParent.children.last, lastChild.type == "footnote_ref" {
 			state.indent = 0
 			parseBlock(state: &state, parent: lastChild)
 			return true
@@ -136,8 +132,8 @@ func testFootnoteReferenceContinue(state: inout BlockParserState, node: Markdown
 	if openNode.type == "paragraph" {
 		if state.indent >= 4 ||
 			openNode.content.hasSuffix("  \n") ||
-			(state.src[state.src.index(state.src.startIndex, offsetBy: state.i)] == "[" &&
-				state.src[state.src.index(state.src.startIndex, offsetBy: state.i + 1)] != "^")
+			(state.i + 1 < state.src.count && state.src[state.i] == 0x5B /* [ */ &&
+				state.src[state.i + 1] != 0x5E /* ^ */ )
 		{
 			state.maybeContinue = true
 			node.maybeContinuing = true
@@ -146,9 +142,4 @@ func testFootnoteReferenceContinue(state: inout BlockParserState, node: Markdown
 	}
 
 	return false
-}
-
-// Helper for space checking (used in this file only)
-func isWhitespaceSpace(code: Int) -> Bool {
-	return code == 0x20 || code == 0x09
 }

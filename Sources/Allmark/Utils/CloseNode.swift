@@ -6,7 +6,7 @@ func closeNode(state: inout BlockParserState, node: MarkdownNode) {
 	var i = state.openNodes.count - 1
 	while i > 0 {
 		let openNode = state.openNodes[i]
-		if let rule = state.rules[openNode.type] {
+		if let rule = state.rulesMap[openNode.type] {
 			rule.closeNode(&state, openNode)
 		}
 		// Compare nodes by index and type since we can't use ==

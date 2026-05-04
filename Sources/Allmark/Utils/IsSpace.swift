@@ -1,8 +1,11 @@
-import Foundation
-
-func isSpace(code: Int) -> Bool {
+@inlinable func isSpace(code: UInt8) -> Bool {
 	switch code {
-	case 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x20:
+	case 0x09 /* \t */,
+	     0x0A /* \n */,
+	     0x0B,
+	     0x0C,
+	     0x0D /* \r */,
+	     0x20 /* \s */:
 		return true
 	default:
 		return false

@@ -9,16 +9,14 @@ func testCodeSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if char == "`" && !isEscaped(text: src, i: state.i) {
+	if !state.isEscaped && char == 0x60 /* ` */ {
 		var openMatched = 1
 		var openEnd = state.i + 1
 
 		while openEnd < src.count {
-			let endIndex = src.index(src.startIndex, offsetBy: openEnd)
-			if src[endIndex] == char {
+			if src[openEnd] == char {
 				openMatched += 1
 				openEnd += 1
 			} else {
@@ -34,13 +32,11 @@ func testCodeSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 
 		var closeMatched = 0
 		while closeEnd < src.count {
-			let endIndex = src.index(src.startIndex, offsetBy: closeEnd)
-			if src[endIndex] == char {
+			if src[closeEnd] == char {
 				closeMatched = 0
 				var innerEnd = closeEnd
 				while innerEnd < src.count {
-					let innerIndex = src.index(src.startIndex, offsetBy: innerEnd)
-					if src[innerIndex] == char {
+					if src[innerEnd] == char {
 						closeMatched += 1
 						innerEnd += 1
 					} else {
@@ -62,9 +58,7 @@ func testCodeSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 
 			let contentStart = state.i
 			let contentEnd = closeEnd - closeMatched
-			let contentStartIndex = src.index(src.startIndex, offsetBy: contentStart)
-			let contentEndIndex = src.index(src.startIndex, offsetBy: contentEnd)
-			var content = String(src[contentStartIndex ..< contentEndIndex])
+			var content = charToString(src, from: contentStart, to: contentEnd)
 
 			// "[L]ine endings are converted to spaces"
 			content = content.replacingOccurrences(of: "\r", with: " ")
@@ -105,7 +99,7 @@ func testCodeSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 			codeNode.length = closeEnd - (state.i - openMatched)
 			codeNode.children = [textNode]
 
-			parent.children?.append(codeNode)
+			parent.children.append(codeNode)
 			state.i = closeEnd
 
 			return true

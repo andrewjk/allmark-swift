@@ -1,13 +1,5 @@
 import Foundation
 
-extension String {
-	func substring(from start: Int, to end: Int) -> String {
-		let startIdx = index(startIndex, offsetBy: start)
-		let endIdx = index(startIndex, offsetBy: end)
-		return String(self[startIdx ..< endIdx])
-	}
-}
-
 /// GFM tables (pipe-delimited)
 
 let tableRule = BlockRule(
@@ -23,20 +15,19 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 	}
 
 	// We may already have a table
-	if let lastNode = parent.children?.last,
+	if let lastNode = parent.children.last,
 	   !state.hasBlankLine,
 	   lastNode.type == "table"
 	{
 		let endOfLine = getEndOfLine(state: &state)
 
-		guard let headerRow = lastNode.children?.first,
-		      let headers = headerRow.children?.map({ $0.info ?? "" })
-		else {
+		guard let headerRow = lastNode.children.first else {
 			return false
 		}
+		let headers = headerRow.children.map { $0.info ?? "" }
 
 		var rowLength = endOfLine - state.i
-		if endOfLine > 0, state.src[state.src.index(state.src.startIndex, offsetBy: endOfLine - 1)] == "\n" {
+		if endOfLine > 0, state.src[endOfLine - 1] == 0x0A /* \n */ {
 			rowLength -= 1
 		}
 
@@ -48,9 +39,9 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 			indent: 0
 		)
 		row.length = rowLength
-		lastNode.children?.append(row)
+		lastNode.children.append(row)
 
-		let rowSrc = state.src.substring(from: state.i, to: state.i + rowLength)
+		let rowSrc = charToString(state.src, from: state.i, to: state.i + rowLength)
 		let pipePositions = loadPipePositions(line: rowSrc)
 
 		let rowContent = rowSrc.trimmingCharacters(in: .whitespaces)
@@ -85,36 +76,34 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 		return false
 	}
 
-	let charIndex = state.src.index(state.src.startIndex, offsetBy: state.i)
-	let char = state.src[charIndex]
+	let char = state.src[state.i]
 
-	if state.indent <= 3 && (char == "|" || char == "-" || char == ":") {
-		var cells: [String] = [char == ":" ? "left" : ""]
+	if state.indent <= 3 && (char == 0x7C /* | */ || char == 0x2D /* - */ || char == 0x3A /* : */ ) {
+		var cells: [String] = [char == 0x3A /* : */ ? "left" : ""]
 		var end = state.i + 1
 		var lastChar = char
 
 		while end < state.src.count {
-			let nextIndex = state.src.index(state.src.startIndex, offsetBy: end)
-			let nextChar = state.src[nextIndex]
+			let nextChar = state.src[end]
 
-			if nextChar == "|" {
+			if nextChar == 0x7C /* | */ {
 				cells.append("")
 				lastChar = nextChar
-			} else if nextChar == "-" {
+			} else if nextChar == 0x2D /* - */ {
 				lastChar = nextChar
-			} else if nextChar == ":" {
+			} else if nextChar == 0x3A /* : */ {
 				let x = cells.count - 1
-				if lastChar == "|" {
+				if lastChar == 0x7C /* | */ {
 					cells[x] = "left"
 				} else {
 					cells[x] = cells[x].isEmpty ? "right" : "center"
 				}
 				lastChar = nextChar
-			} else if isNewLine(char: String(nextChar)) {
+			} else if isNewLine(code: nextChar) {
 				// Handle newline
 				end += 1
 				break
-			} else if isSpace(code: Int(nextChar.asciiValue ?? 0)) {
+			} else if isSpace(code: nextChar) {
 				// Continue past spaces
 			} else {
 				return false
@@ -122,7 +111,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 			end += 1
 		}
 
-		if lastChar == "|" {
+		if lastChar == 0x7C /* | */ {
 			cells.removeLast()
 		}
 
@@ -186,9 +175,9 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 				indent: 0
 			)
 			header.length = headerLength
-			mutableParent.children?.append(header)
+			mutableParent.children.append(header)
 
-			let headerSrc = parent.content.substring(from: 0, to: headerLength)
+			let headerSrc = charToString(parent.content, from: 0, to: headerLength)
 			let pipePositions = loadPipePositions(line: headerSrc)
 
 			let headerParts = splitByUnescapedPipe(headerContent)
@@ -206,9 +195,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 			mutableParent.type = "table"
 			mutableParent.content = ""
 			let markupEnd = min(end, state.src.count)
-			let markupStart = state.src.index(state.src.startIndex, offsetBy: state.i)
-			let markupEndIndex = state.src.index(state.src.startIndex, offsetBy: markupEnd)
-			mutableParent.markup = String(state.src[markupStart ..< markupEndIndex])
+			mutableParent.markup = charToString(state.src, from: state.i, to: markupEnd)
 			mutableParent.length = end - mutableParent.index
 			state.i = end
 			return true
@@ -259,7 +246,7 @@ private func loadPipePositions(line: String) -> [Int] {
 		if char == "|", !isEscaped(text: line, i: i) {
 			pipePositions.append(i)
 			haveEndPipe = true
-		} else if !isSpace(code: Int(char.asciiValue ?? 0)) {
+		} else if !isSpace(code: char.asciiValue ?? 0) {
 			// Make sure there's a start pipe position
 			if pipePositions.isEmpty {
 				pipePositions.append(0)
@@ -301,7 +288,7 @@ private func parseTableCell(
 	)
 	cell.length = cellLength
 	cell.info = headers[index]
-	row.children?.append(cell)
+	row.children.append(cell)
 
 	let content = newBlock(
 		type: "table_cell_content",

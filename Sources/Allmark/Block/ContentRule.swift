@@ -5,7 +5,7 @@ import Foundation
 let contentRule = BlockRule(
 	name: "content",
 	testStart: testContentStart,
-	testContinue: testContentContinue,
+	testContinue: { _, _ in false },
 	closeNode: { _, _ in }
 )
 
@@ -13,9 +13,7 @@ func testContentStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 	let endOfLine = getEndOfLine(state: &state)
 	let src = state.src
 
-	let startIndex = src.index(src.startIndex, offsetBy: state.i)
-	let endIndex = src.index(src.startIndex, offsetBy: endOfLine)
-	let content = String(src[startIndex ..< endIndex])
+	let content = charToString(src, from: state.i, to: endOfLine)
 
 	if parent.acceptsContent {
 		if !state.hasBlankLine {
@@ -29,8 +27,4 @@ func testContentStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 
 	state.i = endOfLine
 	return true
-}
-
-func testContentContinue(state _: inout BlockParserState, node _: MarkdownNode) -> Bool {
-	return false
 }

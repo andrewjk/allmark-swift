@@ -2,7 +2,7 @@ import Foundation
 
 func testTagMarks(
 	name: String,
-	char: String,
+	char: UInt8,
 	state: inout InlineParserState,
 	parent: inout MarkdownNode,
 	precedence: Int
@@ -12,11 +12,10 @@ func testTagMarks(
 	var end = state.i
 
 	// Get the markup
-	var markup = char
+	var markup = String(UnicodeScalar(char))
 	for i in (state.i + 1) ..< src.count {
-		let iIndex = src.index(src.startIndex, offsetBy: i)
-		if String(src[iIndex]) == char {
-			markup.append(char)
+		if src[i] == char {
+			markup.append(Character(UnicodeScalar(char)))
 			end += 1
 		} else {
 			break
@@ -26,11 +25,11 @@ func testTagMarks(
 	// "Three or more tildes do not create a strikethrough"
 	if markup.count < 3 {
 		// TODO: Better space checks including start/end of line
-		let codeBefore = start > 0 ? src.unicodeScalars[src.index(src.startIndex, offsetBy: start - 1)].value : 0
+		let codeBefore = start > 0 ? UInt32(src[start - 1]) : 0
 		let spaceBefore = start == 0 || isUnicodeSpace(code: codeBefore)
 		let punctuationBefore = !spaceBefore && isUnicodePunctuation(code: codeBefore)
 
-		let codeAfter = end + 1 < src.count ? src.unicodeScalars[src.index(src.startIndex, offsetBy: end + 1)].value : 0
+		let codeAfter = end + 1 < src.count ? UInt32(src[end + 1]) : 0
 		let spaceAfter = end == src.count - 1 || isUnicodeSpace(code: codeAfter)
 		let punctuationAfter = !spaceAfter && isUnicodePunctuation(code: codeAfter)
 
@@ -62,7 +61,7 @@ func testTagMarks(
 			while i >= 0 {
 				let prevDelimiter = state.delimiters[i]
 				if prevDelimiter.handled != true {
-					if prevDelimiter.markup == char && prevDelimiter.length == markup.count {
+					if prevDelimiter.markup == String(UnicodeScalar(char)) && prevDelimiter.length == markup.count {
 						startDelimiter = prevDelimiter
 						break
 					} else if (prevDelimiter.precedence ?? 0) <= precedence {
@@ -81,9 +80,10 @@ func testTagMarks(
 			if let startDel = startDelimiter {
 				// Convert the text node into a delimited node with a new text
 				// child followed by the other children of the parent (if any)
-				var i = (parent.children?.count ?? 0) - 1
+				var i = parent.children.count - 1
 				while i >= 0 {
-					if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
+					let lastNode = parent.children[i]
+					if lastNode.index == state.parentIndex + startDel.start {
 						let text = newText(
 							index: lastNode.index,
 							line: lastNode.line,
@@ -95,12 +95,10 @@ func testTagMarks(
 						lastNode.markup = markup
 						lastNode.length = state.parentIndex + state.i - lastNode.index + markup.count
 
-						let movedNodes = Array(parent.children?.suffix(from: i + 1) ?? [])
-						if let childCount = parent.children?.count {
-							parent.children?.removeSubrange((i + 1) ..< childCount)
-						}
+						let movedNodes = Array(parent.children.suffix(from: i + 1))
+						parent.children.removeSubrange((i + 1) ..< parent.children.count)
 						lastNode.children = [text] + movedNodes
-						parent.children?[i] = lastNode
+						parent.children[i] = lastNode
 
 						state.i += markup.count
 
@@ -129,10 +127,10 @@ func testTagMarks(
 				content: markup,
 				indent: 0
 			)
-			parent.children?.append(text)
+			parent.children.append(text)
 
 			state.i += markup.count
-			state.delimiters.append(Delimiter(markup: char, start: start, length: markup.count, handled: nil, precedence: precedence))
+			state.delimiters.append(Delimiter(markup: String(UnicodeScalar(char)), start: start, length: markup.count, handled: nil, precedence: precedence))
 
 			return true
 		}

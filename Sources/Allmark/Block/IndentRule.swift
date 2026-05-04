@@ -5,30 +5,26 @@ import Foundation
 let indentRule = BlockRule(
 	name: "indent",
 	testStart: testIndentStart,
-	testContinue: testIndentContinue,
+	testContinue: { _, _ in false },
 	closeNode: { _, _ in }
 )
 
-// TODO: Should this be built in and not a rule??
 func testIndentStart(state: inout BlockParserState, parent _: MarkdownNode) -> Bool {
 	let src = state.src
 	if state.i >= src.count {
 		return false
 	}
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if isSpace(code: Int(char.asciiValue ?? 0)) {
+	if isSpace(code: char) {
 		while state.i < src.count {
-			let charIndex = src.index(src.startIndex, offsetBy: state.i)
-			let currentChar = src[charIndex]
+			let currentChar = src[state.i]
 
-			if currentChar == " " {
+			if currentChar == 0x20 /* \s */ {
 				state.indent += 1
 				state.i += 1
-			} else if currentChar == "\t" {
-				// Set spaces to the next tabstop of 4 characters
+			} else if currentChar == 0x09 /* \t */ {
 				state.indent += 4 - (state.indent % 4)
 				state.i += 1
 			} else {
@@ -37,9 +33,5 @@ func testIndentStart(state: inout BlockParserState, parent _: MarkdownNode) -> B
 		}
 	}
 
-	return false
-}
-
-func testIndentContinue(state _: inout BlockParserState, node _: MarkdownNode) -> Bool {
 	return false
 }

@@ -13,13 +13,11 @@ func renderConsoleBlockQuote(_ node: MarkdownNode, _ state: inout RendererState,
 			state.output += "\(style)┃\(reset) \(line)\n"
 		}
 	}
-	if let children = node.children {
-		for child in children {
-			let lines = renderNodeToStringConsole(node: child, state: &state)
-			for line in lines.split(separator: "\n", omittingEmptySubsequences: false) {
-				if !line.isEmpty {
-					state.output += "\(style)┃\(reset) \(line)\n"
-				}
+	for child in node.children {
+		let lines = renderNodeToStringConsole(node: child, state: &state)
+		for line in lines.split(separator: "\n", omittingEmptySubsequences: false) {
+			if !line.isEmpty {
+				state.output += "\(style)┃\(reset) \(line)\n"
 			}
 		}
 	}
@@ -29,7 +27,7 @@ func renderConsoleBlockQuote(_ node: MarkdownNode, _ state: inout RendererState,
 func renderNodeToStringConsole(node: MarkdownNode, state: inout RendererState) -> String {
 	let output = state.output
 	state.output = ""
-	if let renderer = state.renderers[node.type] {
+	if let renderer = state.renderersMap[node.type] {
 		renderer.render(node, &state, true)
 	}
 	let result = state.output

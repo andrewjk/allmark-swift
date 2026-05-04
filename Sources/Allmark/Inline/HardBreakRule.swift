@@ -9,11 +9,8 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-
-	if src[index] == "\\" && state.i + 1 < src.count {
-		let nextIndex = src.index(src.startIndex, offsetBy: state.i + 1)
-		if isNewLine(char: String(src[nextIndex])) {
+	if src[state.i] == 0x5C /* \ */ && state.i + 1 < src.count {
+		if isNewLine(code: src[state.i + 1]) {
 			let hb = newInline(
 				type: "hard_break",
 				index: state.parentIndex + state.i,
@@ -23,17 +20,16 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 			)
 			hb.length = 2
 			state.i += 2
-			parent.children?.append(hb)
+			parent.children.append(hb)
 			return true
 		}
-	} else if src[index] == " " {
+	} else if src[state.i] == 0x20 /* \s */ {
 		var end = state.i
 		for i in (state.i + 1) ..< src.count {
-			let iIndex = src.index(src.startIndex, offsetBy: i)
-			if isNewLine(char: String(src[iIndex])) {
+			if isNewLine(code: src[i]) {
 				end = i
 				break
-			} else if src[iIndex] == " " {
+			} else if src[i] == 0x20 /* \s */ {
 				continue
 			} else {
 				return false
@@ -50,7 +46,7 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 			)
 			hb.length = end - state.i
 			state.i = end + 1
-			parent.children?.append(hb)
+			parent.children.append(hb)
 			return true
 		}
 	}

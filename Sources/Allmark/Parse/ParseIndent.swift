@@ -4,23 +4,20 @@ import Foundation
 /// - Parameter state: The block parser state (modified in place)
 func parseIndent(state: inout BlockParserState) {
 	let src = state.src
-	let startIndex = src.index(src.startIndex, offsetBy: state.i)
 
-	// Check if current character is a space
-	guard state.i < src.count, isSpace(code: Int(src.unicodeScalars[startIndex].value)) else {
+	guard state.i < src.count, isSpace(code: src[state.i]) else {
 		return
 	}
 
 	while state.i < src.count {
-		let currentIndex = src.index(src.startIndex, offsetBy: state.i)
-		let char = src[currentIndex]
+		let char = src[state.i]
 
-		if char == " " {
+		if char == 0x20 /* \s */ {
 			state.indent += 1
-		} else if char == "\t" {
+		} else if char == 0x09 /* \t */ {
 			// Set spaces to the next tabstop of 4 characters
 			state.indent += 4 - (state.indent % 4)
-		} else if isNewLine(char: String(char)) {
+		} else if isNewLine(code: char) {
 			state.hasBlankLine = true
 			break
 		} else {

@@ -1,9 +1,10 @@
 import Foundation
-import OrderedCollections
 
-func _render(doc: MarkdownNode, renderers: OrderedDictionary<String, Renderer> = htmlRenderers) -> String {
+func _render(doc: MarkdownNode, renderers: [Renderer] = htmlRenderers) -> String {
+	let renderersMap = Dictionary(uniqueKeysWithValues: renderers.map { ($0.name, $0) })
+
 	var state = RendererState(
-		renderers: renderers,
+		renderersMap: renderersMap,
 		output: "",
 		footnotes: [],
 		listDepth: 0
@@ -11,8 +12,8 @@ func _render(doc: MarkdownNode, renderers: OrderedDictionary<String, Renderer> =
 
 	renderChildren(node: doc, state: &state)
 
-	if !state.footnotes.isEmpty && renderers["footnote_list"] != nil {
-		let footnoteListRenderer = renderers["footnote_list"]
+	if !state.footnotes.isEmpty && renderersMap["footnote_list"] != nil {
+		let footnoteListRenderer = renderersMap["footnote_list"]
 		footnoteListRenderer?.render(doc, &state, false)
 	}
 

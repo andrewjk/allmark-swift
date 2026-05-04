@@ -13,7 +13,7 @@ func newText(
 		line: line,
 		markup: "",
 		indent: indent,
-		children: nil
+		children: []
 	)
 	node.content = content
 	return node

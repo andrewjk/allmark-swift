@@ -618,7 +618,7 @@ struct RenderConsoleTests {
 
 	@Test func rendersFootnote() async {
 		let input = "Text [^1]\n\n[^1]: http://example.com"
-		let expected = "Text \u{001B}[2m[1]\u{001B}[0m\n"
+		let expected = "Text \u{001B}[2m[1]\u{001B}[0m\n\n\n\u{001B}[2m---\u{001B}[0m\n\u{001B}[2m[1]\u{001B}[0m \u{001B}[4m\u{001B}[34mhttp://example.com\u{001B}[0m \u{001B}[2m(http://example.com)\u{001B}[0m\n"
 
 		await MainActor.run {
 			let doc = _parse(src: input, rules: gfmRuleSet)

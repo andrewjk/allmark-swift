@@ -18,13 +18,11 @@ func renderImage(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 
 func getChildText(node: MarkdownNode) -> String {
 	var text = ""
-	if let children = node.children {
-		for child in children {
-			if child.type == "text" {
-				text += child.content
-			} else {
-				text += getChildText(node: child)
-			}
+	for child in node.children {
+		if child.type == "text" {
+			text += child.content
+		} else {
+			text += getChildText(node: child)
 		}
 	}
 	return text

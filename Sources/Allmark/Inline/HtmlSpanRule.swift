@@ -21,11 +21,10 @@ func testHtmlSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if char == "<" && !isEscaped(text: src, i: state.i) {
-		let tail = String(src[index...])
+	if !state.isEscaped && char == 0x3C /* < */ {
+		let tail = charToString(src, from: state.i)
 		let range = NSRange(location: 0, length: tail.utf16.count)
 
 		if let match = htmlTagRegex.firstMatch(in: tail, options: [], range: range) {
@@ -41,7 +40,7 @@ func testHtmlSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 				)
 				html.content = content
 				html.length = content.count
-				parent.children?.append(html)
+				parent.children.append(html)
 				state.i += content.count
 				return true
 			}

@@ -13,18 +13,9 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	// TODO: Should this be in the testEscaped rule?
-	// "Any ASCII punctuation character may be backslash-escaped"
-	// if (char == "\\" && isPunctuation(code: Int(src[src.index(src.startIndex, offsetBy: state.i + 1)].asciiValue ?? 0))) {
-	//	state.i += 1
-	//	let newIndex = src.index(src.startIndex, offsetBy: state.i)
-	//	char = src[newIndex]
-	// }
-
-	var lastNode = parent.children?.last
+	let lastNode = parent.children.last
 	if lastNode == nil || lastNode?.type != "text" {
 		let newTextNode = newText(
 			index: state.parentIndex + state.i,
@@ -32,57 +23,55 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 			content: "",
 			indent: 0
 		)
-		parent.children?.append(newTextNode)
-		lastNode = newTextNode
-	} else if isNewLine(char: String(char)) {
-		// "Spaces at the end of the line and beginning of the next line are removed"
+		parent.children.append(newTextNode)
+	} else if isNewLine(code: char) {
 		if let last = lastNode {
-			last.content = last.content.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
-			if let count = parent.children?.count, count > 0 {
-				parent.children?[count - 1] = last
+			var content = last.content
+			while content.last?.isWhitespace == true {
+				content.removeLast()
 			}
+			last.content = content
+			last.length = content.count
 		}
 	}
 
-	let code = Int(char.asciiValue ?? 0)
-	if isAlphaNumeric(code: code) {
-		// If this an alphanumeric character, we can just process the whole
-		// word, and save checking a bunch of characters that are never going
-		// to match anything
+	let currentLast = parent.children.last!
+	if isAlphaNumeric(code: char) {
 		let start = state.i
 		state.i += 1
 		while state.i < src.count {
-			let nextCode = Int(src[src.index(src.startIndex, offsetBy: state.i)].asciiValue ?? 0)
+			let nextCode = src[state.i]
 			if isAlphaNumeric(code: nextCode) {
 				state.i += 1
 			} else {
 				break
 			}
 		}
-		let startIndex = src.index(src.startIndex, offsetBy: start)
-		let endIndex = src.index(src.startIndex, offsetBy: state.i)
-		if let last = lastNode {
-			last.content += String(src[startIndex ..< endIndex])
-			if let count = parent.children?.count, count > 0 {
-				parent.children?[count - 1] = last
-			}
-		}
+		currentLast.content += charToString(src, from: start, to: state.i)
 	} else {
+		// For non-ASCII characters, we need to handle multi-byte UTF-8 sequences
+		// ASCII characters are 0-127, UTF-8 continuation bytes are 128-191
+		// UTF-8 start bytes are 192-247 (2-byte: 192-223, 3-byte: 224-239, 4-byte: 240-247)
+		let start = state.i
 		state.i += 1
-		if let last = lastNode {
-			last.content += String(char)
-			if let count = parent.children?.count, count > 0 {
-				parent.children?[count - 1] = last
+
+		// If this is a UTF-8 start byte (192-247), collect continuation bytes (128-191)
+		if char >= 192 && char <= 247 {
+			while state.i < src.count {
+				let nextByte = src[state.i]
+				// Continuation bytes are in range 128-191 (0x80-0xBF)
+				if nextByte >= 128 && nextByte <= 191 {
+					state.i += 1
+				} else {
+					break
+				}
 			}
 		}
+
+		currentLast.content += charToString(src, from: start, to: state.i)
 	}
 
-	if let last = lastNode {
-		last.length = last.content.count
-		if let count = parent.children?.count, count > 0 {
-			parent.children?[count - 1] = last
-		}
-	}
+	currentLast.length = currentLast.content.count
 
 	return true
 }

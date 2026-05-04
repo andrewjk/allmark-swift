@@ -12,21 +12,19 @@ func testCriticMarks(
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if char == "{" && !isEscaped(text: src, i: state.i) {
+	if !state.isEscaped && char == 0x7B /* { */ {
 		let start = state.i
 		var end = state.i
 
 		// Get the markup
-		var markup = String(char)
+		var markup = String(UnicodeScalar(char))
 		for i in (start + 1) ..< src.count {
-			let iIndex = src.index(src.startIndex, offsetBy: i)
-			if src[iIndex] == delimiter.first {
+			if src[i] == delimiter.first!.asciiValue! {
 				markup.append(delimiter)
 				end += 1
-			} else if src[iIndex] == "}" || (closeDel != delimiter && src[iIndex] == closeDel.first) {
+			} else if src[i] == 0x7D /* } */ || (closeDel != delimiter && src[i] == closeDel.first!.asciiValue!) {
 				return false
 			} else {
 				break
@@ -41,7 +39,7 @@ func testCriticMarks(
 				content: markup,
 				indent: 0
 			)
-			parent.children?.append(text)
+			parent.children.append(text)
 
 			// Add the start delimiter
 			state.i += markup.count
@@ -49,14 +47,13 @@ func testCriticMarks(
 
 			return true
 		}
-	} else if String(char) == closeDel && !isEscaped(text: src, i: state.i) {
+	} else if !state.isEscaped && String(UnicodeScalar(char)) == closeDel {
 		// Get the markup
 		var markup = "{" + delimiter
 		for i in (state.i + 1) ..< src.count {
-			let iIndex = src.index(src.startIndex, offsetBy: i)
-			if src[iIndex] == closeDel.first {
+			if src[i] == closeDel.first!.asciiValue! {
 				markup.append(delimiter)
-			} else if src[iIndex] == "}" {
+			} else if src[i] == 0x7D /* } */ {
 				break
 			} else {
 				return false
@@ -81,9 +78,10 @@ func testCriticMarks(
 			if let startDel = startDelimiter {
 				// Convert the text node into a deletion node with a new text
 				// child followed by the other children of the parent (if any)
-				var i = (parent.children?.count ?? 0) - 1
+				var i = parent.children.count - 1
 				while i >= 0 {
-					if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
+					let lastNode = parent.children[i]
+					if lastNode.index == state.parentIndex + startDel.start {
 						let newContent = String(lastNode.content.dropFirst(startDel.length))
 						let text = newText(
 							index: lastNode.index,
@@ -95,16 +93,12 @@ func testCriticMarks(
 						lastNode.type = name
 						lastNode.markup = markup
 						lastNode.length = state.parentIndex + state.i - lastNode.index + markup.count
-						let movedNodes = Array(parent.children?.suffix(from: i + 1) ?? [])
+						let movedNodes = Array(parent.children.suffix(from: i + 1))
 						lastNode.children = [text] + movedNodes
 
-						// Remove the moved nodes from parent
-						if let childCount = parent.children?.count {
-							parent.children?.removeSubrange((i + 1) ..< childCount)
-						}
+						parent.children.removeSubrange((i + 1) ..< parent.children.count)
 
-						// Replace node
-						parent.children?[i] = lastNode
+						parent.children[i] = lastNode
 
 						state.i += markup.count
 

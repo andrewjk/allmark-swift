@@ -5,7 +5,7 @@ func addMarkupAsText(
 	state: inout InlineParserState,
 	parent: inout MarkdownNode
 ) {
-	let lastNode = parent.children?.last
+	let lastNode = parent.children.last
 	let haveText = lastNode?.type == "text"
 	let text = haveText ? lastNode! : newText(
 		index: state.i,
@@ -15,7 +15,7 @@ func addMarkupAsText(
 	)
 	text.content += markup
 	if !haveText {
-		parent.children?.append(text)
+		parent.children.append(text)
 	}
 	state.i += markup.count
 }

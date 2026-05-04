@@ -20,23 +20,21 @@ func testThematicBreakStart(state: inout BlockParserState, parent: MarkdownNode)
 		return false
 	}
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if state.indent <= 3 && (char == "-" || char == "_" || char == "*") {
+	if state.indent <= 3 && (char == 0x2D /* - */ || char == 0x5F /* _ */ || char == 0x2A /* * */ ) {
 		var matched = 1
 		var end = state.i + 1
 
 		while end < src.count {
-			let endIndex = src.index(src.startIndex, offsetBy: end)
-			let nextChar = src[endIndex]
+			let nextChar = src[end]
 
 			if nextChar == char {
 				matched += 1
-			} else if isNewLine(char: String(nextChar)) {
+			} else if isNewLine(code: nextChar) {
 				end += 1
 				break
-			} else if isSpace(code: Int(nextChar.asciiValue ?? 0)) {
+			} else if isSpace(code: nextChar) {
 				// continue
 			} else {
 				return false
@@ -70,7 +68,7 @@ func testThematicBreakStart(state: inout BlockParserState, parent: MarkdownNode)
 			}
 
 			// HACK: Special case for a thematic break in a list
-			if currentParent.type == "list_item" && !state.hasBlankLine && String(char) == currentParent.delimiter {
+			if currentParent.type == "list_item" && !state.hasBlankLine && String(UnicodeScalar(char)) == currentParent.delimiter {
 				state.openNodes.removeLast()
 				state.openNodes.removeLast()
 				currentParent = state.openNodes.last!
@@ -84,9 +82,7 @@ func testThematicBreakStart(state: inout BlockParserState, parent: MarkdownNode)
 				closeNode(state: &state, node: closedNode!)
 			}
 
-			let markupStart = src.index(src.startIndex, offsetBy: state.i)
-			let markupEnd = src.index(src.startIndex, offsetBy: end)
-			let markup = String(src[markupStart ..< markupEnd])
+			let markup = charToString(src, from: state.i, to: end)
 
 			let tbr = newBlock(
 				type: "thematic_break",
@@ -96,7 +92,7 @@ func testThematicBreakStart(state: inout BlockParserState, parent: MarkdownNode)
 				indent: 0
 			)
 			tbr.length = end - state.i
-			currentParent.children?.append(tbr)
+			currentParent.children.append(tbr)
 			state.i = end
 			return true
 		}

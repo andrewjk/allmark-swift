@@ -14,11 +14,10 @@ func testStrikethrough(state: inout InlineParserState, parent: inout MarkdownNod
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if char == "~" && !isEscaped(text: src, i: state.i) {
-		return testTagMarks(name: "strikethrough", char: "~", state: &state, parent: &parent, precedence: strikethroughRule.precedence!)
+	if !state.isEscaped && char == 0x7E /* ~ */ {
+		return testTagMarks(name: "strikethrough", char: char, state: &state, parent: &parent, precedence: strikethroughRule.precedence!)
 	}
 
 	return false

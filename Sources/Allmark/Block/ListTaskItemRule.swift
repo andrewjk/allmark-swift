@@ -20,17 +20,16 @@ func testListTaskItemStart(state: inout BlockParserState, parent: MarkdownNode) 
 		let src = state.src
 
 		if start + 3 < src.count {
-			let startIndex = src.index(src.startIndex, offsetBy: start)
-			let char1 = src[startIndex]
-			let char2 = src[src.index(src.startIndex, offsetBy: start + 1)]
-			let char3 = src[src.index(src.startIndex, offsetBy: start + 2)]
-			let char4 = src[src.index(src.startIndex, offsetBy: start + 3)]
+			let char1 = src[start]
+			let char2 = src[start + 1]
+			let char3 = src[start + 2]
+			let char4 = src[start + 3]
 
-			if char1 == "[" && char3 == "]" && isSpace(code: Int(char4.asciiValue ?? 0)) {
+			if char1 == 0x5B /* [ */ && char3 == 0x5D /* ] */ && isSpace(code: char4) {
 				// GitHub doesn't support task lists in block quotes
 				let inBlockQuote = state.openNodes.contains { $0.type == "block_quote" }
 				if !inBlockQuote {
-					let markup = "[\(char2)]"
+					let markup = "[\(Character(UnicodeScalar(char2)))]"
 
 					// HACK: It should be a block, but it's not for output reasons
 					let task = newInline(
@@ -42,7 +41,7 @@ func testListTaskItemStart(state: inout BlockParserState, parent: MarkdownNode) 
 					)
 					task.length = 3
 
-					parent.children?.append(task)
+					parent.children.append(task)
 					movePastMarker(markerLength: 3, state: &state)
 				}
 			}

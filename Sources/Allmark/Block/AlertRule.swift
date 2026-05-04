@@ -15,8 +15,8 @@ let alertRegex = try! NSRegularExpression(
 	options: [.caseInsensitive]
 )
 
-func hasAlertMarkup(char: Character, state: BlockParserState) -> Bool {
-	return state.indent <= 3 && char == ">"
+func hasAlertMarkup(char: UInt8, state: BlockParserState) -> Bool {
+	return state.indent <= 3 && char == 0x3E /* > */
 }
 
 func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
@@ -29,11 +29,10 @@ func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 		return false
 	}
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
 	if hasAlertMarkup(char: char, state: state) {
-		let tail = String(src[src.index(src.startIndex, offsetBy: state.i + 1)...])
+		let tail = charToString(src, from: state.i + 1)
 		let range = NSRange(location: 0, length: tail.utf16.count)
 
 		if let match = alertRegex.firstMatch(in: tail, options: [], range: range) {
@@ -61,7 +60,7 @@ func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 				indent: quoteIndent
 			)
 
-			currentParent.children!.append(quote)
+			currentParent.children.append(quote)
 			state.openNodes.append(quote)
 
 			state.i = getEndOfLine(state: &state)
@@ -79,8 +78,7 @@ func testAlertContinue(state: inout BlockParserState, node: MarkdownNode) -> Boo
 		return false
 	}
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
 	if hasAlertMarkup(char: char, state: state) {
 		movePastMarker(markerLength: 1, state: &state)
@@ -102,8 +100,8 @@ func testAlertContinue(state: inout BlockParserState, node: MarkdownNode) -> Boo
 }
 
 func closeAlert(state: inout BlockParserState, node: MarkdownNode) {
-	if state.hasBlankLine, node.children != nil, !node.children!.isEmpty {
-		let lastChild = node.children![node.children!.count - 1]
+	if state.hasBlankLine, !node.children.isEmpty {
+		let lastChild = node.children[node.children.count - 1]
 		lastChild.blankAfter = true
 		state.hasBlankLine = false
 	}

@@ -32,8 +32,8 @@ public class MarkdownNode {
 	public var info: String?
 	/// The title for a link.
 	public var title: String?
-	/// Child nodes, if any.
-	public var children: [MarkdownNode]?
+	/// Child nodes.
+	public var children: [MarkdownNode]
 
 	/// Creates a new MarkdownNode.
 	public init(
@@ -43,7 +43,7 @@ public class MarkdownNode {
 		line: Int,
 		markup: String,
 		indent: Int,
-		children: [MarkdownNode]?
+		children: [MarkdownNode]
 	) {
 		self.type = type
 		self.block = block

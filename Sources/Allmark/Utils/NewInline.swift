@@ -14,6 +14,6 @@ func newInline(
 		line: line,
 		markup: markup,
 		indent: indent,
-		children: nil
+		children: []
 	)
 }

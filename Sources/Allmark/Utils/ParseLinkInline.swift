@@ -21,15 +21,11 @@ func parseLinkInline(
 	// Get the url
 	var url = ""
 	if currentStart < src.count {
-		let index = src.index(src.startIndex, offsetBy: currentStart)
-		if src[index] == "<" {
+		if src[currentStart] == 0x3C /* < */ {
 			currentStart += 1
 			for i in currentStart ..< src.count {
-				let charIndex = src.index(src.startIndex, offsetBy: i)
-				if src[charIndex] == ">", !isEscaped(text: src, i: i) {
-					let startIndex = src.index(src.startIndex, offsetBy: currentStart)
-					let endIndex = src.index(src.startIndex, offsetBy: i)
-					url = String(src[startIndex ..< endIndex])
+				if src[i] == 0x3E /* > */, !isEscaped(text: src, i: i) {
+					url = charToString(src, from: currentStart, to: i)
 					currentStart = i + 1
 					break
 				}
@@ -38,25 +34,20 @@ func parseLinkInline(
 			var level = 1
 			for i in currentStart ... src.count {
 				if i < src.count && !isEscaped(text: src, i: i) {
-					let charIndex = src.index(src.startIndex, offsetBy: i)
-					if src[charIndex] == ")" {
+					if src[i] == 0x29 /* ) */ {
 						level -= 1
 						if level == 0 {
-							let startIndex = src.index(src.startIndex, offsetBy: currentStart)
-							let endIndex = src.index(src.startIndex, offsetBy: i)
-							url = String(src[startIndex ..< endIndex])
+							url = charToString(src, from: currentStart, to: i)
 							currentStart = i
 							break
 						}
-					} else if src[charIndex] == "(" {
+					} else if src[i] == 0x28 /* ( */ {
 						level += 1
 					}
 				}
 
-				if i == src.count || isSpace(code: Int(src[src.index(src.startIndex, offsetBy: i)].asciiValue ?? 0)) {
-					let startIndex = src.index(src.startIndex, offsetBy: currentStart)
-					let endIndex = src.index(src.startIndex, offsetBy: i)
-					url = String(src[startIndex ..< endIndex])
+				if i == src.count || isSpace(code: src[i]) {
+					url = charToString(src, from: currentStart, to: i)
 					currentStart = i
 					break
 				}
@@ -84,39 +75,32 @@ func parseLinkInline(
 	// Get the title
 	var title = ""
 	if currentStart < src.count {
-		let index = src.index(src.startIndex, offsetBy: currentStart)
-		let delimiter = src[index]
+		let delimiter = src[currentStart]
 
-		if delimiter == ")" {
+		if delimiter == 0x29 /* ) */ {
 			// No title
-		} else if delimiter == "'" || delimiter == "\"" {
+		} else if delimiter == 0x27 /* ' */ || delimiter == 0x22 /* " */ {
 			currentStart += 1
 			for i in currentStart ..< src.count {
-				let charIndex = src.index(src.startIndex, offsetBy: i)
-				if src[charIndex] == delimiter, !isEscaped(text: src, i: i) {
-					let startIndex = src.index(src.startIndex, offsetBy: currentStart)
-					let endIndex = src.index(src.startIndex, offsetBy: i)
-					title = String(src[startIndex ..< endIndex])
+				if src[i] == delimiter, !isEscaped(text: src, i: i) {
+					title = charToString(src, from: currentStart, to: i)
 					currentStart = i + 1
 					break
 				}
 			}
-		} else if delimiter == "(" {
+		} else if delimiter == 0x28 /* ( */ {
 			currentStart += 1
 			var level = 1
 			for i in currentStart ..< src.count {
 				if !isEscaped(text: src, i: i) {
-					let charIndex = src.index(src.startIndex, offsetBy: i)
-					if src[charIndex] == ")" {
+					if src[i] == 0x29 /* ) */ {
 						level -= 1
 						if level == 0 {
-							let startIndex = src.index(src.startIndex, offsetBy: currentStart)
-							let endIndex = src.index(src.startIndex, offsetBy: i)
-							title = String(src[startIndex ..< endIndex])
+							title = charToString(src, from: currentStart, to: i)
 							currentStart = i + 1
 							break
 						}
-					} else if src[charIndex] == "(" {
+					} else if src[i] == 0x28 /* ( */ {
 						level += 1
 					}
 				}
@@ -148,8 +132,7 @@ func parseLinkInline(
 		return nil
 	}
 
-	let index = src.index(src.startIndex, offsetBy: currentStart)
-	if src[index] != ")" {
+	if src[currentStart] != 0x29 /* ) */ {
 		return nil
 	}
 

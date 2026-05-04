@@ -10,22 +10,20 @@ func testLink(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let index = src.index(src.startIndex, offsetBy: state.i)
-	let char = src[index]
+	let char = src[state.i]
 
-	if !isEscaped(text: src, i: state.i) {
-		if char == "[" {
+	if !state.isEscaped {
+		if char == 0x5B /* [ */ {
 			return testLinkOpen(state: &state, parent: &parent)
 		}
 
-		if char == "!" && state.i + 1 < src.count {
-			let nextIndex = src.index(src.startIndex, offsetBy: state.i + 1)
-			if src[nextIndex] == "[" {
+		if char == 0x21 /* ! */ && state.i + 1 < src.count {
+			if src[state.i + 1] == 0x5B /* [ */ {
 				return testImageOpen(state: &state, parent: &parent)
 			}
 		}
 
-		if char == "]" {
+		if char == 0x5D /* ] */ {
 			return testLinkClose(state: &state, parent: &parent)
 		}
 	}
@@ -44,7 +42,7 @@ func testLinkOpen(state: inout InlineParserState, parent: inout MarkdownNode) ->
 		content: markup,
 		indent: 0
 	)
-	parent.children?.append(text)
+	parent.children.append(text)
 
 	state.i += 1
 	state.delimiters.append(Delimiter(markup: markup, start: start, length: 1, handled: nil, precedence: linkRule.precedence))
@@ -63,7 +61,7 @@ func testImageOpen(state: inout InlineParserState, parent: inout MarkdownNode) -
 		content: markup,
 		indent: 0
 	)
-	parent.children?.append(text)
+	parent.children.append(text)
 
 	state.i += markup.count
 	state.delimiters.append(Delimiter(markup: markup, start: start, length: 1, handled: nil, precedence: linkRule.precedence))
@@ -99,15 +97,14 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 	if let startDel = startDelimiter {
 		// Convert the text node into a link node with a new text child
 		// followed by the other children of the parent (if any)
-		var i = (parent.children?.count ?? 0) - 1
+		var i = parent.children.count - 1
 		while i >= 0 {
-			if let lastNode = parent.children?[i], lastNode.index == state.parentIndex + startDel.start {
+			let lastNode = parent.children[i]
+			if lastNode.index == state.parentIndex + startDel.start {
 				var start = state.i + 1
 				let src = state.src
 				let labelStart = startDel.start + startDel.markup.count
-				let labelEndIndex = src.index(src.startIndex, offsetBy: state.i)
-				let labelStartIndex = src.index(src.startIndex, offsetBy: labelStart)
-				var label = String(src[labelStartIndex ..< labelEndIndex])
+				var label = charToString(src, from: labelStart, to: state.i)
 
 				// "The link text may contain balanced brackets, but not
 				// unbalanced ones, unless they are escaped"
@@ -130,8 +127,8 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 
 				let isLink = startDel.markup == "["
 
-				let hasInfo = state.i + 1 < src.count && src[src.index(src.startIndex, offsetBy: state.i + 1)] == "("
-				let hasRef = state.i + 1 < src.count && src[src.index(src.startIndex, offsetBy: state.i + 1)] == "["
+				let hasInfo = state.i + 1 < src.count && src[state.i + 1] == 0x28 /* ( */
+				let hasRef = state.i + 1 < src.count && src[state.i + 1] == 0x5B /* [ */
 
 				// "Full and compact references take precedence over shortcut references"
 				// "Inline links also take precedence"
@@ -142,11 +139,10 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 				} else if hasRef {
 					start += 1
 					for i in start ..< src.count {
-						let iIndex = src.index(src.startIndex, offsetBy: i)
-						if src[iIndex] == "]" {
+						if src[i] == 0x5D /* ] */ {
 							// Lookup using the text between the [], or if there
 							// is no text, use the label
-							label = i - start > 0 ? String(src[src.index(src.startIndex, offsetBy: start) ..< iIndex]) : label
+							label = i - start > 0 ? charToString(src, from: start, to: i) : label
 							label = normalizeLabel(text: label)
 							link = state.refs[label]
 							if link != nil {
@@ -179,12 +175,10 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 					lastNode.title = foundLink.title
 					lastNode.length = state.parentIndex + state.i - lastNode.index
 
-					let movedNodes = Array(parent.children?.suffix(from: i + 1) ?? [])
-					if let childCount = parent.children?.count {
-						parent.children?.removeSubrange((i + 1) ..< childCount)
-					}
+					let movedNodes = Array(parent.children.suffix(from: i + 1))
+					parent.children.removeSubrange((i + 1) ..< parent.children.count)
 					lastNode.children = [text] + movedNodes
-					parent.children?[i] = lastNode
+					parent.children[i] = lastNode
 
 					// "[L]inks may not contain other links, at any level of nesting"
 					if isLink {

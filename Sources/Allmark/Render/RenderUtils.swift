@@ -7,7 +7,7 @@ func startNewLine(node: MarkdownNode, state: inout RendererState) {
 }
 
 func innerNewLine(node: MarkdownNode, state: inout RendererState) {
-	if node.block, let children = node.children, let firstChild = children.first, firstChild.block {
+	if node.block, let firstChild = node.children.first, firstChild.block {
 		state.output += "\n"
 	}
 }

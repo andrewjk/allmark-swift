@@ -9,11 +9,9 @@ func renderConsoleImage(_ node: MarkdownNode, _ state: inout RendererState, _: B
 	let style = ansiGray
 	let reset = ansiReset
 	var alt = ""
-	if let children = node.children {
-		for child in children {
-			if child.type == "text" {
-				alt += child.content
-			}
+	for child in node.children {
+		if child.type == "text" {
+			alt += child.content
 		}
 	}
 	state.output += "\(style)[Image: \(alt.isEmpty ? (node.info ?? "") : alt)]\(reset)"
