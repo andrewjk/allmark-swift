@@ -21,10 +21,10 @@ func parseLinkBlock(
 	var url = ""
 	let src = state.src
 	if currentStart < src.count {
-		if src[currentStart] == 0x3C /* < */ {
+		if src[currentStart] == "<" {
 			currentStart += 1
 			for i in currentStart ..< src.count {
-				if src[i] == 0x3E /* > */, !isEscaped(text: src, i: i) {
+				if src[i] == ">", !isEscaped(text: src, i: i) {
 					url = charToString(src, from: currentStart, to: i)
 					currentStart = i + 1
 					break
@@ -32,7 +32,7 @@ func parseLinkBlock(
 			}
 		} else {
 			for i in currentStart ... src.count {
-				if i == src.count || isSpace(code: src[i]) {
+				if i == src.count || isSpace(code: src[i].asciiValue ?? 0) {
 					url = charToString(src, from: currentStart, to: i)
 					currentStart = i
 					break
@@ -65,7 +65,7 @@ func parseLinkBlock(
 	if currentStart < src.count {
 		let delimiter = src[currentStart]
 
-		if delimiter == 0x27 /* ' */ || delimiter == 0x22 /* " */ {
+		if delimiter == "'" || delimiter == "\"" {
 			currentStart += 1
 			for i in currentStart ..< src.count {
 				if src[i] == delimiter, !isEscaped(text: src, i: i) {
@@ -74,19 +74,19 @@ func parseLinkBlock(
 					break
 				}
 			}
-		} else if delimiter == 0x28 /* ( */ {
+		} else if delimiter == "(" {
 			currentStart += 1
 			var level = 1
 			for i in currentStart ..< src.count {
 				if !isEscaped(text: src, i: i) {
-					if src[i] == 0x29 /* ) */ {
+					if src[i] == ")" {
 						level -= 1
 						if level == 0 {
 							title = charToString(src, from: currentStart, to: i)
 							currentStart = i + 1
 							break
 						}
-					} else if src[i] == 0x28 /* ( */ {
+					} else if src[i] == "(" {
 						level += 1
 					}
 				}
@@ -111,12 +111,12 @@ func parseLinkBlock(
 
 	// Check for non-whitespace after title
 	if currentStart > 0 {
-		if !isNewLine(code: src[currentStart - 1]) {
+		if !isNewLine(char: src[currentStart - 1]) {
 			while currentStart < src.count {
-				if isNewLine(code: src[currentStart]) {
+				if isNewLine(char: src[currentStart]) {
 					currentStart += 1
 					break
-				} else if isSpace(code: src[currentStart]) {
+				} else if isSpace(char: src[currentStart]) {
 					currentStart += 1
 				} else {
 					if spaces.contains("\n") {

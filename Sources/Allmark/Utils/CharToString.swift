@@ -1,11 +1,11 @@
 import Foundation
 
-@inlinable func charToString(_ chars: [UInt8], from: Int, to: Int) -> String {
-	return String(bytes: chars[from ..< to], encoding: .utf8)!
+@inlinable func charToString(_ chars: [Character], from: Int, to: Int) -> String {
+	return String(chars[from ..< to])
 }
 
-@inlinable func charToString(_ chars: [UInt8], from: Int) -> String {
-	return String(bytes: chars[from...], encoding: .utf8)!
+@inlinable func charToString(_ chars: [Character], from: Int) -> String {
+	return String(chars[from...])
 }
 
 @inlinable func charToString(_ string: String, from: Int, to: Int) -> String {

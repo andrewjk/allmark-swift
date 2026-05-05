@@ -6,7 +6,7 @@ public struct InlineParserState {
 	public var rules: [InlineRule]
 
 	/// The source text being parsed.
-	public var src: [UInt8]
+	public var src: [Character]
 	/// Current position in the source.
 	public var i: Int
 	/// Current line number.
@@ -26,7 +26,7 @@ public struct InlineParserState {
 	/// The starting index of the parent node.
 	public var parentIndex: Int
 
-	public init(rules: [InlineRule], src: [UInt8], i: Int, line: Int, lineStart: Int, indent: Int, isEscaped: Bool, delimiters: [Delimiter], refs: [String: LinkReference], footnotes: [String: FootnoteReference], parentIndex: Int) {
+	public init(rules: [InlineRule], src: [Character], i: Int, line: Int, lineStart: Int, indent: Int, isEscaped: Bool, delimiters: [Delimiter], refs: [String: LinkReference], footnotes: [String: FootnoteReference], parentIndex: Int) {
 		self.rules = rules
 		self.src = src
 		self.i = i

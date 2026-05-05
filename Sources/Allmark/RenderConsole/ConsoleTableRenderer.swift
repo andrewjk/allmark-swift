@@ -65,7 +65,7 @@ func renderConsoleTable(_ node: MarkdownNode, _ state: inout RendererState, _: B
 		}
 		if align == "center" {
 			let leftPad = (width - text.count) / 2
-			let rightPad = width - text.count - leftPad
+			let rightPad = width - text.count - leftPad + 1
 			return String(repeating: " ", count: leftPad) + text + String(repeating: " ", count: rightPad)
 		}
 		return text + String(repeating: " ", count: width - text.count) + " "

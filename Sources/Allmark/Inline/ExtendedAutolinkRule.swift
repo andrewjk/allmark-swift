@@ -36,7 +36,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 	if !state.isEscaped {
 		let char = src[state.i]
 
-		if char == 0x77 /* w */ {
+		if char == "w" {
 			let tail = charToString(src, from: state.i)
 
 			let urlRange = NSRange(location: 0, length: tail.utf16.count)
@@ -80,7 +80,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 			}
 		}
 
-		if char == 0x68 /* h */ || char == 0x66 /* f */ {
+		if char == "h" || char == "f" {
 			let tail = charToString(src, from: state.i)
 
 			let urlRange = NSRange(location: 0, length: tail.utf16.count)
@@ -120,7 +120,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 
 		// Check alphanumeric for email
 		if state.i < src.count {
-			if isAlphaNumeric(code: src[state.i]) {
+			if isAlphaNumeric(char: char) {
 				// TODO: I think we should actually check this when we come across an @,
 				// rather than any alphanumeric
 				let tail = charToString(src, from: state.i)
@@ -183,7 +183,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 			}
 		}
 
-		if char == 0x6D /* m */ || char == 0x78 /* w */ {
+		if char == "m" || char == "x" {
 			let tail = charToString(src, from: state.i)
 
 			let xmppRange = NSRange(location: 0, length: tail.utf16.count)

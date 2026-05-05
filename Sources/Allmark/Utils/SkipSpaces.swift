@@ -1,9 +1,9 @@
 import Foundation
 
-func skipSpaces(text: [UInt8], start: Int) -> Int {
+func skipSpaces(text: [Character], start: Int) -> Int {
 	var index = start
 	while index < text.count {
-		if !isSpace(code: text[index]) {
+		if !isSpace(char: text[index]) {
 			break
 		}
 		index += 1

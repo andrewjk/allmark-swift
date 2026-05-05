@@ -22,7 +22,7 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 
 	let char = src[state.i]
 
-	if !state.isEscaped && state.indent <= 3 && char == 0x5B /* [ */ {
+	if !state.isEscaped && state.indent <= 3 && char == "[" {
 		// A footnote definition cannot interrupt a paragraph
 		if parent.type == "paragraph" && !parent.blankAfter {
 			return false
@@ -32,7 +32,7 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 		var start = state.i + 1
 
 		// Check for ^ that indicates a footnote (not a regular link reference)
-		if start >= src.count || src[start] != 0x5E /* ^ */ {
+		if start >= src.count || src[start] != "^" {
 			return false
 		}
 		start += 1
@@ -41,14 +41,14 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 		var label = ""
 		for i in start ..< src.count {
 			if !isEscaped(text: src, i: i) {
-				if src[i] == 0x5D /* ] */ {
+				if src[i] == "]" {
 					label = charToString(src, from: start, to: i)
 					start = i + 1
 					break
 				}
 
 				// Labels cannot contain brackets, unless they are backslash-escaped
-				if src[i] == 0x5B /* [ */ {
+				if src[i] == "[" {
 					return false
 				}
 			}
@@ -61,14 +61,14 @@ func testFootnoteReferenceStart(state: inout BlockParserState, parent: MarkdownN
 			return false
 		}
 
-		if start >= src.count || src[start] != 0x3A /* : */ {
+		if start >= src.count || src[start] != ":" {
 			return false
 		}
 		start += 1
 
 		// Skip whitespace after colon
 		while start < src.count {
-			if isSpace(code: src[start]) {
+			if isSpace(char: src[start]) {
 				start += 1
 			} else {
 				break
@@ -132,8 +132,8 @@ func testFootnoteReferenceContinue(state: inout BlockParserState, node: Markdown
 	if openNode.type == "paragraph" {
 		if state.indent >= 4 ||
 			openNode.content.hasSuffix("  \n") ||
-			(state.i + 1 < state.src.count && state.src[state.i] == 0x5B /* [ */ &&
-				state.src[state.i + 1] != 0x5E /* ^ */ )
+			(state.i + 1 < state.src.count && state.src[state.i] == "[" &&
+				state.src[state.i + 1] != "^")
 		{
 			state.maybeContinue = true
 			node.maybeContinuing = true

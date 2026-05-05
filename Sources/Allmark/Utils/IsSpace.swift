@@ -11,3 +11,8 @@
 		return false
 	}
 }
+
+@inlinable func isSpace(char: Character) -> Bool {
+	guard let code = char.asciiValue else { return false }
+	return isSpace(code: code)
+}

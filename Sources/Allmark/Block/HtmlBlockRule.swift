@@ -33,7 +33,7 @@ func testHtmlBlockStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 
 	let char = src[state.i]
 
-	if !state.isEscaped && state.indent <= 3 && char == 0x3C /* < */ {
+	if !state.isEscaped && state.indent <= 3 && char == "<" {
 		let tail = charToString(src, from: state.i)
 
 		if testHtmlCondition1(state: &state, parent: parent, tail: tail) { return true }
@@ -67,8 +67,8 @@ func testHtmlCondition1(state: inout BlockParserState, parent: MarkdownNode, tai
 		var end = state.i + 1 + (match.range(at: 0).length) + 1
 
 		while end < state.src.count {
-			if state.src[end] == 0x3C /* < */ {
-				if state.src[end + 1] == 0x2F /* / */ {
+			if state.src[end] == "<" {
+				if state.src[end + 1] == "/" {
 					let nextClosingTag = charToString(state.src, from: end, to: end + closingTag.count).lowercased()
 					if nextClosingTag == closingTag {
 						state.i = end

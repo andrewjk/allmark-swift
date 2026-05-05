@@ -12,11 +12,11 @@ func testFootnote(state: inout InlineParserState, parent: inout MarkdownNode) ->
 	let char = src[state.i]
 
 	if !state.isEscaped {
-		if char == 0x5B /* [ */ {
+		if char == "[" {
 			return testFootnoteOpen(state: &state, parent: &parent)
 		}
 
-		if char == 0x5D /* ] */ {
+		if char == "]" {
 			return testFootnoteClose(state: &state, parent: &parent)
 		}
 	}
@@ -33,7 +33,7 @@ func testFootnoteOpen(state: inout InlineParserState, parent: inout MarkdownNode
 		return false
 	}
 
-	if src[start + 1] != 0x5E /* ^ */ {
+	if src[start + 1] != "^" {
 		return false
 	}
 
@@ -107,10 +107,10 @@ func testFootnoteClose(state: inout InlineParserState, parent: inout MarkdownNod
 				// Swallow anything in brackets afterwards
 				// Unless it's a link reference, in which case it should be treated as a link instead
 				if state.i + 1 < src.count {
-					if src[state.i + 1] == 0x5B /* [ */ {
+					if src[state.i + 1] == "[" {
 						let linkStart = state.i + 2
 						for i in linkStart ..< src.count {
-							if src[i] == 0x5D /* ] */ {
+							if src[i] == "]" {
 								var linkRef = charToString(src, from: linkStart, to: i)
 								linkRef = normalizeLabel(text: linkRef)
 								if state.refs[linkRef] != nil {
@@ -150,7 +150,7 @@ func testFootnoteClose(state: inout InlineParserState, parent: inout MarkdownNod
 					// Parse the footnote content for inline elements
 					var tempState = InlineParserState(
 						rules: state.rules,
-						src: Array(footnote.content.content.utf8),
+						src: Array(footnote.content.content),
 						i: 0,
 						line: lastNode.line,
 						lineStart: 0,

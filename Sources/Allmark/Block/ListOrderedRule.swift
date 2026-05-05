@@ -19,8 +19,8 @@ func getOrderedListMarkup(state: BlockParserState) -> ListInfo? {
 	var end = state.i
 
 	while end < src.count {
-		if isNumeric(code: src[end]) {
-			numbers.append(Character(UnicodeScalar(src[end])))
+		if isNumeric(char: src[end]) {
+			numbers.append(src[end])
 			end += 1
 		} else {
 			break
@@ -30,15 +30,15 @@ func getOrderedListMarkup(state: BlockParserState) -> ListInfo? {
 	if !numbers.isEmpty, numbers.count < 10, end < src.count {
 		let delimiter = src[end]
 
-		if delimiter == 0x2E /* . */ || delimiter == 0x29 /* ) */ {
-			let isSpaceOrEof = end == src.count - 1 || (end + 1 < src.count && isSpace(code: src[end + 1]))
+		if delimiter == "." || delimiter == ")" {
+			let isSpaceOrEof = end == src.count - 1 || (end + 1 < src.count && isSpace(char: src[end + 1]))
 
 			if isSpaceOrEof || end == src.count - 1 {
-				let isBlank = end == src.count - 1 || isNewLine(code: src[end + 1])
+				let isBlank = end == src.count - 1 || isNewLine(char: src[end + 1])
 
 				return ListInfo(
-					delimiter: String(UnicodeScalar(delimiter)),
-					markup: numbers + String(UnicodeScalar(delimiter)),
+					delimiter: String(delimiter),
+					markup: numbers + String(delimiter),
 					isBlank: isBlank,
 					type: "list_ordered"
 				)

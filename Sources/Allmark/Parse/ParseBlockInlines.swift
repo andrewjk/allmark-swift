@@ -81,7 +81,7 @@ func parseBlockInlines(
 
 	var state = InlineParserState(
 		rules: rules,
-		src: Array(parent.content.trimmingCharacters(in: .whitespacesAndNewlines).utf8),
+		src: Array(parent.content.trimmingCharacters(in: .whitespacesAndNewlines)),
 		i: 0,
 		line: parent.line,
 		lineStart: 0,

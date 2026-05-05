@@ -1,14 +1,14 @@
-@inlinable func isEscaped(text: [UInt8], i: Int) -> Bool {
+@inlinable func isEscaped(text: [Character], i: Int) -> Bool {
 	if i == 0 {
 		return false
 	}
-	return text[i - 1] == 0x5C /* \ */ && (i <= 1 || text[i - 2] != 0x5C /* \ */ )
+	return text[i - 1] == "\\" && (i <= 1 || text[i - 2] != "\\")
 }
 
-func isEscaped(text: String, i: Int) -> Bool {
+@inlinable func isEscaped(text: String, i: Int) -> Bool {
 	if i == 0 {
 		return false
 	}
-	let chars = Array(text.utf8)
-	return chars[i - 1] == 0x5C /* \ */ && (i <= 1 || chars[i - 2] != 0x5C /* \ */ )
+	let chars = Array(text)
+	return isEscaped(text: chars, i: i)
 }

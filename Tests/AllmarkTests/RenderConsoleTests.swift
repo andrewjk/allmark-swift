@@ -473,6 +473,42 @@ struct RenderConsoleTests {
 		}
 	}
 
+	@Test func rendersTableWithCenterAlignedPadding() async {
+		let input = "| A | B |\n| - | :-: |\n| x | centered |\n| y | a1 |"
+		let expected = """
+		┌───┬──────────┐
+		│ A │    B     │
+		├───┼──────────┤
+		│ x │ centered │
+		│ y │    a1    │
+		└───┴──────────┘
+		"""
+
+		await MainActor.run {
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers))
+			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
+
+	@Test func rendersTableWithCenterAlignedPadding2() async {
+		let input = "| A | B |\n| - | :-: |\n| x | centerd |\n| y | a1 |"
+		let expected = """
+		┌───┬─────────┐
+		│ A │    B    │
+		├───┼─────────┤
+		│ x │ centerd │
+		│ y │   a1    │
+		└───┴─────────┘
+		"""
+
+		await MainActor.run {
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers))
+			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
+
 	@Test func rendersStrongText() async {
 		let input = "**bold**"
 		let expected = "\u{001B}[1m\u{001B}[33mbold\u{001B}[0m\n"

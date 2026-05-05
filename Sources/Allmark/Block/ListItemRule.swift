@@ -39,8 +39,8 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 			var end = state.i
 
 			while end < src.count {
-				if isNumeric(code: src[end]) {
-					numbers.append(Character(UnicodeScalar(src[end])))
+				if isNumeric(char: src[end]) {
+					numbers.append(src[end])
 					end += 1
 				} else {
 					break
@@ -51,7 +51,7 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 				let delimiter = src[end]
 
 				if let item = itemNode {
-					if state.indent <= 3 && state.indent < item.subindent && !numbers.isEmpty && String(UnicodeScalar(delimiter)) == node.delimiter {
+					if state.indent <= 3 && state.indent < item.subindent && !numbers.isEmpty && String(delimiter) == node.delimiter {
 						return false
 					}
 				}
@@ -63,7 +63,7 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 			}
 		} else if openNode.type == "list_bulleted" {
 			if let item = itemNode {
-				if state.indent <= 3 && state.indent < item.subindent && String(UnicodeScalar(char)) == node.delimiter {
+				if state.indent <= 3 && state.indent < item.subindent && String(char) == node.delimiter {
 					return false
 				}
 			}

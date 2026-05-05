@@ -2,7 +2,7 @@ import Foundation
 
 func testTagMarks(
 	name: String,
-	char: UInt8,
+	char: Character,
 	state: inout InlineParserState,
 	parent: inout MarkdownNode,
 	precedence: Int
@@ -12,10 +12,10 @@ func testTagMarks(
 	var end = state.i
 
 	// Get the markup
-	var markup = String(UnicodeScalar(char))
+	var markup = String(char)
 	for i in (state.i + 1) ..< src.count {
 		if src[i] == char {
-			markup.append(Character(UnicodeScalar(char)))
+			markup.append(char)
 			end += 1
 		} else {
 			break
@@ -25,11 +25,11 @@ func testTagMarks(
 	// "Three or more tildes do not create a strikethrough"
 	if markup.count < 3 {
 		// TODO: Better space checks including start/end of line
-		let codeBefore = start > 0 ? UInt32(src[start - 1]) : 0
+		let codeBefore = start > 0 ? src[start - 1].unicodeScalars.first!.value : 0
 		let spaceBefore = start == 0 || isUnicodeSpace(code: codeBefore)
 		let punctuationBefore = !spaceBefore && isUnicodePunctuation(code: codeBefore)
 
-		let codeAfter = end + 1 < src.count ? UInt32(src[end + 1]) : 0
+		let codeAfter = end + 1 < src.count ? src[end + 1].unicodeScalars.first!.value : 0
 		let spaceAfter = end == src.count - 1 || isUnicodeSpace(code: codeAfter)
 		let punctuationAfter = !spaceAfter && isUnicodePunctuation(code: codeAfter)
 
@@ -61,7 +61,7 @@ func testTagMarks(
 			while i >= 0 {
 				let prevDelimiter = state.delimiters[i]
 				if prevDelimiter.handled != true {
-					if prevDelimiter.markup == String(UnicodeScalar(char)) && prevDelimiter.length == markup.count {
+					if prevDelimiter.markup == String(char) && prevDelimiter.length == markup.count {
 						startDelimiter = prevDelimiter
 						break
 					} else if (prevDelimiter.precedence ?? 0) <= precedence {
@@ -130,7 +130,7 @@ func testTagMarks(
 			parent.children.append(text)
 
 			state.i += markup.count
-			state.delimiters.append(Delimiter(markup: String(UnicodeScalar(char)), start: start, length: markup.count, handled: nil, precedence: precedence))
+			state.delimiters.append(Delimiter(markup: String(char), start: start, length: markup.count, handled: nil, precedence: precedence))
 
 			return true
 		}

@@ -22,7 +22,7 @@ func testThematicBreakStart(state: inout BlockParserState, parent: MarkdownNode)
 
 	let char = src[state.i]
 
-	if state.indent <= 3 && (char == 0x2D /* - */ || char == 0x5F /* _ */ || char == 0x2A /* * */ ) {
+	if state.indent <= 3 && (char == "-" || char == "_" || char == "*") {
 		var matched = 1
 		var end = state.i + 1
 
@@ -31,10 +31,10 @@ func testThematicBreakStart(state: inout BlockParserState, parent: MarkdownNode)
 
 			if nextChar == char {
 				matched += 1
-			} else if isNewLine(code: nextChar) {
+			} else if isNewLine(char: nextChar) {
 				end += 1
 				break
-			} else if isSpace(code: nextChar) {
+			} else if isSpace(char: nextChar) {
 				// continue
 			} else {
 				return false
@@ -68,7 +68,7 @@ func testThematicBreakStart(state: inout BlockParserState, parent: MarkdownNode)
 			}
 
 			// HACK: Special case for a thematic break in a list
-			if currentParent.type == "list_item" && !state.hasBlankLine && String(UnicodeScalar(char)) == currentParent.delimiter {
+			if currentParent.type == "list_item" && !state.hasBlankLine && String(char) == currentParent.delimiter {
 				state.openNodes.removeLast()
 				state.openNodes.removeLast()
 				currentParent = state.openNodes.last!

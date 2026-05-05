@@ -15,8 +15,8 @@ let alertRegex = try! NSRegularExpression(
 	options: [.caseInsensitive]
 )
 
-func hasAlertMarkup(char: UInt8, state: BlockParserState) -> Bool {
-	return state.indent <= 3 && char == 0x3E /* > */
+func hasAlertMarkup(char: Character, state: BlockParserState) -> Bool {
+	return state.indent <= 3 && char == ">"
 }
 
 func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {

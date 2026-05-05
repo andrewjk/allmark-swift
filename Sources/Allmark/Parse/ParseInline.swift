@@ -11,10 +11,10 @@ func parseInline(state: inout InlineParserState, parent: MarkdownNode) {
 	while state.i < src.count {
 		let char = src[state.i]
 
-		if char == 0x0D /* \r */ || char == 0x0A /* \n */ {
+		if char == "\r" || char == "\n" {
 			// Treat Windows \r\n as \n
-			if char == 0x0D /* \r */, state.i + 1 < src.count {
-				if src[state.i + 1] == 0x0A /* \n */ {
+			if char == "\r", state.i + 1 < src.count {
+				if src[state.i + 1] == "\n" {
 					state.i += 1
 				}
 			}

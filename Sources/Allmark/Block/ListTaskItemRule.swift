@@ -25,11 +25,11 @@ func testListTaskItemStart(state: inout BlockParserState, parent: MarkdownNode) 
 			let char3 = src[start + 2]
 			let char4 = src[start + 3]
 
-			if char1 == 0x5B /* [ */ && char3 == 0x5D /* ] */ && isSpace(code: char4) {
+			if char1 == "[" && char3 == "]" && isSpace(char: char4) {
 				// GitHub doesn't support task lists in block quotes
 				let inBlockQuote = state.openNodes.contains { $0.type == "block_quote" }
 				if !inBlockQuote {
-					let markup = "[\(Character(UnicodeScalar(char2)))]"
+					let markup = "[\(char2)]"
 
 					// HACK: It should be a block, but it's not for output reasons
 					let task = newInline(

@@ -23,7 +23,7 @@ func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode)
 
 	let char = src[state.i]
 
-	if !state.isEscaped && state.indent <= 3 && char == 0x5B /* [ */ {
+	if !state.isEscaped && state.indent <= 3 && char == "[" {
 		// A link reference definition cannot interrupt a paragraph
 		if parent.type == "paragraph" && !parent.blankAfter {
 			return false
@@ -36,14 +36,14 @@ func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode)
 		var label = ""
 		for i in start ..< src.count {
 			if !isEscaped(text: src, i: i) {
-				if src[i] == 0x5D /* ] */ {
+				if src[i] == "]" {
 					label = charToString(src, from: start, to: i)
 					start = i + 1
 					break
 				}
 
 				// Link labels cannot contain brackets, unless they are backslash-escaped
-				if src[i] == 0x5B /* [ */ {
+				if src[i] == "[" {
 					return false
 				}
 			}
@@ -56,7 +56,7 @@ func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode)
 			return false
 		}
 
-		if start >= src.count || src[start] != 0x3A /* : */ {
+		if start >= src.count || src[start] != ":" {
 			return false
 		}
 
@@ -93,7 +93,7 @@ func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode)
 		parent.children.append(ref)
 
 		if state.i > 0 {
-			if !isNewLine(code: src[state.i - 1]) {
+			if !isNewLine(char: src[state.i - 1]) {
 				state.i = getEndOfLine(state: &state)
 			}
 		}

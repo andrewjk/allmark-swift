@@ -17,23 +17,23 @@ func getBulletedListMarkup(state: BlockParserState) -> ListInfo? {
 
 	let char = src[state.i]
 
-	if char == 0x2D /* - */ || char == 0x2B /* + */ || char == 0x2A /* * */ {
+	if char == "-" || char == "+" || char == "*" {
 		// Check if next char is space or end of line
 		if state.i == src.count - 1 {
 			return ListInfo(
-				delimiter: String(UnicodeScalar(char)),
-				markup: String(UnicodeScalar(char)),
+				delimiter: String(char),
+				markup: String(char),
 				isBlank: true,
 				type: "list_bulleted"
 			)
 		}
 
 		let nextChar = src[state.i + 1]
-		if isSpace(code: nextChar) {
-			let isBlank = isNewLine(code: nextChar)
+		if isSpace(char: nextChar) {
+			let isBlank = isNewLine(char: nextChar)
 			return ListInfo(
-				delimiter: String(UnicodeScalar(char)),
-				markup: String(UnicodeScalar(char)),
+				delimiter: String(char),
+				markup: String(char),
 				isBlank: isBlank,
 				type: "list_bulleted"
 			)

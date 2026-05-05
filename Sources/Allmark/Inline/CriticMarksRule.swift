@@ -14,17 +14,17 @@ func testCriticMarks(
 
 	let char = src[state.i]
 
-	if !state.isEscaped && char == 0x7B /* { */ {
+	if !state.isEscaped && char == "{" {
 		let start = state.i
 		var end = state.i
 
 		// Get the markup
-		var markup = String(UnicodeScalar(char))
+		var markup = String(char)
 		for i in (start + 1) ..< src.count {
-			if src[i] == delimiter.first!.asciiValue! {
+			if src[i] == delimiter.first {
 				markup.append(delimiter)
 				end += 1
-			} else if src[i] == 0x7D /* } */ || (closeDel != delimiter && src[i] == closeDel.first!.asciiValue!) {
+			} else if src[i] == "}" || (closeDel != delimiter && src[i] == closeDel.first) {
 				return false
 			} else {
 				break
@@ -47,13 +47,13 @@ func testCriticMarks(
 
 			return true
 		}
-	} else if !state.isEscaped && String(UnicodeScalar(char)) == closeDel {
+	} else if !state.isEscaped && String(char) == closeDel {
 		// Get the markup
 		var markup = "{" + delimiter
 		for i in (state.i + 1) ..< src.count {
-			if src[i] == closeDel.first!.asciiValue! {
+			if src[i] == closeDel.first {
 				markup.append(delimiter)
-			} else if src[i] == 0x7D /* } */ {
+			} else if src[i] == "}" {
 				break
 			} else {
 				return false

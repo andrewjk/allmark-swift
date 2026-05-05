@@ -12,15 +12,15 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 
 	let char = src[state.i]
 
-	if !state.isEscaped && (char == 0x2A /* * */ || char == 0x5F /* _ */ ) {
+	if !state.isEscaped && (char == "*" || char == "_") {
 		let start = state.i
 		var end = state.i
 
 		// Get the markup
-		var markup = String(UnicodeScalar(char))
+		var markup = String(char)
 		for i in (start + 1) ..< src.count {
 			if src[i] == char {
-				markup.append(Character(UnicodeScalar(char)))
+				markup.append(char)
 				end += 1
 			} else {
 				break
@@ -28,11 +28,11 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 		}
 
 		// TODO: Better space checks including start/end of line
-		let codeBefore = start > 0 ? UInt32(src[start - 1]) : 0
+		let codeBefore = start > 0 ? src[start - 1].unicodeScalars.first!.value : 0
 		let spaceBefore = start == 0 || isUnicodeSpace(code: codeBefore)
 		let punctuationBefore = !spaceBefore && isUnicodePunctuation(code: codeBefore)
 
-		let codeAfter = end + 1 < src.count ? UInt32(src[end + 1]) : 0
+		let codeAfter = end + 1 < src.count ? src[end + 1].unicodeScalars.first!.value : 0
 		let spaceAfter = end == src.count - 1 || isUnicodeSpace(code: codeAfter)
 		let punctuationAfter = !spaceAfter && isUnicodePunctuation(code: codeAfter)
 
@@ -64,7 +64,7 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 		while i >= 0 {
 			let prevDelimiter = state.delimiters[i]
 			if prevDelimiter.handled != true {
-				if prevDelimiter.markup == String(UnicodeScalar(char)) {
+				if prevDelimiter.markup == String(char) {
 					if prevDelimiter.length == markup.count {
 						startDelimiter = prevDelimiter
 						startIndex = i
@@ -91,9 +91,9 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 				(rightFlanking ||
 					// Check if it's a continuing part of a three-run delimiter
 					(state.i > 0 && src[state.i - 1] == char)) &&
-				startDel.markup == String(UnicodeScalar(char)) &&
+				startDel.markup == String(char) &&
 				// "Emphasis with _ is not allowed inside words"
-				(char != 0x5F /* _ */ || spaceAfter || punctuationAfter) &&
+				(char != "_" || spaceAfter || punctuationAfter) &&
 				// "[A] delimiter that can both open and close ... cannot form
 				// emphasis if the sum of the lengths of the delimiter runs
 				// containing the opening and closing delimiters is a multiple
@@ -178,7 +178,7 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 		let canOpen =
 			leftFlanking &&
 			// "Emphasis with _ is not allowed inside words"
-			(char != 0x5F /* _ */ || spaceBefore || punctuationBefore)
+			(char != "_" || spaceBefore || punctuationBefore)
 
 		if canOpen {
 			// Add a new text node which may turn into emphasis
@@ -191,7 +191,7 @@ func testEmphasis(state: inout InlineParserState, parent: inout MarkdownNode) ->
 			parent.children.append(text)
 
 			state.i += markup.count
-			state.delimiters.append(Delimiter(markup: String(UnicodeScalar(char)), start: start, length: markup.count, handled: nil, precedence: emphasisRule.precedence))
+			state.delimiters.append(Delimiter(markup: String(char), start: start, length: markup.count, handled: nil, precedence: emphasisRule.precedence))
 
 			return true
 		}

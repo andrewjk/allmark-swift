@@ -32,7 +32,7 @@ func testHeadingUnderlineStart(state: inout BlockParserState, parent: MarkdownNo
 
 	let char = src[state.i]
 
-	if state.indent <= 3 && (char == 0x3D /* = */ || char == 0x2D /* - */ ) {
+	if state.indent <= 3 && (char == "=" || char == "-") {
 		var matched = 1
 		var end = state.i + 1
 
@@ -42,15 +42,15 @@ func testHeadingUnderlineStart(state: inout BlockParserState, parent: MarkdownNo
 			if nextChar == char {
 				// The setext heading underline cannot contain internal spaces
 				if matched > 0 && end > 0 {
-					if isSpace(code: src[end - 1]) {
+					if isSpace(char: src[end - 1]) {
 						return false
 					}
 				}
 				matched += 1
-			} else if isNewLine(code: nextChar) {
+			} else if isNewLine(char: nextChar) {
 				end += 1
 				break
-			} else if isSpace(code: nextChar) {
+			} else if isSpace(char: nextChar) {
 				// continue
 			} else {
 				return false

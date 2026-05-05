@@ -23,7 +23,7 @@ func testHtmlSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 
 	let char = src[state.i]
 
-	if !state.isEscaped && char == 0x3C /* < */ {
+	if !state.isEscaped && char == "<" {
 		let tail = charToString(src, from: state.i)
 		let range = NSRange(location: 0, length: tail.utf16.count)
 

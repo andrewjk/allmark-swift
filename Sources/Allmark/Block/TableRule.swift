@@ -27,7 +27,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 		let headers = headerRow.children.map { $0.info ?? "" }
 
 		var rowLength = endOfLine - state.i
-		if endOfLine > 0, state.src[endOfLine - 1] == 0x0A /* \n */ {
+		if endOfLine > 0, state.src[endOfLine - 1] == "\n" {
 			rowLength -= 1
 		}
 
@@ -78,32 +78,32 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 
 	let char = state.src[state.i]
 
-	if state.indent <= 3 && (char == 0x7C /* | */ || char == 0x2D /* - */ || char == 0x3A /* : */ ) {
-		var cells: [String] = [char == 0x3A /* : */ ? "left" : ""]
+	if state.indent <= 3 && (char == "|" || char == "-" || char == ":") {
+		var cells: [String] = [char == ":" ? "left" : ""]
 		var end = state.i + 1
 		var lastChar = char
 
 		while end < state.src.count {
 			let nextChar = state.src[end]
 
-			if nextChar == 0x7C /* | */ {
+			if nextChar == "|" {
 				cells.append("")
 				lastChar = nextChar
-			} else if nextChar == 0x2D /* - */ {
+			} else if nextChar == "-" {
 				lastChar = nextChar
-			} else if nextChar == 0x3A /* : */ {
+			} else if nextChar == ":" {
 				let x = cells.count - 1
-				if lastChar == 0x7C /* | */ {
+				if lastChar == "|" {
 					cells[x] = "left"
 				} else {
 					cells[x] = cells[x].isEmpty ? "right" : "center"
 				}
 				lastChar = nextChar
-			} else if isNewLine(code: nextChar) {
+			} else if isNewLine(char: nextChar) {
 				// Handle newline
 				end += 1
 				break
-			} else if isSpace(code: nextChar) {
+			} else if isSpace(char: nextChar) {
 				// Continue past spaces
 			} else {
 				return false
@@ -111,7 +111,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 			end += 1
 		}
 
-		if lastChar == 0x7C /* | */ {
+		if lastChar == "|" {
 			cells.removeLast()
 		}
 
@@ -246,7 +246,7 @@ private func loadPipePositions(line: String) -> [Int] {
 		if char == "|", !isEscaped(text: line, i: i) {
 			pipePositions.append(i)
 			haveEndPipe = true
-		} else if !isSpace(code: char.asciiValue ?? 0) {
+		} else if !isSpace(char: char) {
 			// Make sure there's a start pipe position
 			if pipePositions.isEmpty {
 				pipePositions.append(0)

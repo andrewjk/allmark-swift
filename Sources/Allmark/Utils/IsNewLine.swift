@@ -1,4 +1,4 @@
 
-@inlinable func isNewLine(code: UInt8) -> Bool {
-	return code == 0x0D /* \r */ || code == 0x0A /* \n */
+@inlinable func isNewLine(char: Character) -> Bool {
+	return char == "\r" || char == "\n"
 }

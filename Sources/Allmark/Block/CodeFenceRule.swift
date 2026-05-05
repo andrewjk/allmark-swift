@@ -23,7 +23,7 @@ func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 
 	let char = src[state.i]
 
-	if state.indent <= 3 && (char == 0x60 /* ` */ || char == 0x7E /* ~ */ ) {
+	if state.indent <= 3 && (char == "`" || char == "~") {
 		var matched = 1
 		var end = state.i + 1
 		var haveSpace = false
@@ -36,9 +36,9 @@ func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 					return false
 				}
 				matched += 1
-			} else if isNewLine(code: nextChar) {
+			} else if isNewLine(char: nextChar) {
 				break
-			} else if isSpace(code: nextChar) {
+			} else if isSpace(char: nextChar) {
 				haveSpace = true
 			} else {
 				break
@@ -50,15 +50,15 @@ func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 			var closedNode: MarkdownNode? = nil
 			var currentParent = parent
 
-			let markup = String(repeating: Character(UnicodeScalar(char)), count: matched)
+			let markup = String(repeating: char, count: matched)
 
 			var info = ""
-			if state.i + matched < src.count && !isNewLine(code: src[state.i + matched]) {
+			if state.i + matched < src.count && !isNewLine(char: src[state.i + matched]) {
 				end = getEndOfLine(state: &state)
 				info = charToString(src, from: state.i + matched, to: end)
 
 				// Info strings for backtick code blocks cannot contain backticks
-				if char == 0x60 /* ` */ && info.contains("`") {
+				if char == "`" && info.contains("`") {
 					return false
 				}
 
@@ -135,9 +135,9 @@ func testCodeFenceContinue(state: inout BlockParserState, node: MarkdownNode) ->
 
 	let char = src[state.i]
 
-	if state.indent <= 3 && (char == 0x60 /* ` */ || char == 0x7E /* ~ */ ) {
+	if state.indent <= 3 && (char == "`" || char == "~") {
 		// This might be a closing fence
-		if node.markup.hasPrefix(String(UnicodeScalar(char))) {
+		if node.markup.hasPrefix(String(char)) {
 			var endMatched = 0
 			var end = state.i
 
@@ -157,9 +157,9 @@ func testCodeFenceContinue(state: inout BlockParserState, node: MarkdownNode) ->
 				while end < src.count {
 					let nextChar = src[end]
 
-					if isNewLine(code: nextChar) {
+					if isNewLine(char: nextChar) {
 						break
-					} else if isSpace(code: nextChar) {
+					} else if isSpace(char: nextChar) {
 						end += 1
 					} else {
 						return true
