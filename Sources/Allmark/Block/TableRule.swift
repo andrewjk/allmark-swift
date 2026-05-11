@@ -26,10 +26,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 		}
 		let headers = headerRow.children.map { $0.info ?? "" }
 
-		var rowLength = endOfLine - state.i
-		if endOfLine > 0, state.src[endOfLine - 1] == "\n" {
-			rowLength -= 1
-		}
+		let rowLength = endOfLine - state.i
 
 		let row = newBlock(
 			type: "table_row",
@@ -100,7 +97,6 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 				}
 				lastChar = nextChar
 			} else if isNewLine(char: nextChar) {
-				// Handle newline
 				end += 1
 				break
 			} else if isSpace(char: nextChar) {
@@ -164,7 +160,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 
 			let headerIndex = parent.index
 			var headerLength = parent.content.count
-			if parent.content.hasSuffix("\n") {
+			if parent.content.hasSuffix("\n") || parent.content.hasSuffix("\r\n") {
 				headerLength -= 1
 			}
 			let header = newBlock(

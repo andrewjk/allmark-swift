@@ -3,7 +3,8 @@ import Foundation
 func getEndOfLine(state: inout BlockParserState) -> Int {
 	var endOfLine = state.i
 	while endOfLine < state.src.count {
-		if isNewLine(char: state.src[endOfLine]) {
+		let char = state.src[endOfLine]
+		if isNewLine(char: char) {
 			endOfLine += 1
 			state.lineStart = endOfLine
 			break

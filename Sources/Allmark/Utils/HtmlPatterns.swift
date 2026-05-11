@@ -31,7 +31,7 @@ let attributeValueSpec = "\\s*=\\s*(?:\(attributeValue))"
 
 // An attribute consists of whitespace, an attribute name, and an optional
 // attribute value specification.
-let attribute = "\\s(?:\(attributeName))(?:\(attributeValueSpec))*"
+let attribute = "\\s+(?:\(attributeName))(?:\(attributeValueSpec))*"
 
 // An open tag consists of a < character, a tag name, zero or more attributes,
 // optional whitespace, an optional / character, and a > character.

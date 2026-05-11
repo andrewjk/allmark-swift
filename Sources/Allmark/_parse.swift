@@ -14,6 +14,7 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 	// Skip empty lines at the start
 	var start = 0
 	var i = 0
+	var index = 0
 	while i < chars.count {
 		if !isSpace(char: chars[i]) {
 			break
@@ -21,6 +22,16 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 			start = i + 1
 		}
 		i += 1
+	}
+	index = i
+
+	// Process frontmatter if found
+	var frontmatter: String? = nil
+	if i < chars.count && chars[i] == "-" {
+		frontmatter = extractFrontMatter(&document, chars, index)
+		if let fm = frontmatter {
+			start = index + fm.count
+		}
 	}
 
 	let rulesMap = Dictionary(uniqueKeysWithValues: rules.blocks.map { ($0.name, $0) })
@@ -57,6 +68,10 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 	}
 
 	parseBlockInlines(parent: &document, rules: rules.inlines, refs: state.refs, footnotes: state.footnotes)
+
+	if let fm = frontmatter {
+		document.info = fm
+	}
 
 	return document
 }

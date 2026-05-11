@@ -132,6 +132,7 @@ func testFootnoteReferenceContinue(state: inout BlockParserState, node: Markdown
 	if openNode.type == "paragraph" {
 		if state.indent >= 4 ||
 			openNode.content.hasSuffix("  \n") ||
+			openNode.content.hasSuffix("  \r\n") ||
 			(state.i + 1 < state.src.count && state.src[state.i] == "[" &&
 				state.src[state.i + 1] != "^")
 		{

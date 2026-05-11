@@ -10,16 +10,13 @@ let htmlBlockRule = BlockRule(
 )
 
 // Regex patterns for HTML block conditions
-let htmlRegex1 = try! NSRegularExpression(pattern: "^<(script|pre|style|textarea)(\\s|$|>)", options: [.caseInsensitive])
-let htmlRegex2 = try! NSRegularExpression(pattern: "<!--.+?-->", options: [.dotMatchesLineSeparators])
-let htmlRegex3 = try! NSRegularExpression(pattern: "<\\?.+?\\?>", options: [.dotMatchesLineSeparators])
-let htmlRegex4 = try! NSRegularExpression(pattern: "<![A-Z].+>", options: [.dotMatchesLineSeparators])
-let htmlRegex5 = try! NSRegularExpression(pattern: "<!\\[CDATA\\[.+?\\]\\]>", options: [.dotMatchesLineSeparators])
-let htmlRegex6 = try! NSRegularExpression(
-	pattern: "^</?(address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|nav|noframes|ol|optgroup|option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul)(\\s|\\n|$|>|/>)",
-	options: [.caseInsensitive]
-)
-let htmlRegex7 = try! NSRegularExpression(pattern: "^(?:\(openTag)|\(closeTag))(?:\\s|$)")
+nonisolated(unsafe) let htmlRegex1 = /(?i)^<(script|pre|style|textarea)(\s|$|>)/
+nonisolated(unsafe) let htmlRegex2 = /(?s)<!--.+?-->/
+nonisolated(unsafe) let htmlRegex3 = /(?s)<\?.+?\?>/
+nonisolated(unsafe) let htmlRegex4 = /(?s)<![A-Z].+>/
+nonisolated(unsafe) let htmlRegex5 = /(?s)<!\[CDATA\[.+?\]\]>/
+nonisolated(unsafe) let htmlRegex6 = /(?i)^<\/?(address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|nav|noframes|ol|optgroup|option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul)(\s+|$|>|\/>)/
+nonisolated(unsafe) let htmlRegex7 = try! Regex("^(?:\(openTag)|\(closeTag))(?:\\s|$)")
 
 func testHtmlBlockStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
 	if parent.acceptsContent {
@@ -49,9 +46,7 @@ func testHtmlBlockStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 }
 
 func testHtmlCondition1(state: inout BlockParserState, parent: MarkdownNode, tail: String) -> Bool {
-	let range = NSRange(location: 0, length: tail.utf16.count)
-
-	if let match = htmlRegex1.firstMatch(in: tail, options: [], range: range) {
+	if let match = tail.firstMatch(of: htmlRegex1) {
 		var currentParent = parent
 
 		if currentParent.type == "paragraph" {
@@ -59,12 +54,11 @@ func testHtmlCondition1(state: inout BlockParserState, parent: MarkdownNode, tai
 			currentParent = state.openNodes.last!
 		}
 
-		let tagRange = match.range(at: 1)
-		let tagName = (tail as NSString).substring(with: tagRange).lowercased()
+		let tagName = String(match.output.1).lowercased()
 		let closingTag = "</\(tagName)>"
 
 		let start = state.i
-		var end = state.i + 1 + (match.range(at: 0).length) + 1
+		var end = state.i + 1 + tail.distance(from: tail.startIndex, to: match.range.upperBound) + 1
 
 		while end < state.src.count {
 			if state.src[end] == "<" {
@@ -106,9 +100,7 @@ func testHtmlCondition1(state: inout BlockParserState, parent: MarkdownNode, tai
 }
 
 func testHtmlCondition2(state: inout BlockParserState, parent: MarkdownNode, tail: String) -> Bool {
-	let range = NSRange(location: 0, length: tail.utf16.count)
-
-	if let match = htmlRegex2.firstMatch(in: tail, options: [], range: range) {
+	if let match = tail.firstMatch(of: htmlRegex2) {
 		var currentParent = parent
 
 		if currentParent.type == "paragraph" {
@@ -117,7 +109,7 @@ func testHtmlCondition2(state: inout BlockParserState, parent: MarkdownNode, tai
 		}
 
 		let start = state.i
-		state.i += match.range.length
+		state.i += tail.distance(from: tail.startIndex, to: match.range.upperBound)
 		let endOfLine = getEndOfLine(state: &state)
 
 		let html = newBlock(
@@ -146,9 +138,7 @@ func testHtmlCondition2(state: inout BlockParserState, parent: MarkdownNode, tai
 }
 
 func testHtmlCondition3(state: inout BlockParserState, parent: MarkdownNode, tail: String) -> Bool {
-	let range = NSRange(location: 0, length: tail.utf16.count)
-
-	if let match = htmlRegex3.firstMatch(in: tail, options: [], range: range) {
+	if let match = tail.firstMatch(of: htmlRegex3) {
 		var currentParent = parent
 
 		if currentParent.type == "paragraph" {
@@ -157,7 +147,7 @@ func testHtmlCondition3(state: inout BlockParserState, parent: MarkdownNode, tai
 		}
 
 		let start = state.i
-		state.i += match.range.length
+		state.i += tail.distance(from: tail.startIndex, to: match.range.upperBound)
 		let endOfLine = getEndOfLine(state: &state)
 
 		let html = newBlock(
@@ -186,9 +176,7 @@ func testHtmlCondition3(state: inout BlockParserState, parent: MarkdownNode, tai
 }
 
 func testHtmlCondition4(state: inout BlockParserState, parent: MarkdownNode, tail: String) -> Bool {
-	let range = NSRange(location: 0, length: tail.utf16.count)
-
-	if let match = htmlRegex4.firstMatch(in: tail, options: [], range: range) {
+	if let match = tail.firstMatch(of: htmlRegex4) {
 		var currentParent = parent
 
 		if currentParent.type == "paragraph" {
@@ -197,7 +185,7 @@ func testHtmlCondition4(state: inout BlockParserState, parent: MarkdownNode, tai
 		}
 
 		let start = state.i
-		state.i += match.range.length
+		state.i += tail.distance(from: tail.startIndex, to: match.range.upperBound)
 		let endOfLine = getEndOfLine(state: &state)
 
 		let html = newBlock(
@@ -226,9 +214,7 @@ func testHtmlCondition4(state: inout BlockParserState, parent: MarkdownNode, tai
 }
 
 func testHtmlCondition5(state: inout BlockParserState, parent: MarkdownNode, tail: String) -> Bool {
-	let range = NSRange(location: 0, length: tail.utf16.count)
-
-	if let match = htmlRegex5.firstMatch(in: tail, options: [], range: range) {
+	if let match = tail.firstMatch(of: htmlRegex5) {
 		var currentParent = parent
 
 		if currentParent.type == "paragraph" {
@@ -237,7 +223,7 @@ func testHtmlCondition5(state: inout BlockParserState, parent: MarkdownNode, tai
 		}
 
 		let start = state.i
-		state.i += match.range.length
+		state.i += tail.distance(from: tail.startIndex, to: match.range.upperBound)
 		let endOfLine = getEndOfLine(state: &state)
 
 		let html = newBlock(
@@ -266,9 +252,7 @@ func testHtmlCondition5(state: inout BlockParserState, parent: MarkdownNode, tai
 }
 
 func testHtmlCondition6(state: inout BlockParserState, parent: MarkdownNode, tail: String) -> Bool {
-	let range = NSRange(location: 0, length: tail.utf16.count)
-
-	if htmlRegex6.firstMatch(in: tail, options: [], range: range) != nil {
+	if tail.firstMatch(of: htmlRegex6) != nil {
 		var currentParent = parent
 
 		if currentParent.type == "paragraph" {
@@ -305,27 +289,19 @@ func testHtmlCondition6(state: inout BlockParserState, parent: MarkdownNode, tai
 }
 
 func testHtmlCondition7(state: inout BlockParserState, parent: MarkdownNode, tail: String) -> Bool {
-	// Build regex pattern from openTag and closeTag
-	let pattern = "^(?:\(openTag)|\(closeTag))(?:\\s|$)"
-	let regex = try! NSRegularExpression(pattern: pattern)
-	let range = NSRange(location: 0, length: tail.utf16.count)
+	if let match = tail.firstMatch(of: htmlRegex7) {
+		let end = state.i + tail.distance(from: tail.startIndex, to: match.range.upperBound)
 
-	if let match = regex.firstMatch(in: tail, options: [], range: range) {
-		let matchEnd = match.range.location + match.range.length
-		let newlineIndex = (tail as NSString).range(of: "\n").location
-
-		// Check if tag is complete and on its own line
-		let tagRange = match.range(at: 0)
-		let tagName = (tail as NSString).substring(with: tagRange).lowercased()
-		if (newlineIndex != NSNotFound && newlineIndex < matchEnd - 1) ||
-			(state.i + matchEnd < state.src.count && !tagName.hasSuffix("\n"))
-		{
+		if end < state.src.count && !isNewLine(char: state.src[end - 1]) {
 			return false
 		}
+		for i in state.i ..< end - 1 {
+			if isNewLine(char: state.src[i]) {
+				return false
+			}
+		}
 
-		// All types of HTML blocks except type 7 may interrupt a paragraph
 		if parent.type == "paragraph" && !parent.blankAfter {
-			let end = state.i + matchEnd
 			let content = charToString(state.src, from: state.i, to: end)
 			parent.content += content
 			state.i = end

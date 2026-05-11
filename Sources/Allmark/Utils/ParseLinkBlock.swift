@@ -5,7 +5,7 @@ func parseLinkBlock(
 	start: Int,
 	_end _: String
 ) -> LinkReference? {
-	let blankLineRegex = try! NSRegularExpression(pattern: "\\n[ \\t]*\\n", options: [])
+	let blankLineRegex = try! NSRegularExpression(pattern: "\\r?\\n[ \\t]*\\r?\\n", options: [])
 
 	var currentStart = start
 
@@ -42,7 +42,7 @@ func parseLinkBlock(
 	}
 
 	if !url.isEmpty {
-		if url.contains("\r") || url.contains("\n") {
+		if url.contains("\n") || url.contains("\r\n") {
 			return nil
 		}
 		url = decodeEntities(text: url)
@@ -119,7 +119,7 @@ func parseLinkBlock(
 				} else if isSpace(char: src[currentStart]) {
 					currentStart += 1
 				} else {
-					if spaces.contains("\n") {
+					if spaces.contains("\n") || spaces.contains("\r\n") {
 						title = ""
 						currentStart = urlEnd
 						break

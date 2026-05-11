@@ -5,7 +5,7 @@ func parseLinkInline(
 	start: Int,
 	_end _: String
 ) -> LinkReference? {
-	let blankLineRegex = try! NSRegularExpression(pattern: "\\n[ \\t]*\\n", options: [])
+	let blankLineRegex = try! NSRegularExpression(pattern: "\\r?\\n[ \\t]*\\r?\\n", options: [])
 
 	var currentStart = start
 	let src = state.src
@@ -56,7 +56,7 @@ func parseLinkInline(
 	}
 
 	if !url.isEmpty {
-		if url.contains("\r") || url.contains("\n") {
+		if url.contains("\n") || url.contains("\r\n") {
 			return nil
 		}
 		url = decodeEntities(text: url)

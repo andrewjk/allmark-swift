@@ -1,4 +1,4 @@
 
 @inlinable func isNewLine(char: Character) -> Bool {
-	return char == "\r" || char == "\n"
+	return char == "\n" || char == "\r\n"
 }

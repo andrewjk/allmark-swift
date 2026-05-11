@@ -4,261 +4,629 @@ import Testing
 struct ExtInsertionTests {
 	@Test func insertionSingle() async {
 		let input = """
+
 		This text was {+inserted+} recently.
+
 		"""
+
 		let expected = """
 		<p>This text was <ins class="markdown-insertion">inserted</ins> recently.</p>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionDouble() async {
 		let input = """
+
 		This text was {++inserted++} recently.
+
 		"""
+
 		let expected = """
 		<p>This text was <ins class="markdown-insertion">inserted</ins> recently.</p>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionTriple() async {
 		let input = """
+
 		This text was {+++inserted+++} recently.
+
 		"""
+
 		let expected = """
 		<p>This text was {+++inserted+++} recently.</p>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionSingleCharacter() async {
-		let input = "text {+a+} more"
-		let expected = "<p>text <ins class=\"markdown-insertion\">a</ins> more</p>"
+		let input = """
+
+		text {+a+} more
+
+		"""
+
+		let expected = """
+		<p>text <ins class="markdown-insertion">a</ins> more</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionWithSpaces() async {
-		let input = "text {+with spaces+} more"
-		let expected = "<p>text <ins class=\"markdown-insertion\">with spaces</ins> more</p>"
+		let input = """
+
+		text {+with spaces+} more
+
+		"""
+
+		let expected = """
+		<p>text <ins class="markdown-insertion">with spaces</ins> more</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionAtStartOfParagraph() async {
-		let input = "{+inserted+} This is new."
-		let expected = "<p><ins class=\"markdown-insertion\">inserted</ins> This is new.</p>"
+		let input = """
+
+		{+inserted+} This is new.
+
+		"""
+
+		let expected = """
+		<p><ins class="markdown-insertion">inserted</ins> This is new.</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionAtEndOfParagraph() async {
-		let input = "This is {+inserted+}"
-		let expected = "<p>This is <ins class=\"markdown-insertion\">inserted</ins></p>"
+		let input = """
+
+		This is {+inserted+}
+
+		"""
+
+		let expected = """
+		<p>This is <ins class="markdown-insertion">inserted</ins></p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionWithPunctuation() async {
-		let input = "text {+word!+} more"
-		let expected = "<p>text <ins class=\"markdown-insertion\">word!</ins> more</p>"
+		let input = """
+
+		text {+word!+} more
+
+		"""
+
+		let expected = """
+		<p>text <ins class="markdown-insertion">word!</ins> more</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionWithSpecialCharacters() async {
-		let input = "text {+a+b+} more"
-		let expected = "<p>text <ins class=\"markdown-insertion\">a+b</ins> more</p>"
+		let input = """
+
+		text {+a+b+} more
+
+		"""
+
+		let expected = """
+		<p>text <ins class="markdown-insertion">a+b</ins> more</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionAdjacentToText() async {
-		let input = "test{+ing+}test"
-		let expected = "<p>test<ins class=\"markdown-insertion\">ing</ins>test</p>"
+		let input = """
+
+		test{+ing+}test
+
+		"""
+
+		let expected = """
+		<p>test<ins class="markdown-insertion">ing</ins>test</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func emptyInsertion() async {
-		let input = "text{++}text"
-		let expected = "<p>text{++}text</p>"
+		let input = """
+
+		text{++}text
+
+		"""
+
+		let expected = """
+		<p>text{++}text</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionWithMarkdownInside() async {
-		let input = "text {+**bold**+}"
-		let expected = "<p>text <ins class=\"markdown-insertion\"><strong>bold</strong></ins></p>"
+		let input = """
+
+		text {+**bold**+}
+
+		"""
+
+		let expected = """
+		<p>text <ins class="markdown-insertion"><strong>bold</strong></ins></p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionWithCodeInside() async {
-		let input = "text {+`code`+}"
-		let expected = "<p>text <ins class=\"markdown-insertion\"><code>code</code></ins></p>"
+		let input = """
+
+		text {+`code`+}
+
+		"""
+
+		let expected = """
+		<p>text <ins class="markdown-insertion"><code>code</code></ins></p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func escapedBracesShouldNotBeInsertion() async {
-		let input = "text \\{+not insertion\\+}"
-		let expected = "<p>text {+not insertion+}</p>"
+		let input = """
+
+		text \\{+not insertion\\+}
+
+		"""
+
+		let expected = """
+		<p>text {+not insertion+}</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func unmatchedOpeningInsertion() async {
-		let input = "text {+not closed"
-		let expected = "<p>text {+not closed</p>"
+		let input = """
+
+		text {+not closed
+
+		"""
+
+		let expected = """
+		<p>text {+not closed</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func unmatchedClosingInsertion() async {
-		let input = "text not opened+}"
-		let expected = "<p>text not opened+}</p>"
+		let input = """
+
+		text not opened+}
+
+		"""
+
+		let expected = """
+		<p>text not opened+}</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionInListItem() async {
-		let input = "- Item with {+insertion+}"
+		let input = """
+
+		- Item with {+insertion+}
+
+		"""
+
 		let expected = """
 		<ul>
 		<li>Item with <ins class="markdown-insertion">insertion</ins></li>
 		</ul>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionInBlockquote() async {
-		let input = "> Quote with {+insertion+}"
+		let input = """
+
+		> Quote with {+insertion+}
+
+		"""
+
 		let expected = """
 		<blockquote>
 		<p>Quote with <ins class="markdown-insertion">insertion</ins></p>
 		</blockquote>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionWithPlusInside() async {
-		let input = "text {+plus + inside+}"
-		let expected = "<p>text <ins class=\"markdown-insertion\">plus + inside</ins></p>"
+		let input = """
+
+		text {+plus + inside+}
+
+		"""
+
+		let expected = """
+		<p>text <ins class="markdown-insertion">plus + inside</ins></p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionAtBeginningOfDocument() async {
-		let input = "{+Start+} of document."
-		let expected = "<p><ins class=\"markdown-insertion\">Start</ins> of document.</p>"
+		let input = """
+
+		{+Start+} of document.
+
+		"""
+
+		let expected = """
+		<p><ins class="markdown-insertion">Start</ins> of document.</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionAtEndOfDocument() async {
-		let input = "End of {+document+}"
-		let expected = "<p>End of <ins class=\"markdown-insertion\">document</ins></p>"
+		let input = """
+
+		End of {+document+}
+
+		"""
+
+		let expected = """
+		<p>End of <ins class="markdown-insertion">document</ins></p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func multipleInsertionsInOneLine() async {
-		let input = "{+first+} and {+second+} and {+third+}"
-		let expected = "<p><ins class=\"markdown-insertion\">first</ins> and <ins class=\"markdown-insertion\">second</ins> and <ins class=\"markdown-insertion\">third</ins></p>"
+		let input = """
+
+		{+first+} and {+second+} and {+third+}
+
+		"""
+
+		let expected = """
+		<p><ins class="markdown-insertion">first</ins> and <ins class="markdown-insertion">second</ins> and <ins class="markdown-insertion">third</ins></p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionWithStartingEmphasis() async {
-		let input = "{+inserted *text+} that shouldn't be bold*"
-		let expected = "<p><ins class=\"markdown-insertion\">inserted *text</ins> that shouldn't be bold*</p>"
+		let input = """
+
+		{+inserted *text+} that shouldn't be bold*
+
+		"""
+
+		let expected = """
+		<p><ins class="markdown-insertion">inserted *text</ins> that shouldn't be bold*</p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func insertionWithEndingEmphasis() async {
-		let input = "*this text should be {+inserted but not bold*+}"
-		let expected = "<p>*this text should be <ins class=\"markdown-insertion\">inserted but not bold*</ins></p>"
+		let input = """
+
+		*this text should be {+inserted but not bold*+}
+
+		"""
+
+		let expected = """
+		<p>*this text should be <ins class="markdown-insertion">inserted but not bold*</ins></p>
+
+		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: extendedRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: extendedRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 }

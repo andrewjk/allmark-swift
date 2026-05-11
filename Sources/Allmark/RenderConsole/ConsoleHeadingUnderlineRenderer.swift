@@ -14,7 +14,7 @@ func renderConsoleHeadingUnderline(_ node: MarkdownNode, _ state: inout Renderer
 	}
 
 	let style = ansiBold + ansiMagenta
-	if !state.output.isEmpty, !state.output.hasSuffix("\n") {
+	if !state.output.isEmpty, !state.output.hasSuffix("\n"), !state.output.hasSuffix("\r\n") {
 		state.output += "\n"
 	}
 

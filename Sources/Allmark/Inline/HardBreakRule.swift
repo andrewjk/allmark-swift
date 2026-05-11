@@ -19,34 +19,36 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 				indent: 0
 			)
 			hb.length = 2
-			state.i += 2
 			parent.children.append(hb)
+			state.i += 2
 			return true
 		}
 	} else if src[state.i] == " " {
-		var end = state.i
+		var spaces = 1
+		var end = src.count
 		for i in (state.i + 1) ..< src.count {
-			if isNewLine(char: src[i]) {
+			let nextChar = src[i]
+			if isNewLine(char: nextChar) {
 				end = i
 				break
-			} else if src[i] == " " {
-				continue
+			} else if nextChar == " " {
+				spaces += 1
 			} else {
 				return false
 			}
 		}
 
-		if end - state.i >= 2 {
+		if spaces >= 2 {
 			let hb = newInline(
 				type: "hard_break",
 				index: state.parentIndex + state.i,
 				line: state.line,
-				markup: "\\",
+				markup: "  ",
 				indent: 0
 			)
-			hb.length = end - state.i
-			state.i = end + 1
+			hb.length = spaces
 			parent.children.append(hb)
+			state.i = end + 1
 			return true
 		}
 	}

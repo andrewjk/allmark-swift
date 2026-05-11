@@ -120,10 +120,19 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 
 		// Check alphanumeric for email
 		if state.i < src.count {
-			if isAlphaNumeric(char: char) {
-				// TODO: I think we should actually check this when we come across an @,
-				// rather than any alphanumeric
-				let tail = charToString(src, from: state.i)
+			// Check for @ sign for email
+			if char == "@" {
+				// Find start of potential email (first space before @ or beginning of string)
+				var start = 0
+				for i in stride(from: state.i - 1, through: 0, by: -1) {
+					let previousChar = src[i]
+					if isSpace(char: previousChar) {
+						start = i + 1
+						break
+					}
+				}
+
+				let tail = charToString(src, from: start)
 
 				let emailRange = NSRange(location: 0, length: tail.utf16.count)
 				if let emailMatch = extEmailRegex.firstMatch(in: tail, options: [], range: emailRange) {
@@ -136,46 +145,28 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 						// of the email address, in which case it will not be considered
 						// part of the address"
 						if url.hasSuffix("-") || url.hasSuffix("_") {
-							let fullMatchRange = emailMatch.range(at: 0)
-							if let fullRange = Range(fullMatchRange, in: tail) {
-								let markup = escapeHtml(text: String(tail[fullRange]))
-								let text = newText(
-									index: state.parentIndex + state.i,
-									line: state.line,
-									content: markup,
-									indent: state.indent
-								)
-								parent.children.append(text)
-								state.i += tail[fullRange].count
-								return true
-							}
+							return false
 						}
 
 						if let atIndex = url.firstIndex(of: "@") {
 							let afterAt = String(url[url.index(after: atIndex)...])
 							if afterAt.contains("+") {
-								let fullMatchRange = emailMatch.range(at: 0)
-								if let fullRange = Range(fullMatchRange, in: tail) {
-									let markup = escapeHtml(text: String(tail[fullRange]))
-									let text = newText(
-										index: state.parentIndex + state.i,
-										line: state.line,
-										content: markup,
-										indent: state.indent
-									)
-									parent.children.append(text)
-									state.i += tail[fullRange].count
-									return true
-								}
+								return false
 							}
 						}
 
 						url = url.replacingOccurrences(of: "\\.$", with: "", options: .regularExpression)
 
+						// Update the last node's content to remove characters already added
+						let lastNode = parent.children.last!
+						let oldContent = lastNode.content
+						let newContent = String(oldContent.prefix(oldContent.count - (state.i - start)))
+						lastNode.content = newContent
+
 						let link = newLink(url: url, state: state)
 						link.info = "mailto:\(link.info ?? "")"
 						parent.children.append(link)
-						state.i += url.count
+						state.i = start + url.count
 
 						return true
 					}

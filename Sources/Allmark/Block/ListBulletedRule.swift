@@ -29,7 +29,9 @@ func getBulletedListMarkup(state: BlockParserState) -> ListInfo? {
 		}
 
 		let nextChar = src[state.i + 1]
-		if isSpace(char: nextChar) {
+		// Check if next char is a space or newline
+		if isSpace(char: nextChar) || isNewLine(char: nextChar) {
+			// If it's a newline directly after the marker, it's blank
 			let isBlank = isNewLine(char: nextChar)
 			return ListInfo(
 				delimiter: String(char),

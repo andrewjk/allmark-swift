@@ -4,10 +4,14 @@ import Testing
 struct GfmTableTests {
 	@Test func specTable() async {
 		let input = """
+
 		| foo | bar |
 		| --- | --- |
 		| baz | bim |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -23,21 +27,34 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithAlignment() async {
 		let input = """
+
 		| Left | Center | Right |
 		| :--- | :----: | ----: |
 		| foo  |  bar   |   baz |
 		| a    |   b    |     c |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -60,22 +77,35 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithInlineFormatting() async {
 		let input = """
+
 		| Text | Code |
 		| ---- | ---- |
 		| **bold** | `code` |
 		| *italic* | [link](url) |
 		| ~~strike~~ | `multi` |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -99,21 +129,34 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithMissingCells() async {
 		let input = """
+
 		| a | b | c |
 		| - | - | - |
 		| 1 | 2 |
 		| 1 |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -136,20 +179,33 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithExtraCells() async {
 		let input = """
+
 		| a | b |
 		| - | - |
 		| 1 | 2 | 3 | 4 |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -165,19 +221,32 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithOnlyHeader() async {
 		let input = """
+
 		| foo | bar |
 		| --- | --- |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -187,21 +256,34 @@ struct GfmTableTests {
 		</tr>
 		</thead>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithEmptyCells() async {
 		let input = """
+
 		| a | b | c |
 		| - | - | - |
 		|   | 2 |   |
 		| 1 |   | 3 |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -224,40 +306,66 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithoutOuterPipes() async {
 		let input = """
+
 		a | b | c
 		- | - | -
 		1 | 2 | 3
+
+
 		"""
+
 		let expected = """
 		<p>a | b | c</p>
 		<ul>
 		<li>| - | -
 		1 | 2 | 3</li>
 		</ul>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithWhitespaceVariations() async {
 		let input = """
+
 		|  a  |  b  |  c  |
 		| --- | --- | --- |
 		| 1   |   2 |3    |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -275,23 +383,36 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithMixedContentTypes() async {
 		let input = """
+
 		| Type | Example |
 		| ---- | ------- |
 		| Text | plain text |
 		| Code | `inline` |
 		| Bold | **strong** |
 		| Link | [text](http://example.com) |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -319,21 +440,34 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithSingleColumn() async {
 		let input = """
+
 		| Column |
 		| ------ |
 		| data   |
 		| more   |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -350,21 +484,34 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 
 	@Test func tableWithManyColumns() async {
 		let input = """
+
 		| A | B | C | D | E | F |
 		| - | - | - | - | - | - |
 		| 1 | 2 | 3 | 4 | 5 | 6 |
 		| a | b | c | d | e | f |
+
+
 		"""
+
 		let expected = """
 		<table>
 		<thead>
@@ -396,11 +543,20 @@ struct GfmTableTests {
 		</tr>
 		</tbody>
 		</table>
+
 		"""
+
 		await MainActor.run {
-			let doc = _parse(src: input, rules: gfmRuleSet)
-			let html = _render(doc: doc, renderers: htmlRenderers)
-			#expect(html.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+			let htmlSpaced = _transform(src: input, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlSpaced == expected)
+
+			let inputTrimmed = String(input[input.index(after: input.startIndex) ..< input.index(before: input.endIndex)])
+			let htmlTrimmed = _transform(src: inputTrimmed, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlTrimmed == expected)
+
+			let inputCrLf = input.replacingOccurrences(of: "\n", with: "\r\n")
+			let htmlCrLf = _transform(src: inputCrLf, rules: gfmRuleSet, renderers: htmlRenderers)
+			#expect(htmlCrLf.replacingOccurrences(of: "\r\n", with: "\n") == expected)
 		}
 	}
 }

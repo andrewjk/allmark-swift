@@ -11,14 +11,7 @@ func parseInline(state: inout InlineParserState, parent: MarkdownNode) {
 	while state.i < src.count {
 		let char = src[state.i]
 
-		if char == "\r" || char == "\n" {
-			// Treat Windows \r\n as \n
-			if char == "\r", state.i + 1 < src.count {
-				if src[state.i + 1] == "\n" {
-					state.i += 1
-				}
-			}
-
+		if isNewLine(char: char) {
 			state.line += 1
 			state.lineStart = state.i
 		}
