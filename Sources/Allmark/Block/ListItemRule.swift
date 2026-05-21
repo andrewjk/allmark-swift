@@ -56,21 +56,11 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 					}
 				}
 			}
-			// Break only when content is inside this nesting level, otherwise
-			// continue walking up to check ancestor lists
-			if let item = itemNode, state.indent >= item.subindent {
-				break
-			}
 		} else if openNode.type == "list_bulleted" {
 			if let item = itemNode {
 				if state.indent <= 3 && state.indent < item.subindent && String(char) == node.delimiter {
 					return false
 				}
-			}
-			// Break only when content is inside this nesting level, otherwise
-			// continue walking up to check ancestor lists
-			if let item = itemNode, state.indent >= item.subindent {
-				break
 			}
 		}
 		i -= 1

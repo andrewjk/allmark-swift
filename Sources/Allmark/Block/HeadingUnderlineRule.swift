@@ -7,7 +7,7 @@ import Foundation
 let headingUnderlineRule = BlockRule(
 	name: "heading_underline",
 	testStart: testHeadingUnderlineStart,
-	testContinue: testHeadingUnderlineContinue,
+	testContinue: { _, _ in false },
 	closeNode: { _, _ in }
 )
 
@@ -77,9 +77,5 @@ func testHeadingUnderlineStart(state: inout BlockParserState, parent: MarkdownNo
 		}
 	}
 
-	return false
-}
-
-func testHeadingUnderlineContinue(state _: inout BlockParserState, node _: MarkdownNode) -> Bool {
 	return false
 }

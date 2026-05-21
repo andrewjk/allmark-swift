@@ -6,8 +6,12 @@ let listOrderedRule = BlockRule(
 	name: "list_ordered",
 	testStart: testListOrderedStart,
 	testContinue: testListOrderedContinue,
-	closeNode: { _, _ in }
+	closeNode: closeListOrderedNode
 )
+
+func closeListOrderedNode(_: inout BlockParserState, _ node: MarkdownNode) {
+	node.loose = isLooseList(node)
+}
 
 func getOrderedListMarkup(state: BlockParserState) -> ListInfo? {
 	let src = state.src

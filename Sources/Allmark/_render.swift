@@ -1,13 +1,14 @@
 import Foundation
 
-func _render(doc: MarkdownNode, renderers: [Renderer] = htmlRenderers) -> String {
+func _render(doc: MarkdownNode, renderers: [Renderer] = htmlRenderers, lineWidth: Int? = nil) -> String {
 	let renderersMap = Dictionary(uniqueKeysWithValues: renderers.map { ($0.name, $0) })
 
 	var state = RendererState(
 		renderersMap: renderersMap,
 		output: "",
 		footnotes: [],
-		listDepth: 0
+		listDepth: 0,
+		lineWidth: lineWidth
 	)
 
 	renderChildren(node: doc, state: &state)

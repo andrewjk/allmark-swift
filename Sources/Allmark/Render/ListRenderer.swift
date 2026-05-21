@@ -19,35 +19,10 @@ func renderList(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 	state.output += "<\(ordered ? "ol\(start)" : "ul")>"
 	innerNewLine(node: node, state: &state)
 
-	var loose = false
-	for i in 0 ..< (node.children.count - 1) {
-		let child = node.children[i]
-		if let grandchild = child.children.last, grandchild.blankAfter {
-			child.blankAfter = true
-		}
-		if child.blankAfter {
-			loose = true
-			break
-		}
-	}
-
-	for child in node.children {
-		if !child.children.isEmpty {
-			for j in 0 ..< (child.children.count - 1) {
-				let first = child.children[j]
-				let second = child.children[j + 1]
-				if first.block, first.blankAfter, second.block {
-					loose = true
-					break
-				}
-			}
-		}
-	}
-
 	for item in node.children {
 		state.output += "<li>"
 		for (i, child) in item.children.enumerated() {
-			if !loose, child.type == "paragraph" {
+			if !node.loose, child.type == "paragraph" {
 				renderChildren(node: child, state: &state)
 			} else {
 				if i == 0 {

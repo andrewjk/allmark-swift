@@ -6,8 +6,12 @@ let listBulletedRule = BlockRule(
 	name: "list_bulleted",
 	testStart: testListBulletedStart,
 	testContinue: testListBulletedContinue,
-	closeNode: { _, _ in }
+	closeNode: closeListBulletedNode
 )
+
+func closeListBulletedNode(_: inout BlockParserState, _ node: MarkdownNode) {
+	node.loose = isLooseList(node)
+}
 
 func getBulletedListMarkup(state: BlockParserState) -> ListInfo? {
 	let src = state.src

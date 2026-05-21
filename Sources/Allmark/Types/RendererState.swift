@@ -12,12 +12,15 @@ public struct RendererState {
 	public var footnoteRefs: [String: MarkdownNode]
 	/// Current list nesting depth.
 	public var listDepth: Int
+	/// Optional line width for console table wrapping.
+	public var lineWidth: Int?
 
-	public init(renderersMap: [String: Renderer], output: String, footnotes: [MarkdownNode], listDepth: Int = 0) {
+	public init(renderersMap: [String: Renderer], output: String, footnotes: [MarkdownNode], listDepth: Int = 0, lineWidth: Int? = nil) {
 		self.renderersMap = renderersMap
 		self.output = output
 		self.footnotes = footnotes
 		footnoteRefs = [:]
 		self.listDepth = listDepth
+		self.lineWidth = lineWidth
 	}
 }

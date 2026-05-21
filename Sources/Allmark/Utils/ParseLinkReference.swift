@@ -1,9 +1,8 @@
 import Foundation
 
-func parseLinkBlock(
+func parseLinkReference(
 	state: inout BlockParserState,
-	start: Int,
-	_end _: String
+	start: Int
 ) -> LinkReference? {
 	let blankLineRegex = try! NSRegularExpression(pattern: "\\r?\\n[ \\t]*\\r?\\n", options: [])
 
@@ -42,9 +41,6 @@ func parseLinkBlock(
 	}
 
 	if !url.isEmpty {
-		if url.contains("\n") || url.contains("\r\n") {
-			return nil
-		}
 		url = decodeEntities(text: url)
 		url = escapeBackslashes(text: url)
 		// HACK:

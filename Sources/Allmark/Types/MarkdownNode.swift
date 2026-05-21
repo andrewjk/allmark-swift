@@ -24,6 +24,8 @@ public class MarkdownNode {
 	public var subindent: Int
 	/// Whether this node is followed by a blank line.
 	public var blankAfter: Bool
+	/// Whether this list node is loose (has blank lines between items).
+	public var loose: Bool
 	/// Whether this node contains plain text content, rather than parsed Markdown.
 	public var acceptsContent: Bool
 	/// Whether this node ends with a paragraph that may lazily continue.
@@ -58,6 +60,7 @@ public class MarkdownNode {
 		acceptsContent = false
 		maybeContinuing = false
 		blankAfter = false
+		loose = false
 		self.children = children
 	}
 }

@@ -206,3 +206,38 @@ func testListContinue(state: inout BlockParserState, node: MarkdownNode, info: L
 func isListType(_ nodeType: String) -> Bool {
 	return nodeType.hasPrefix("list_") && nodeType != "list_item"
 }
+
+func isLooseList(_ node: MarkdownNode) -> Bool {
+	var loose = false
+
+	if node.children.count > 1 {
+		for i in 0 ..< (node.children.count - 1) {
+			let child = node.children[i]
+			if let grandchild = child.children.last {
+				if grandchild.blankAfter {
+					child.blankAfter = true
+				}
+			}
+			if child.blankAfter {
+				loose = true
+				break
+			}
+		}
+	}
+
+	for i in 0 ..< node.children.count {
+		let child = node.children[i]
+		if child.children.count > 1 {
+			for j in 0 ..< (child.children.count - 1) {
+				let first = child.children[j]
+				let second = child.children[j + 1]
+				if first.block && first.blankAfter && second.block {
+					loose = true
+					break
+				}
+			}
+		}
+	}
+
+	return loose
+}

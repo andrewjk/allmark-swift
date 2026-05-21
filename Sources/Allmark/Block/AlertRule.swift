@@ -36,17 +36,7 @@ func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 		let range = NSRange(location: 0, length: tail.utf16.count)
 
 		if let match = alertRegex.firstMatch(in: tail, options: [], range: range) {
-			var closedNode: MarkdownNode? = nil
-			var currentParent = parent
-
-			if currentParent.type == "paragraph" {
-				closedNode = state.openNodes.popLast()
-				currentParent = state.openNodes.last!
-			}
-
-			if closedNode != nil {
-				closeNode(state: &state, node: closedNode!)
-			}
+			let currentParent = parent
 
 			let alertTypeRange = match.range(at: 1)
 			let alertType = (tail as NSString).substring(with: alertTypeRange).lowercased()
@@ -72,7 +62,7 @@ func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 	return false
 }
 
-func testAlertContinue(state: inout BlockParserState, node: MarkdownNode) -> Bool {
+func testAlertContinue(state: inout BlockParserState, _node _: MarkdownNode) -> Bool {
 	let src = state.src
 	if state.i >= src.count {
 		return false
@@ -87,13 +77,6 @@ func testAlertContinue(state: inout BlockParserState, node: MarkdownNode) -> Boo
 
 	if state.hasBlankLine {
 		return false
-	}
-
-	let openNode = state.openNodes.last!
-	if openNode.type == "paragraph" {
-		state.maybeContinue = true
-		node.maybeContinuing = true
-		return true
 	}
 
 	return false

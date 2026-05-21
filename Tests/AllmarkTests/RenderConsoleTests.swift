@@ -509,6 +509,97 @@ struct RenderConsoleTests {
 		}
 	}
 
+	@Test func wrapsTableCellsAtWordBoundariesToFitLineWidth() async {
+		let input = "| Name | Description |\n|------|-------------|\n| foo | This is a long text |"
+		let expected = """
+		┌──────┬────────────────┐
+		│ Name │ Description    │
+		├──────┼────────────────┤
+		│ foo  │ This is a long │
+		│      │ text           │
+		└──────┴────────────────┘
+		"""
+
+		await MainActor.run {
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 25))
+			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
+
+	@Test func wrapsTableCellsAcrossMultipleLines() async {
+		let input = "| ID | Status  | Description |\n|----|---------|-------------|\n| 1  | active  | This is a very long description that needs to be wrapped |\n| 2  | pending | Short |"
+		let expected = """
+		┌────┬─────────┬─────────────────────┐
+		│ ID │ Status  │ Description         │
+		├────┼─────────┼─────────────────────┤
+		│ 1  │ active  │ This is a very long │
+		│    │         │ description that    │
+		│    │         │ needs to be wrapped │
+		│ 2  │ pending │ Short               │
+		└────┴─────────┴─────────────────────┘
+		"""
+
+		await MainActor.run {
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 40))
+			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
+
+	@Test func doesNotWrapTableWhenItFitsWithinLineWidth() async {
+		let input = "| A | B |\n|---|---|\n| 1 | 2 |"
+		let expected = """
+		┌───┬───┐
+		│ A │ B │
+		├───┼───┤
+		│ 1 │ 2 │
+		└───┴───┘
+		"""
+
+		await MainActor.run {
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 80))
+			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
+
+	@Test func wrapsMultipleColumnsToFitLineWidth() async {
+		let input = "| Column A | Column B |\n|----------|----------|\n| first long text here | second long text here |"
+		let expected = """
+		┌────────────┬─────────────┐
+		│ Column A   │ Column B    │
+		├────────────┼─────────────┤
+		│ first long │ second long │
+		│ text here  │ text here   │
+		└────────────┴─────────────┘
+		"""
+
+		await MainActor.run {
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 30))
+			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
+
+	@Test func wrapsAlignedColumnsToFitLineWidth() async {
+		let input = "| Column A | Column B |\n|----------|---------:|\n| first long text here | second long text here |"
+		let expected = """
+		┌────────────┬─────────────┐
+		│ Column A   │    Column B │
+		├────────────┼─────────────┤
+		│ first long │ second long │
+		│ text here  │   text here │
+		└────────────┴─────────────┘
+		"""
+
+		await MainActor.run {
+			let doc = _parse(src: input, rules: gfmRuleSet)
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 30))
+			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+		}
+	}
+
 	@Test func rendersStrongText() async {
 		let input = "**bold**"
 		let expected = "\u{001B}[1m\u{001B}[33mbold\u{001B}[0m\n"

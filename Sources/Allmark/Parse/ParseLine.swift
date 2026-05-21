@@ -22,7 +22,12 @@ func parseLine(state: inout BlockParserState) {
 		if rule.testContinue(&state, node) {
 			parseIndent(state: &state)
 		} else {
-			closeNode(state: &state, node: node)
+			var j = state.openNodes.count
+			while j > i {
+				j -= 1
+				let openNode = state.openNodes[j]
+				closeNode(state: &state, node: openNode)
+			}
 			state.openNodes.removeSubrange(i...)
 			break
 		}

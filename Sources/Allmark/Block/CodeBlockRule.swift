@@ -29,34 +29,7 @@ func testCodeBlockStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 	let char = src[state.i]
 
 	if state.indent >= 4 && !isNewLine(char: char) {
-		var closedNode: MarkdownNode? = nil
-		var currentParent = parent
-
-		// TODO: rule.canContain?? e.g. list_ordered.canContain = ["list_item"] etc
-		if currentParent.type == "list_ordered" || currentParent.type == "list_bulleted" {
-			closedNode = state.openNodes.popLast()
-			currentParent = state.openNodes.last!
-		}
-
-		if state.maybeContinue {
-			state.maybeContinue = false
-			var i = state.openNodes.count - 1
-			while i > 0 {
-				let node = state.openNodes[i]
-				if node.maybeContinuing {
-					node.maybeContinuing = false
-					closedNode = node
-					state.openNodes.removeSubrange(i...)
-					break
-				}
-				i -= 1
-			}
-			currentParent = state.openNodes.last!
-		}
-
-		if closedNode != nil {
-			closeNode(state: &state, node: closedNode!)
-		}
+		let currentParent = parent
 
 		let codeIndent = state.indent - 4
 

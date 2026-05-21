@@ -25,11 +25,6 @@ let extXmppRegex = try! NSRegularExpression(
 )
 
 func testExtendedAutolink(state: inout InlineParserState, parent: inout MarkdownNode) -> Bool {
-	// Don't try to extract HTML for HTML blocks
-	if parent.type == "html_block" {
-		return false
-	}
-
 	let src = state.src
 	guard state.i < src.count else { return false }
 

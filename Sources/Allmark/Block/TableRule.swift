@@ -5,7 +5,10 @@ import Foundation
 let tableRule = BlockRule(
 	name: "table",
 	testStart: testTableStart,
-	testContinue: testTableContinue,
+	// Just close the table every time, and check whether the last node was a
+	// table in testStart. That way we can interrupt tables with e.g.
+	// blockquotes, even if the blockquote contains a pipe
+	testContinue: { _, _ in false },
 	closeNode: { _, _ in }
 )
 
@@ -133,30 +136,7 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 				return false
 			}
 
-			var closedNode: MarkdownNode?
-			var mutableParent = parent
-
-			if state.maybeContinue {
-				state.maybeContinue = false
-				var i = state.openNodes.count - 1
-				while i > 0 {
-					let node = state.openNodes[i]
-					if node.maybeContinuing {
-						node.maybeContinuing = false
-						closedNode = node
-						state.openNodes.removeSubrange(i...)
-						break
-					}
-					i -= 1
-				}
-				if let last = state.openNodes.last {
-					mutableParent = last
-				}
-			}
-
-			if let closed = closedNode {
-				closeNode(state: &state, node: closed)
-			}
+			let mutableParent = parent
 
 			let headerIndex = parent.index
 			var headerLength = parent.content.count
@@ -198,13 +178,6 @@ func testTableStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 		}
 	}
 
-	return false
-}
-
-func testTableContinue(state _: inout BlockParserState, node _: MarkdownNode) -> Bool {
-	// Just close the table every time, and check whether the last node was a
-	// table in testStart. That way we can interrupt tables with e.g.
-	// blockquotes, even if the blockquote contains a pipe
 	return false
 }
 

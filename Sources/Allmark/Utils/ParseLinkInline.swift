@@ -2,20 +2,13 @@ import Foundation
 
 func parseLinkInline(
 	state: inout InlineParserState,
-	start: Int,
-	_end _: String
+	start: Int
 ) -> LinkReference? {
-	let blankLineRegex = try! NSRegularExpression(pattern: "\\r?\\n[ \\t]*\\r?\\n", options: [])
-
 	var currentStart = start
 	let src = state.src
 
 	// Consume spaces
 	var spaces = consumeSpaces(text: src, i: currentStart)
-	let spacesRange = NSRange(location: 0, length: spaces.utf16.count)
-	if blankLineRegex.firstMatch(in: spaces, options: [], range: spacesRange) != nil {
-		return nil
-	}
 	currentStart += spaces.count
 
 	// Get the url
@@ -111,15 +104,6 @@ func parseLinkInline(
 	}
 
 	if !title.isEmpty {
-		if spaces.isEmpty {
-			return nil
-		}
-
-		let titleRange = NSRange(location: 0, length: title.utf16.count)
-		if blankLineRegex.firstMatch(in: title, options: [], range: titleRange) != nil {
-			return nil
-		}
-
 		title = decodeEntities(text: title)
 		title = escapeBackslashes(text: title)
 		title = escapeHtml(text: title)

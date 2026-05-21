@@ -135,7 +135,7 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 				var link: LinkReference?
 				if hasInfo {
 					start += 1
-					link = parseLinkInline(state: &state, start: start, _end: ")")
+					link = parseLinkInline(state: &state, start: start)
 				} else if hasRef {
 					start += 1
 					for i in start ..< src.count {

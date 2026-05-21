@@ -34,8 +34,8 @@ public enum Allmark {
 	///   - doc: The root node of the AST to render.
 	///   - renderers: The renderer array to use (defaults to HTML).
 	/// - Returns: The rendered output string.
-	public static func render(doc: MarkdownNode, renderers: [Renderer] = htmlRenderers) -> String {
-		return _render(doc: doc, renderers: renderers)
+	public static func render(doc: MarkdownNode, renderers: [Renderer] = htmlRenderers, lineWidth: Int? = nil) -> String {
+		return _render(doc: doc, renderers: renderers, lineWidth: lineWidth)
 	}
 
 	/// Parse and render Markdown in one step.
@@ -44,7 +44,7 @@ public enum Allmark {
 	///   - rules: The ruleset to use for parsing.
 	///   - renderers: The renderer array to use.
 	/// - Returns: The rendered output string.
-	public static func transform(src: String, rules: RuleSet, renderers: [Renderer]) -> String {
-		return _transform(src: src, rules: rules, renderers: renderers)
+	public static func transform(src: String, rules: RuleSet, renderers: [Renderer], lineWidth: Int? = nil) -> String {
+		return _transform(src: src, rules: rules, renderers: renderers, lineWidth: lineWidth)
 	}
 }
