@@ -13,9 +13,9 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	let char = src[state.i]
+	var char = src[state.i]
 
-	let lastNode = parent.children.last
+	var lastNode = parent.children.last
 	if lastNode == nil || lastNode?.type != "text" {
 		let newTextNode = newText(
 			index: state.parentIndex + state.i,
@@ -24,6 +24,7 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 			indent: 0
 		)
 		parent.children.append(newTextNode)
+		lastNode = newTextNode
 	} else if isNewLine(char: char) {
 		if let last = lastNode {
 			var content = last.content
@@ -32,6 +33,26 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 			}
 			last.content = content
 			last.length = content.count
+		}
+		if state.i + 1 < src.count, isSpace(char: src[state.i + 1]) {
+			lastNode!.content += String(char)
+			lastNode!.length = lastNode!.content.count
+			state.i += 2
+			while state.i < src.count, isSpace(char: src[state.i]) {
+				state.i += 1
+			}
+			lastNode = newText(
+				index: state.parentIndex + state.i,
+				line: state.line,
+				content: "",
+				indent: 0
+			)
+			parent.children.append(lastNode!)
+			if state.i < src.count {
+				char = src[state.i]
+			} else {
+				return true
+			}
 		}
 	}
 

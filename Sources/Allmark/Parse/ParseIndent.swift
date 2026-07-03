@@ -9,6 +9,7 @@ func parseIndent(state: inout BlockParserState) {
 		return
 	}
 
+	let start = state.i
 	while state.i < src.count {
 		let char = src[state.i]
 
@@ -25,4 +26,5 @@ func parseIndent(state: inout BlockParserState) {
 
 		state.i += 1
 	}
+	state.spaces = String(src[start ..< state.i])
 }

@@ -682,4 +682,50 @@ struct SourceMappingTests {
 			#expect(deletion.length == 8)
 		}
 	}
+
+	@Test func paragraphWithSpacesAfterNewline() async {
+		let input = "Test\n  text with `spaces`"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let paragraph = doc.children[0]
+			#expect(paragraph.children.count == 3)
+			let text = paragraph.children[0]
+			#expect(text.type == "text")
+			#expect(text.index == 0)
+			#expect(text.length == 5)
+			let text2 = paragraph.children[1]
+			#expect(text2.type == "text")
+			#expect(text2.index == 7)
+			#expect(text2.length == 10)
+			let code = paragraph.children[2]
+			#expect(code.type == "code_span")
+			#expect(code.index == 17)
+			#expect(code.length == 8)
+		}
+	}
+
+	@Test func paragraphWithSpacesAfterHardBreak() async {
+		let input = "Test  \n  text with `spaces`"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let paragraph = doc.children[0]
+			#expect(paragraph.children.count == 4)
+			let text = paragraph.children[0]
+			#expect(text.type == "text")
+			#expect(text.index == 0)
+			#expect(text.length == 4)
+			let br = paragraph.children[1]
+			#expect(br.type == "hard_break")
+			#expect(br.index == 4)
+			#expect(br.length == 2)
+			let text2 = paragraph.children[2]
+			#expect(text2.type == "text")
+			#expect(text2.index == 9)
+			#expect(text2.length == 10)
+			let code = paragraph.children[3]
+			#expect(code.type == "code_span")
+			#expect(code.index == 19)
+			#expect(code.length == 8)
+		}
+	}
 }

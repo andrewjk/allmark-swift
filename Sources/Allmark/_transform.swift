@@ -1,6 +1,6 @@
 import Foundation
 
-func _transform(src: String, rules: RuleSet, renderers: [Renderer], lineWidth: Int? = nil) -> String {
+func _transform(src: String, rules: RuleSet, renderers: [Renderer], options: RenderOptions? = nil) -> String {
 	let doc = _parse(src: src, rules: rules)
-	return _render(doc: doc, renderers: renderers, lineWidth: lineWidth)
+	return _render(doc: doc, renderers: renderers, options: options)
 }

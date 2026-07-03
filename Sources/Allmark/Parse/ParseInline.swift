@@ -12,6 +12,7 @@ func parseInline(state: inout InlineParserState, parent: MarkdownNode) {
 		let char = src[state.i]
 
 		if isNewLine(char: char) {
+			state.indent = 0
 			state.line += 1
 			state.lineStart = state.i
 		}

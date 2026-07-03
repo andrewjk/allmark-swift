@@ -20,7 +20,7 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 			)
 			hb.length = 2
 			parent.children.append(hb)
-			state.i += 2
+			handleHardBreakEnd(state: &state, end: state.i + 2)
 			return true
 		}
 	} else if src[state.i] == " " {
@@ -48,10 +48,21 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 			)
 			hb.length = spaces
 			parent.children.append(hb)
-			state.i = end + 1
+			handleHardBreakEnd(state: &state, end: end + 1)
 			return true
 		}
 	}
 
 	return false
+}
+
+func handleHardBreakEnd(state: inout InlineParserState, end: Int) {
+	state.i = end
+	state.line += 1
+	state.lineStart = state.i
+
+	if state.i < state.src.count, isSpace(char: state.src[state.i]) {
+		let space = consumeSpaces(text: state.src, i: state.i)
+		state.i += space.count
+	}
 }

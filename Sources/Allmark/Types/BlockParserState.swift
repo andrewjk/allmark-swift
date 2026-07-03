@@ -17,6 +17,8 @@ public struct BlockParserState {
 	public var lineStart: Int
 	/// Current indentation level.
 	public var indent: Int
+	/// Spaces string for source mapping.
+	public var spaces: String
 	/// Stack of currently open nodes.
 	public var openNodes: [MarkdownNode]
 	/// Whether the current character is escaped.
@@ -30,7 +32,7 @@ public struct BlockParserState {
 	/// Footnote reference definitions.
 	public var footnotes: [String: FootnoteReference]
 
-	public init(rules: [BlockRule], rulesMap: [String: BlockRule], src: [Character], i: Int, line: Int, lineStart: Int, indent: Int, openNodes: [MarkdownNode], isEscaped: Bool, maybeContinue: Bool, hasBlankLine: Bool, refs: [String: LinkReference], footnotes: [String: FootnoteReference]) {
+	public init(rules: [BlockRule], rulesMap: [String: BlockRule], src: [Character], i: Int, line: Int, lineStart: Int, indent: Int, spaces: String, openNodes: [MarkdownNode], isEscaped: Bool, maybeContinue: Bool, hasBlankLine: Bool, refs: [String: LinkReference], footnotes: [String: FootnoteReference]) {
 		self.rules = rules
 		self.rulesMap = rulesMap
 		self.src = src
@@ -38,6 +40,7 @@ public struct BlockParserState {
 		self.line = line
 		self.lineStart = lineStart
 		self.indent = indent
+		self.spaces = spaces
 		self.openNodes = openNodes
 		self.isEscaped = isEscaped
 		self.maybeContinue = maybeContinue

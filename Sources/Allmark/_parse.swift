@@ -44,6 +44,7 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 		line: 0,
 		lineStart: 0,
 		indent: 0,
+		spaces: "",
 		openNodes: [document],
 		isEscaped: false,
 		maybeContinue: false,

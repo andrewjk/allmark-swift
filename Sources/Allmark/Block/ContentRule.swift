@@ -16,14 +16,16 @@ func testContentStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 	let content = charToString(src, from: state.i, to: endOfLine)
 
 	if parent.acceptsContent {
-		if !state.hasBlankLine {
+		if state.hasBlankLine {
+			state.hasBlankLine = false
+		} else {
 			parent.content += String(repeating: " ", count: state.indent)
 		}
-		parent.content += content
-		state.hasBlankLine = false
 	} else {
-		parent.content += content
+		parent.content += state.spaces
+		state.spaces = ""
 	}
+	parent.content += content
 
 	state.i = endOfLine
 	return true

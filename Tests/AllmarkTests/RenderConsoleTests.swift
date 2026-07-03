@@ -522,7 +522,7 @@ struct RenderConsoleTests {
 
 		await MainActor.run {
 			let doc = _parse(src: input, rules: gfmRuleSet)
-			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 25))
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, options: RenderOptions(lineWidth: 25)))
 			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -542,7 +542,7 @@ struct RenderConsoleTests {
 
 		await MainActor.run {
 			let doc = _parse(src: input, rules: gfmRuleSet)
-			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 40))
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, options: RenderOptions(lineWidth: 40)))
 			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -559,7 +559,7 @@ struct RenderConsoleTests {
 
 		await MainActor.run {
 			let doc = _parse(src: input, rules: gfmRuleSet)
-			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 80))
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, options: RenderOptions(lineWidth: 80)))
 			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -577,7 +577,7 @@ struct RenderConsoleTests {
 
 		await MainActor.run {
 			let doc = _parse(src: input, rules: gfmRuleSet)
-			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 30))
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, options: RenderOptions(lineWidth: 30)))
 			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
@@ -595,7 +595,7 @@ struct RenderConsoleTests {
 
 		await MainActor.run {
 			let doc = _parse(src: input, rules: gfmRuleSet)
-			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, lineWidth: 30))
+			let output = stripAnsiCodes(_render(doc: doc, renderers: consoleRenderers, options: RenderOptions(lineWidth: 30)))
 			#expect(output.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
 		}
 	}
