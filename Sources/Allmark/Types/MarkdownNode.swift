@@ -1,7 +1,7 @@
 import Foundation
 
 /// A node in the Markdown AST.
-public class MarkdownNode {
+public final class MarkdownNode: @unchecked Sendable {
 	/// The node type (e.g., "paragraph", "heading", "emphasis").
 	public var type: String
 	/// Whether this is a block-level node.
