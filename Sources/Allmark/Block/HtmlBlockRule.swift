@@ -47,13 +47,22 @@ func testHtmlBlockStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 	if !state.isEscaped && state.indent <= 3 && char == "<" {
 		let tail = charToString(src, from: state.i)
 
-		if testHtmlCondition1(state: &state, parent: parent, tail: tail) { return true }
+		if testHtmlCondition1(state: &state, parent: parent, tail: tail) {
+			return true
+		}
 		if testHtmlCondition2to5(state: &state, parent: parent, tail: tail, regex: htmlRegex2)
 			|| testHtmlCondition2to5(state: &state, parent: parent, tail: tail, regex: htmlRegex3)
 			|| testHtmlCondition2to5(state: &state, parent: parent, tail: tail, regex: htmlRegex4)
-			|| testHtmlCondition2to5(state: &state, parent: parent, tail: tail, regex: htmlRegex5) { return true }
-		if testHtmlCondition6(state: &state, parent: parent, tail: tail) { return true }
-		if testHtmlCondition7(state: &state, parent: parent, tail: tail) { return true }
+			|| testHtmlCondition2to5(state: &state, parent: parent, tail: tail, regex: htmlRegex5)
+		{
+			return true
+		}
+		if testHtmlCondition6(state: &state, parent: parent, tail: tail) {
+			return true
+		}
+		if testHtmlCondition7(state: &state, parent: parent, tail: tail) {
+			return true
+		}
 	}
 
 	return false

@@ -13,7 +13,7 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	var char = src[state.i]
+	let char = src[state.i]
 
 	var lastNode = parent.children.last
 	if lastNode == nil || lastNode?.type != "text" {
@@ -48,11 +48,7 @@ func testText(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 				indent: 0
 			)
 			parent.children.append(lastNode!)
-			if state.i < src.count {
-				char = src[state.i]
-			} else {
-				return true
-			}
+			return true
 		}
 	}
 

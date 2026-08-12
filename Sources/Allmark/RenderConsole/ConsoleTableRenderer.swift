@@ -167,9 +167,13 @@ func fitColumns(_ columnWidths: [Int], lineWidth: Int, numColumns: Int, cellText
 	while targetWidths.reduce(0, +) > available {
 		var maxIdx = 0
 		for i in 1 ..< targetWidths.count {
-			if targetWidths[i] > targetWidths[maxIdx] { maxIdx = i }
+			if targetWidths[i] > targetWidths[maxIdx] {
+				maxIdx = i
+			}
 		}
-		if targetWidths[maxIdx] <= minWidths[maxIdx] { break }
+		if targetWidths[maxIdx] <= minWidths[maxIdx] {
+			break
+		}
 		targetWidths[maxIdx] -= 1
 	}
 
@@ -190,8 +194,12 @@ func wrapAllCells(_ cellTexts: [[String]], _ targetWidths: [Int]) -> [[[String]]
 }
 
 func wrapText(_ text: String, _ maxWidth: Int) -> [String] {
-	if maxWidth <= 0 { return [text] }
-	if text.count <= maxWidth { return [text] }
+	if maxWidth <= 0 {
+		return [text]
+	}
+	if text.count <= maxWidth {
+		return [text]
+	}
 	let words = text.split(separator: " ").map(String.init)
 	var lines: [String] = []
 	var currentLine = ""
@@ -205,6 +213,8 @@ func wrapText(_ text: String, _ maxWidth: Int) -> [String] {
 			currentLine = word
 		}
 	}
-	if !currentLine.isEmpty { lines.append(currentLine) }
+	if !currentLine.isEmpty {
+		lines.append(currentLine)
+	}
 	return lines
 }
