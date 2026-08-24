@@ -15,11 +15,11 @@ let alertRegex = try! NSRegularExpression(
 	options: [.caseInsensitive]
 )
 
-func hasAlertMarkup(char: Character, state: BlockParserState) -> Bool {
-	return state.indent <= 3 && char == ">"
+func hasAlertMarkup(char: UInt8, state: BlockParserState) -> Bool {
+	return state.indent <= 3 && char == ANGLE_RIGHT_CODE
 }
 
-func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
+func testAlertStart(state: inout BlockParserState, parent: MarkdownNode, endOfLine _: Int) -> Bool {
 	if parent.acceptsContent {
 		return false
 	}
@@ -32,7 +32,7 @@ func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 	let char = src[state.i]
 
 	if hasAlertMarkup(char: char, state: state) {
-		let tail = charToString(src, from: state.i + 1)
+		let tail = charToString(src, from: state.i + 1, to: min(src.count, state.i + 1 + 64))
 		let range = NSRange(location: 0, length: tail.utf16.count)
 
 		if let match = alertRegex.firstMatch(in: tail, options: [], range: range) {
@@ -52,8 +52,6 @@ func testAlertStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool
 
 			currentParent.children.append(quote)
 			state.openNodes.append(quote)
-
-			state.i = getEndOfLine(state: &state)
 
 			return true
 		}

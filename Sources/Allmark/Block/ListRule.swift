@@ -8,7 +8,7 @@ struct ListInfo {
 	var type: String
 }
 
-func testListStart(state: inout BlockParserState, parent: MarkdownNode, info: ListInfo?) -> Bool {
+func testListStart(state: inout BlockParserState, parent: MarkdownNode, endOfLine: Int, info: ListInfo?) -> Bool {
 	guard let info = info else {
 		return false
 	}
@@ -87,9 +87,9 @@ func testListStart(state: inout BlockParserState, parent: MarkdownNode, info: Li
 
 	for idx in startIdx ..< src.count {
 		let char = src[idx]
-		if isNewLine(char: char) {
+		if isNewLine(code: char) {
 			break
-		} else if isSpace(char: char) {
+		} else if isSpace(code: char) {
 			spaces += 1
 		} else {
 			blank = false
@@ -156,7 +156,7 @@ func testListStart(state: inout BlockParserState, parent: MarkdownNode, info: Li
 	movePastMarker(markerLength: info.markup.count, state: &state)
 
 	state.hasBlankLine = false
-	parseBlock(state: &state, parent: item)
+	parseBlock(state: &state, parent: item, endOfLine: endOfLine)
 
 	return true
 }
@@ -184,7 +184,7 @@ func testListContinue(state: inout BlockParserState, node: MarkdownNode, info: L
 		return false
 	}
 
-	if isNewLine(char: char) {
+	if isNewLine(code: char) {
 		return true
 	}
 

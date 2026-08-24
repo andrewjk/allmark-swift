@@ -4,26 +4,27 @@ func parseLinkReference(
 	state: inout BlockParserState,
 	start: Int
 ) -> LinkReference? {
-	let blankLineRegex = try! NSRegularExpression(pattern: "\\r?\\n[ \\t]*\\r?\\n", options: [])
+	let blankLineRegex = try! NSRegularExpression(pattern: "(\\r?\\n|\\r)[ \\t]*\\1", options: [])
 
 	var currentStart = start
 
 	// Consume spaces
-	var spaces = consumeSpaces(text: state.src, i: currentStart)
-	let spacesRange = NSRange(location: 0, length: spaces.utf16.count)
-	if blankLineRegex.firstMatch(in: spaces, options: [], range: spacesRange) != nil {
+	let firstSpacesLen = consumeSpaces(text: state.src, i: currentStart)
+	let firstSpaces = String(decoding: state.src[currentStart ..< currentStart + firstSpacesLen], as: UTF8.self)
+	let spacesRange = NSRange(location: 0, length: firstSpaces.utf16.count)
+	if blankLineRegex.firstMatch(in: firstSpaces, options: [], range: spacesRange) != nil {
 		return nil
 	}
-	currentStart += spaces.count
+	currentStart += firstSpacesLen
 
 	// Get the url
 	var url = ""
 	let src = state.src
 	if currentStart < src.count {
-		if src[currentStart] == "<" {
+		if src[currentStart] == ANGLE_LEFT_CODE {
 			currentStart += 1
 			for i in currentStart ..< src.count {
-				if src[i] == ">", !isEscaped(text: src, i: i) {
+				if src[i] == ANGLE_RIGHT_CODE, !isEscaped(text: src, i: i) {
 					url = charToString(src, from: currentStart, to: i)
 					currentStart = i + 1
 					break
@@ -31,7 +32,7 @@ func parseLinkReference(
 			}
 		} else {
 			for i in currentStart ... src.count {
-				if i == src.count || isSpace(code: src[i].asciiValue ?? 0) {
+				if i == src.count || isSpace(code: src[i]) {
 					url = charToString(src, from: currentStart, to: i)
 					currentStart = i
 					break
@@ -53,15 +54,16 @@ func parseLinkReference(
 	let urlEnd = currentStart
 
 	// Consume spaces
-	spaces = consumeSpaces(text: src, i: currentStart)
-	currentStart += spaces.count
+	let titleSpacesLen = consumeSpaces(text: src, i: currentStart)
+	let spaces = String(decoding: src[currentStart ..< currentStart + titleSpacesLen], as: UTF8.self)
+	currentStart += titleSpacesLen
 
 	// Get the title
 	var title = ""
 	if currentStart < src.count {
 		let delimiter = src[currentStart]
 
-		if delimiter == "'" || delimiter == "\"" {
+		if delimiter == QUOTE_SINGLE_CODE || delimiter == QUOTE_DOUBLE_CODE {
 			currentStart += 1
 			for i in currentStart ..< src.count {
 				if src[i] == delimiter, !isEscaped(text: src, i: i) {
@@ -70,19 +72,19 @@ func parseLinkReference(
 					break
 				}
 			}
-		} else if delimiter == "(" {
+		} else if delimiter == PAREN_OPEN_CODE {
 			currentStart += 1
 			var level = 1
 			for i in currentStart ..< src.count {
 				if !isEscaped(text: src, i: i) {
-					if src[i] == ")" {
+					if src[i] == PAREN_CLOSE_CODE {
 						level -= 1
 						if level == 0 {
 							title = charToString(src, from: currentStart, to: i)
 							currentStart = i + 1
 							break
 						}
-					} else if src[i] == "(" {
+					} else if src[i] == PAREN_OPEN_CODE {
 						level += 1
 					}
 				}
@@ -107,15 +109,15 @@ func parseLinkReference(
 
 	// Check for non-whitespace after title
 	if currentStart > 0 {
-		if !isNewLine(char: src[currentStart - 1]) {
+		if !isNewLine(code: src[currentStart - 1]) {
 			while currentStart < src.count {
-				if isNewLine(char: src[currentStart]) {
+				if isNewLine(code: src[currentStart]) {
 					currentStart += 1
 					break
-				} else if isSpace(char: src[currentStart]) {
+				} else if isSpace(code: src[currentStart]) {
 					currentStart += 1
 				} else {
-					if spaces.contains("\n") || spaces.contains("\r\n") {
+					if spaces.contains("\r\n") || spaces.contains("\n") || spaces.contains("\r") {
 						title = ""
 						currentStart = urlEnd
 						break

@@ -12,7 +12,7 @@ func testSuperscript(state: inout InlineParserState, parent: inout MarkdownNode)
 
 	let char = src[state.i]
 
-	if !state.isEscaped && char == "^" {
+	if !state.isEscaped && char == CARET_CODE {
 		return testTagMarks(name: "superscript", char: char, state: &state, parent: &parent, precedence: superscriptRule.precedence!)
 	}
 

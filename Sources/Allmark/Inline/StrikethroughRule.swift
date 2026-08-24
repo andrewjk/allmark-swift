@@ -16,7 +16,7 @@ func testStrikethrough(state: inout InlineParserState, parent: inout MarkdownNod
 
 	let char = src[state.i]
 
-	if !state.isEscaped && char == "~" {
+	if !state.isEscaped && char == TILDE_CODE {
 		return testTagMarks(name: "strikethrough", char: char, state: &state, parent: &parent, precedence: strikethroughRule.precedence!)
 	}
 

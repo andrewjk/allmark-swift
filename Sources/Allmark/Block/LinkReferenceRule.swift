@@ -11,7 +11,7 @@ let linkReferenceRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
-func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
+func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode, endOfLine _: Int) -> Bool {
 	if parent.acceptsContent {
 		return false
 	}
@@ -23,7 +23,7 @@ func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode)
 
 	let char = src[state.i]
 
-	if !state.isEscaped && state.indent <= 3 && char == "[" {
+	if !state.isEscaped && state.indent <= 3 && char == BRACKET_OPEN_CODE {
 		// A link reference definition cannot interrupt a paragraph
 		if parent.type == "paragraph" && !parent.blankAfter {
 			return false
@@ -36,27 +36,25 @@ func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode)
 		var label = ""
 		for i in start ..< src.count {
 			if !isEscaped(text: src, i: i) {
-				if src[i] == "]" {
+				if src[i] == BRACKET_CLOSE_CODE {
 					label = charToString(src, from: start, to: i)
 					start = i + 1
 					break
 				}
 
 				// Link labels cannot contain brackets, unless they are backslash-escaped
-				if src[i] == "[" {
+				if src[i] == BRACKET_OPEN_CODE {
 					return false
 				}
 			}
 		}
 
 		// A link label must contain at least one non-whitespace character
-		let labelPattern = try! NSRegularExpression(pattern: "[^\\s]")
-		let labelRange = NSRange(location: 0, length: label.utf16.count)
-		if label.isEmpty || labelPattern.firstMatch(in: label, options: [], range: labelRange) == nil {
+		if label.isEmpty || !hasNonWhitespace(label) {
 			return false
 		}
 
-		if start >= src.count || src[start] != ":" {
+		if start >= src.count || src[start] != COLON_CODE {
 			return false
 		}
 
@@ -91,12 +89,6 @@ func testLinkReferenceStart(state: inout BlockParserState, parent: MarkdownNode)
 		}
 
 		parent.children.append(ref)
-
-		if state.i > 0 {
-			if !isNewLine(char: src[state.i - 1]) {
-				state.i = getEndOfLine(state: &state)
-			}
-		}
 
 		ref.length = state.i - ref.index
 

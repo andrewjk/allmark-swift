@@ -29,7 +29,16 @@ func renderList(_ node: MarkdownNode, _ state: inout RendererState, _: Bool?) {
 					innerNewLine(node: item, state: &state)
 				}
 				renderNode(node: child, state: &state)
-				if i == item.children.count - 1, child.block, !state.output.hasSuffix("\n"), !state.output.hasSuffix("\r\n") {
+				if i == item.children.count - 1, child.block {
+					if state.output.hasSuffix("\n") {
+						state.output.removeLast()
+					}
+					if state.output.hasSuffix("\r\n") {
+						state.output.removeLast()
+					}
+					if state.output.hasSuffix("\r") {
+						state.output.removeLast()
+					}
 					state.output += "\n"
 				}
 			}

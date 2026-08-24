@@ -13,17 +13,17 @@ func testLink(state: inout InlineParserState, parent: inout MarkdownNode) -> Boo
 	let char = src[state.i]
 
 	if !state.isEscaped {
-		if char == "[" {
+		if char == BRACKET_OPEN_CODE {
 			return testLinkOpen(state: &state, parent: &parent)
 		}
 
-		if char == "!" && state.i + 1 < src.count {
-			if src[state.i + 1] == "[" {
+		if char == EXCLAMATION_CODE && state.i + 1 < src.count {
+			if src[state.i + 1] == BRACKET_OPEN_CODE {
 				return testImageOpen(state: &state, parent: &parent)
 			}
 		}
 
-		if char == "]" {
+		if char == BRACKET_CLOSE_CODE {
 			return testLinkClose(state: &state, parent: &parent)
 		}
 	}
@@ -109,17 +109,16 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 				// "The link text may contain balanced brackets, but not
 				// unbalanced ones, unless they are escaped"
 				var level = 0
-				var labelIndex = 0
-				while labelIndex < label.count {
-					let charIndex = label.index(label.startIndex, offsetBy: labelIndex)
-					if label[charIndex] == "\\" {
-						labelIndex += 1
-					} else if label[charIndex] == "[" {
+				var labelIndex = label.startIndex
+				while labelIndex < label.endIndex {
+					if label[labelIndex] == "\\" {
+						labelIndex = label.index(after: labelIndex)
+					} else if label[labelIndex] == "[" {
 						level += 1
-					} else if label[charIndex] == "]" {
+					} else if label[labelIndex] == "]" {
 						level -= 1
 					}
-					labelIndex += 1
+					labelIndex = label.index(after: labelIndex)
 				}
 				if level != 0 {
 					return false
@@ -127,8 +126,8 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 
 				let isLink = startDel.markup == "["
 
-				let hasInfo = state.i + 1 < src.count && src[state.i + 1] == "("
-				let hasRef = state.i + 1 < src.count && src[state.i + 1] == "["
+				let hasInfo = state.i + 1 < src.count && src[state.i + 1] == PAREN_OPEN_CODE
+				let hasRef = state.i + 1 < src.count && src[state.i + 1] == BRACKET_OPEN_CODE
 
 				// "Full and compact references take precedence over shortcut references"
 				// "Inline links also take precedence"
@@ -139,7 +138,7 @@ func testLinkClose(state: inout InlineParserState, parent: inout MarkdownNode) -
 				} else if hasRef {
 					start += 1
 					for i in start ..< src.count {
-						if src[i] == "]" {
+						if src[i] == BRACKET_CLOSE_CODE {
 							// Lookup using the text between the [], or if there
 							// is no text, use the label
 							label = i - start > 0 ? charToString(src, from: start, to: i) : label

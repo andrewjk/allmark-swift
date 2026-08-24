@@ -9,7 +9,7 @@ let listItemRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
-func testListItemStart(state _: inout BlockParserState, parent _: MarkdownNode) -> Bool {
+func testListItemStart(state _: inout BlockParserState, parent _: MarkdownNode, endOfLine _: Int) -> Bool {
 	return false
 }
 
@@ -35,11 +35,11 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 		if openNode.type == "list_item" {
 			itemNode = openNode
 		} else if openNode.type == "list_ordered" {
-			var numbers = ""
+			var numbers: [UInt8] = []
 			var end = state.i
 
 			while end < src.count {
-				if isNumeric(char: src[end]) {
+				if isNumeric(code: src[end]) {
 					numbers.append(src[end])
 					end += 1
 				} else {
@@ -51,14 +51,14 @@ func testListItemContinue(state: inout BlockParserState, node: MarkdownNode) -> 
 				let delimiter = src[end]
 
 				if let item = itemNode {
-					if state.indent <= 3 && state.indent < item.subindent && !numbers.isEmpty && String(delimiter) == node.delimiter {
+					if state.indent <= 3 && state.indent < item.subindent && !numbers.isEmpty && byteString(delimiter) == node.delimiter {
 						return false
 					}
 				}
 			}
 		} else if openNode.type == "list_bulleted" {
 			if let item = itemNode {
-				if state.indent <= 3 && state.indent < item.subindent && String(char) == node.delimiter {
+				if state.indent <= 3 && state.indent < item.subindent && byteString(char) == node.delimiter {
 					return false
 				}
 			}

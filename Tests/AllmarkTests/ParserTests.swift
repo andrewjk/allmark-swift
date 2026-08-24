@@ -47,12 +47,26 @@ import Testing
 
 		#expect(doc.children[0].type == "heading")
 		#expect(doc.children[0].index == 0)
-		#expect(doc.children[0].length == 9)
+		#expect(doc.children[0].length == 13)
 
 		let start = doc.children[0].index
 		let end = start + doc.children[0].length
-		let inputIndex = input.index(input.startIndex, offsetBy: start)
-		let endIndex = input.index(input.startIndex, offsetBy: end)
-		#expect(String(input[inputIndex ..< endIndex]) == "# Test ☺️\n")
+		let inputBytes = Array(input.utf8)
+		#expect(String(decoding: inputBytes[start ..< end], as: UTF8.self) == "# Test ☺️")
+
+		let input2 = input.replacingOccurrences(of: "\r\n", with: "\r").replacingOccurrences(of: "\n", with: "\r")
+		let doc2 = _parse(src: input2, rules: coreRuleSet)
+		let html2 = _render(doc: doc2, renderers: htmlRenderers)
+		let normalizedHtml2 = html2.replacingOccurrences(of: "\r\n", with: "\n").replacingOccurrences(of: "\r", with: "\n")
+		#expect(normalizedHtml2.trimmingCharacters(in: .whitespacesAndNewlines) == expected.trimmingCharacters(in: .whitespacesAndNewlines))
+
+		#expect(doc2.children[0].type == "heading")
+		#expect(doc2.children[0].index == 0)
+		#expect(doc2.children[0].length == 13)
+
+		let start2 = doc2.children[0].index
+		let end2 = start2 + doc2.children[0].length
+		let inputBytes2 = Array(input2.utf8)
+		#expect(String(decoding: inputBytes2[start2 ..< end2], as: UTF8.self) == "# Test ☺️")
 	}
 }

@@ -9,16 +9,16 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 		indent: 0
 	)
 
-	let chars = Array(src)
+	let chars = Array(src.utf8)
 
 	// Skip empty lines at the start
 	var start = 0
 	var i = 0
 	var index = 0
 	while i < chars.count {
-		if !isSpace(char: chars[i]) {
+		if !isSpace(code: chars[i]) {
 			break
-		} else if isNewLine(char: chars[i]) {
+		} else if isNewLine(code: chars[i]) {
 			start = i + 1
 		}
 		i += 1
@@ -27,10 +27,10 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 
 	// Process frontmatter if found
 	var frontmatter: String? = nil
-	if i < chars.count && chars[i] == "-" {
+	if i < chars.count && chars[i] == DASH_CODE {
 		frontmatter = extractFrontMatter(&document, chars, index)
 		if let fm = frontmatter {
-			start = index + fm.count
+			start = index + fm.utf8.count
 		}
 	}
 

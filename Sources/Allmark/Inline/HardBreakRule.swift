@@ -9,8 +9,8 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 	let src = state.src
 	guard state.i < src.count else { return false }
 
-	if src[state.i] == "\\" && state.i + 1 < src.count {
-		if isNewLine(char: src[state.i + 1]) {
+	if src[state.i] == BACKSLASH_CODE && state.i + 1 < src.count {
+		if isNewLine(code: src[state.i + 1]) {
 			let hb = newInline(
 				type: "hard_break",
 				index: state.parentIndex + state.i,
@@ -23,15 +23,15 @@ func testHardBreak(state: inout InlineParserState, parent: inout MarkdownNode) -
 			handleHardBreakEnd(state: &state, end: state.i + 2)
 			return true
 		}
-	} else if src[state.i] == " " {
+	} else if src[state.i] == SPACE_CODE {
 		var spaces = 1
 		var end = src.count
 		for i in (state.i + 1) ..< src.count {
 			let nextChar = src[i]
-			if isNewLine(char: nextChar) {
+			if isNewLine(code: nextChar) {
 				end = i
 				break
-			} else if nextChar == " " {
+			} else if nextChar == SPACE_CODE {
 				spaces += 1
 			} else {
 				return false
@@ -61,8 +61,7 @@ func handleHardBreakEnd(state: inout InlineParserState, end: Int) {
 	state.line += 1
 	state.lineStart = state.i
 
-	if state.i < state.src.count, isSpace(char: state.src[state.i]) {
-		let space = consumeSpaces(text: state.src, i: state.i)
-		state.i += space.count
+	if state.i < state.src.count, isSpace(code: state.src[state.i]) {
+		state.i += consumeSpaces(text: state.src, i: state.i)
 	}
 }

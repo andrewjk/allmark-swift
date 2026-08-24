@@ -1,11 +1,28 @@
 import Foundation
 
 func escapePunctuation(text: String) -> String {
-	// Replace \ followed by punctuation with just the punctuation
-	let pattern = "\\\\([!\"#$%&'()*+,-./:;<=>?@\\[\\\\\\]^_`{|}~])"
-	guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
+	// Fast path: no backslashes means nothing to unescape
+	if !text.contains("\\") {
 		return text
 	}
-	let range = NSRange(location: 0, length: text.utf16.count)
-	return regex.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "$1")
+
+	// Replace \ followed by punctuation with just the punctuation
+	var result = ""
+	result.reserveCapacity(text.count)
+	var i = text.startIndex
+	let end = text.endIndex
+	while i < end {
+		let char = text[i]
+		if char == "\\" {
+			let next = text.index(after: i)
+			if next < end, let code = text[next].asciiValue, isPunctuation(code: UInt32(code)) {
+				result.append(text[next])
+				i = text.index(after: next)
+				continue
+			}
+		}
+		result.append(char)
+		i = text.index(after: i)
+	}
+	return result
 }

@@ -19,11 +19,11 @@ func getOrderedListMarkup(state: BlockParserState) -> ListInfo? {
 		return nil
 	}
 
-	var numbers = ""
+	var numbers: [UInt8] = []
 	var end = state.i
 
 	while end < src.count {
-		if isNumeric(char: src[end]) {
+		if isNumeric(code: src[end]) {
 			numbers.append(src[end])
 			end += 1
 		} else {
@@ -34,15 +34,15 @@ func getOrderedListMarkup(state: BlockParserState) -> ListInfo? {
 	if !numbers.isEmpty, numbers.count < 10, end < src.count {
 		let delimiter = src[end]
 
-		if delimiter == "." || delimiter == ")" {
-			let isSpaceOrEof = end == src.count - 1 || (end + 1 < src.count && isSpace(char: src[end + 1]))
+		if delimiter == DOT_CODE || delimiter == PAREN_CLOSE_CODE {
+			let isSpaceOrEof = end == src.count - 1 || (end + 1 < src.count && isSpace(code: src[end + 1]))
 
 			if isSpaceOrEof || end == src.count - 1 {
-				let isBlank = end == src.count - 1 || isNewLine(char: src[end + 1])
+				let isBlank = end == src.count - 1 || isNewLine(code: src[end + 1])
 
 				return ListInfo(
-					delimiter: String(delimiter),
-					markup: numbers + String(delimiter),
+					delimiter: byteString(delimiter),
+					markup: String(decoding: numbers, as: UTF8.self) + byteString(delimiter),
 					isBlank: isBlank,
 					type: "list_ordered"
 				)
@@ -53,7 +53,7 @@ func getOrderedListMarkup(state: BlockParserState) -> ListInfo? {
 	return nil
 }
 
-func testListOrderedStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
+func testListOrderedStart(state: inout BlockParserState, parent: MarkdownNode, endOfLine: Int) -> Bool {
 	if parent.acceptsContent {
 		return false
 	}
@@ -62,7 +62,7 @@ func testListOrderedStart(state: inout BlockParserState, parent: MarkdownNode) -
 		return false
 	}
 
-	return testListStart(state: &state, parent: parent, info: info)
+	return testListStart(state: &state, parent: parent, endOfLine: endOfLine, info: info)
 }
 
 func testListOrderedContinue(state: inout BlockParserState, node: MarkdownNode) -> Bool {

@@ -18,7 +18,7 @@ func testHtmlSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 
 	let char = src[state.i]
 
-	if !state.isEscaped && char == "<" {
+	if !state.isEscaped && char == ANGLE_LEFT_CODE {
 		let tail = charToString(src, from: state.i)
 		let range = NSRange(location: 0, length: tail.utf16.count)
 
@@ -34,9 +34,9 @@ func testHtmlSpan(state: inout InlineParserState, parent: inout MarkdownNode) ->
 					indent: state.indent
 				)
 				html.content = content
-				html.length = content.count
+				html.length = content.utf8.count
 				parent.children.append(html)
-				state.i += content.count
+				state.i += content.utf8.count
 				return true
 			}
 		}

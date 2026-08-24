@@ -5,7 +5,7 @@ import Foundation
 func parseIndent(state: inout BlockParserState) {
 	let src = state.src
 
-	guard state.i < src.count, isSpace(char: src[state.i]) else {
+	guard state.i < src.count, isSpace(code: src[state.i]) else {
 		return
 	}
 
@@ -13,11 +13,11 @@ func parseIndent(state: inout BlockParserState) {
 	while state.i < src.count {
 		let char = src[state.i]
 
-		if char == " " {
+		if char == SPACE_CODE {
 			state.indent += 1
-		} else if char == "\t" {
+		} else if char == TAB_CODE {
 			state.indent += 4 - (state.indent % 4)
-		} else if isNewLine(char: char) {
+		} else if isNewLine(code: char) {
 			state.hasBlankLine = true
 			break
 		} else {
@@ -26,5 +26,5 @@ func parseIndent(state: inout BlockParserState) {
 
 		state.i += 1
 	}
-	state.spaces = String(src[start ..< state.i])
+	state.spaces = charToString(src, from: start, to: state.i)
 }

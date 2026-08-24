@@ -11,7 +11,7 @@ let headingRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
-func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
+func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode, endOfLine: Int) -> Bool {
 	if parent.acceptsContent {
 		return false
 	}
@@ -23,12 +23,12 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 
 	let char = src[state.i]
 
-	if !state.isEscaped && state.indent <= 3 && char == "#" {
+	if !state.isEscaped && state.indent <= 3 && char == HASH_CODE {
 		var level = 1
 		var j = state.i + 1
 
 		while j < src.count {
-			if src[j] == "#" {
+			if src[j] == HASH_CODE {
 				level += 1
 			} else {
 				break
@@ -37,7 +37,7 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 		}
 
 		if level < 7 && state.i + level < src.count {
-			if isSpace(char: src[state.i + level]) {
+			if isSpace(code: src[state.i + level]) {
 				var closedNode: MarkdownNode? = nil
 				var currentParent = parent
 
@@ -67,19 +67,18 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 				currentParent.children.append(heading)
 
 				movePastMarker(markerLength: level, state: &state)
-				let endOfLine = getEndOfLine(state: &state)
 				var end = endOfLine - 1
 
 				while end >= state.i {
-					if !isSpace(char: src[end]) {
+					if !isSpace(code: src[end]) {
 						break
 					}
 					end -= 1
 				}
 
 				while end >= state.i {
-					if src[end] != "#" {
-						if src[end] == "\\" || !isSpace(char: src[end]) {
+					if src[end] != HASH_CODE {
+						if src[end] == BACKSLASH_CODE || !isSpace(code: src[end]) {
 							end = endOfLine - 1
 						}
 						break
@@ -102,12 +101,8 @@ func testHeadingStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 					heading.info = charToString(src, from: end, to: endOfLine)
 				}
 
-				state.i = endOfLine
-
-				let headingRange = charToString(src, from: heading.index, to: state.i)
-				heading.length = headingRange.count
-				let contentRange = charToString(src, from: content.index, to: state.i)
-				content.length = contentRange.count
+				heading.length = endOfLine - heading.index
+				content.length = endOfLine - content.index
 
 				return true
 			}

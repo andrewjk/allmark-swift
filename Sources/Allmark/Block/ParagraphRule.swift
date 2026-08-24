@@ -10,7 +10,7 @@ let paragraphRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
-func testParagraphStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
+func testParagraphStart(state: inout BlockParserState, parent: MarkdownNode, endOfLine: Int) -> Bool {
 	if parent.acceptsContent {
 		return false
 	}
@@ -19,8 +19,9 @@ func testParagraphStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 		return false
 	}
 
-	let endOfLine = getEndOfLine(state: &state)
 	let src = state.src
+
+	let content = charToString(src, from: state.i, to: endOfLine) + getLineEnding(state: state, endOfLine: endOfLine)
 
 	var hasNonWhitespace = false
 	for i in state.i ..< endOfLine {
@@ -30,11 +31,8 @@ func testParagraphStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 		}
 	}
 	if !hasNonWhitespace {
-		state.i = endOfLine
 		return true
 	}
-
-	let content = charToString(src, from: state.i, to: endOfLine)
 
 	let paragraph = newBlock(
 		type: "paragraph",
@@ -44,7 +42,6 @@ func testParagraphStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 		indent: 0
 	)
 	paragraph.content = content
-	state.i = endOfLine
 
 	if state.hasBlankLine && !parent.children.isEmpty {
 		let lastChild = parent.children[parent.children.count - 1]

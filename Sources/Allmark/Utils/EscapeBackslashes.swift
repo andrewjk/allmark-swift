@@ -2,23 +2,23 @@ import Foundation
 
 func escapeBackslashes(text: String) -> String {
 	var result = ""
-	var i = 0
-	while i < text.count {
-		let index = text.index(text.startIndex, offsetBy: i)
-		let char = text[index]
-		if char == "\\" && i + 1 < text.count {
-			let nextIndex = text.index(text.startIndex, offsetBy: i + 1)
-			let nextChar = text[nextIndex]
-			if isPunctuation(code: text.unicodeScalars[nextIndex].value) {
-				i += 1
-				result.append(nextChar)
+	result.reserveCapacity(text.count)
+	var i = text.startIndex
+	let end = text.endIndex
+	while i < end {
+		let char = text[i]
+		if char == "\\" {
+			let next = text.index(after: i)
+			if next < end, isPunctuation(code: text.unicodeScalars[next].value) {
+				i = next
+				result.append(text[i])
 			} else {
 				result.append(char)
 			}
 		} else {
 			result.append(char)
 		}
-		i += 1
+		i = text.index(after: i)
 	}
 	return result
 }

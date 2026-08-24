@@ -1,62 +1,109 @@
 import Foundation
 
 func decodeEntities(text: String) -> String {
-	let pattern = "(?<!\\\\)&([a-zA-Z0-9]+|#[0-9]{1,7}|#[xX][a-fA-F0-9]{1,6});"
-
-	guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
+	// Fast path: no ampersands means no entities
+	if !text.contains("&") {
 		return text
 	}
 
-	let nsRange = NSRange(text.startIndex..., in: text)
-	let matches = regex.matches(in: text, options: [], range: nsRange)
-
-	var result = text
-	var offset = 0
-
-	for match in matches {
-		let matchRange = match.range
-		let adjustedRange = NSRange(location: matchRange.location + offset, length: matchRange.length)
-
-		guard let swiftRange = Range(adjustedRange, in: result) else {
+	var result = ""
+	result.reserveCapacity(text.count)
+	var i = text.startIndex
+	let end = text.endIndex
+	while i < end {
+		let char = text[i]
+		if char != "&" {
+			result.append(char)
+			i = text.index(after: i)
 			continue
 		}
 
-		let entityString = String(result[swiftRange])
-		let innerRange = match.range(at: 1)
-		let adjustedInnerRange = NSRange(location: innerRange.location + offset, length: innerRange.length)
-
-		guard let swiftInnerRange = Range(adjustedInnerRange, in: result) else {
+		// & preceded by backslash is escaped
+		if i != text.startIndex && text[text.index(before: i)] == "\\" {
+			result.append(char)
+			i = text.index(after: i)
 			continue
 		}
 
-		let inner = String(result[swiftInnerRange])
-		var replacement: String
+		if let (replacement, nextIndex) = decodeEntity(at: i, in: text) {
+			result.append(replacement)
+			i = nextIndex
+		} else {
+			result.append(char)
+			i = text.index(after: i)
+		}
+	}
+	return result
+}
 
-		if inner.hasPrefix("#") {
-			if inner.hasPrefix("#x") || inner.hasPrefix("#X") {
-				let hexString = String(inner.dropFirst(2))
-				if let codePoint = UInt32(hexString, radix: 16), codePoint != 0 {
-					replacement = String(UnicodeScalar(codePoint)!)
-				} else {
-					replacement = "\u{FFFD}"
+private func decodeEntity(at index: String.Index, in text: String) -> (String, String.Index)? {
+	let end = text.endIndex
+	var j = text.index(after: index)
+	guard j < end else { return nil }
+
+	if text[j] == "#" {
+		j = text.index(after: j)
+		var isHex = false
+		if j < end {
+			let c = text[j]
+			if c == "x" || c == "X" {
+				isHex = true
+				j = text.index(after: j)
+			}
+		}
+		var count = 0
+		let maxCount = isHex ? 6 : 7
+		while j < end, count < maxCount {
+			let code = text[j].asciiValue ?? 0
+			if isHex {
+				let isHexDigit = isNumeric(code: code) || (code >= 65 && code <= 70) || (code >= 97 && code <= 102)
+				if !isHexDigit {
+					break
 				}
 			} else {
-				let numString = String(inner.dropFirst())
-				if let codePoint = UInt32(numString), codePoint != 0 {
-					replacement = String(UnicodeScalar(codePoint)!)
-				} else {
-					replacement = "\u{FFFD}"
+				if !isNumeric(code: code) {
+					break
 				}
 			}
-		} else {
-			replacement = entities[inner] ?? entityString
+			count += 1
+			j = text.index(after: j)
 		}
+		guard count > 0, j < end, text[j] == ";" else { return nil }
 
-		result.replaceSubrange(swiftRange, with: replacement)
-		offset += replacement.count - entityString.count
+		let after = text.index(after: index)
+		let inner = String(text[after ..< j])
+		let replacement: String
+		if isHex {
+			let hexString = String(inner.dropFirst(2))
+			if let codePoint = UInt32(hexString, radix: 16), codePoint != 0, let scalar = UnicodeScalar(codePoint) {
+				replacement = String(scalar)
+			} else {
+				replacement = "\u{FFFD}"
+			}
+		} else {
+			let numString = String(inner.dropFirst())
+			if let codePoint = UInt32(numString), codePoint != 0, let scalar = UnicodeScalar(codePoint) {
+				replacement = String(scalar)
+			} else {
+				replacement = "\u{FFFD}"
+			}
+		}
+		return (replacement, text.index(after: j))
 	}
 
-	return result
+	// Named entity: [a-zA-Z0-9]+ then ';'
+	var count = 0
+	while j < end {
+		guard let code = text[j].asciiValue, isAlphaNumeric(code: code) else { break }
+		count += 1
+		j = text.index(after: j)
+	}
+	guard count > 0, j < end, text[j] == ";" else { return nil }
+
+	let after = text.index(after: index)
+	let inner = String(text[after ..< j])
+	guard let replacement = entities[inner] else { return nil }
+	return (replacement, text.index(after: j))
 }
 
 let entities: [String: String] = [

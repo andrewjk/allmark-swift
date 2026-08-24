@@ -1,16 +1,10 @@
 import Foundation
 
-func consumeSpaces(text: [Character], i: Int) -> String {
-	var result = ""
+/// Returns the number of consecutive space/whitespace bytes starting at `i`.
+func consumeSpaces(text: [UInt8], i: Int) -> Int {
 	var index = i
-	while index < text.count {
-		let char = text[index]
-		if isSpace(char: char) {
-			result.append(char)
-			index += 1
-		} else {
-			break
-		}
+	while index < text.count, isSpace(code: text[index]) {
+		index += 1
 	}
-	return result
+	return index - i
 }

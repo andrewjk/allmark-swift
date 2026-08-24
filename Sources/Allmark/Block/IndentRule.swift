@@ -9,7 +9,7 @@ let indentRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
-func testIndentStart(state: inout BlockParserState, parent _: MarkdownNode) -> Bool {
+func testIndentStart(state: inout BlockParserState, parent _: MarkdownNode, endOfLine _: Int) -> Bool {
 	let src = state.src
 	if state.i >= src.count {
 		return false
@@ -17,14 +17,14 @@ func testIndentStart(state: inout BlockParserState, parent _: MarkdownNode) -> B
 
 	let char = src[state.i]
 
-	if isSpace(char: char) {
+	if isSpace(code: char) {
 		while state.i < src.count {
 			let currentChar = src[state.i]
 
-			if currentChar == " " {
+			if currentChar == SPACE_CODE {
 				state.indent += 1
 				state.i += 1
-			} else if currentChar == "\t" {
+			} else if currentChar == TAB_CODE {
 				state.indent += 4 - (state.indent % 4)
 				state.i += 1
 			} else {

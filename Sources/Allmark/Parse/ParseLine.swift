@@ -34,5 +34,25 @@ func parseLine(state: inout BlockParserState) {
 	}
 
 	let parent = state.openNodes.last!
-	parseBlock(state: &state, parent: parent)
+
+	// Get the end of the line
+	var endOfLine = state.i
+	var nextIndex = state.src.count
+	while endOfLine < state.src.count {
+		let code = state.src[endOfLine]
+		if isNewLine(code: code) {
+			nextIndex = endOfLine + newlineLength(state.src, endOfLine)
+			break
+		}
+		endOfLine += 1
+	}
+
+	parseBlock(state: &state, parent: parent, endOfLine: endOfLine)
+
+	// NOTE: a rule can move state.i past the next line
+	// (e.g. for a HTML block or link reference containing a newline)
+	if state.i < nextIndex {
+		state.i = nextIndex
+		state.lineStart = nextIndex
+	}
 }

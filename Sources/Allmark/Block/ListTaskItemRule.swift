@@ -14,7 +14,7 @@ let listTaskItemRule = BlockRule(
  * which begins with a task list item marker and at least one whitespace
  * character before any other content.
  */
-func testListTaskItemStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
+func testListTaskItemStart(state: inout BlockParserState, parent: MarkdownNode, endOfLine _: Int) -> Bool {
 	if parent.type == "list_item" {
 		let start = state.i
 		let src = state.src
@@ -25,11 +25,11 @@ func testListTaskItemStart(state: inout BlockParserState, parent: MarkdownNode) 
 			let char3 = src[start + 2]
 			let char4 = src[start + 3]
 
-			if char1 == "[" && char3 == "]" && isSpace(char: char4) {
+			if char1 == BRACKET_OPEN_CODE && char3 == BRACKET_CLOSE_CODE && isSpace(code: char4) {
 				// GitHub doesn't support task lists in block quotes
 				let inBlockQuote = state.openNodes.contains { $0.type == "block_quote" }
 				if !inBlockQuote {
-					let markup = "[\(char2)]"
+					let markup = "[" + byteString(char2) + "]"
 
 					// HACK: It should be a block, but it's not for output reasons
 					let task = newInline(

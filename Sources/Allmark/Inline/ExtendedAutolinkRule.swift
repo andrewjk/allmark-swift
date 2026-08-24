@@ -31,8 +31,8 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 	if !state.isEscaped {
 		let char = src[state.i]
 
-		if char == "w" {
-			let tail = charToString(src, from: state.i)
+		if char == 0x77, matchesLiteralCI(src, state.i, "www.") {
+			let tail = charToString(src, from: state.i, to: endOfLineIndex(src, state.i))
 
 			let urlRange = NSRange(location: 0, length: tail.utf16.count)
 			if let urlMatch = urlRegex.firstMatch(in: tail, options: [], range: urlRange) {
@@ -44,7 +44,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 					if spaceRegexExt.firstMatch(in: url, options: [], range: spaceRange) != nil {
 						let fullMatchRange = urlMatch.range(at: 0)
 						if let fullRange = Range(fullMatchRange, in: tail) {
-							let originalLength = tail[fullRange].count
+							let originalLength = tail[fullRange].utf8.count
 							let markup = escapeHtml(text: String(tail[fullRange]))
 							let text = newText(
 								index: state.parentIndex + state.i,
@@ -67,7 +67,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 						let link = newLink(url: url, state: state)
 						link.info = "http://\(link.info ?? "")"
 						parent.children.append(link)
-						state.i += url.count
+						state.i += url.utf8.count
 					}
 
 					return true
@@ -75,8 +75,12 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 			}
 		}
 
-		if char == "h" || char == "f" {
-			let tail = charToString(src, from: state.i)
+		if char == 0x68 || char == 0x66,
+		   matchesLiteralCI(src, state.i, "http://")
+		   || matchesLiteralCI(src, state.i, "https://")
+		   || matchesLiteralCI(src, state.i, "ftp://")
+		{
+			let tail = charToString(src, from: state.i, to: endOfLineIndex(src, state.i))
 
 			let urlRange = NSRange(location: 0, length: tail.utf16.count)
 			if let urlMatch = extUrlRegex.firstMatch(in: tail, options: [], range: urlRange) {
@@ -96,7 +100,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 								indent: state.indent
 							)
 							parent.children.append(text)
-							state.i += tail[fullRange].count
+							state.i += tail[fullRange].utf8.count
 							return true
 						}
 					}
@@ -106,7 +110,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 
 					let link = newLink(url: url, state: state)
 					parent.children.append(link)
-					state.i += url.count
+					state.i += url.utf8.count
 
 					return true
 				}
@@ -116,18 +120,18 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 		// Check alphanumeric for email
 		if state.i < src.count {
 			// Check for @ sign for email
-			if char == "@" {
+			if char == AT_SIGN_CODE {
 				// Find start of potential email (first space before @ or beginning of string)
 				var start = 0
 				for i in stride(from: state.i - 1, through: 0, by: -1) {
 					let previousChar = src[i]
-					if isSpace(char: previousChar) {
+					if isSpace(code: previousChar) {
 						start = i + 1
 						break
 					}
 				}
 
-				let tail = charToString(src, from: start)
+				let tail = charToString(src, from: start, to: endOfLineIndex(src, start))
 
 				let emailRange = NSRange(location: 0, length: tail.utf16.count)
 				if let emailMatch = extEmailRegex.firstMatch(in: tail, options: [], range: emailRange) {
@@ -161,7 +165,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 						let link = newLink(url: url, state: state)
 						link.info = "mailto:\(link.info ?? "")"
 						parent.children.append(link)
-						state.i = start + url.count
+						state.i = start + url.utf8.count
 
 						return true
 					}
@@ -169,8 +173,10 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 			}
 		}
 
-		if char == "m" || char == "x" {
-			let tail = charToString(src, from: state.i)
+		if char == 0x6D || char == 0x78,
+		   matchesLiteralCI(src, state.i, "mailto:") || matchesLiteralCI(src, state.i, "xmpp:")
+		{
+			let tail = charToString(src, from: state.i, to: endOfLineIndex(src, state.i))
 
 			let xmppRange = NSRange(location: 0, length: tail.utf16.count)
 			if let emailMatch = extXmppRegex.firstMatch(in: tail, options: [], range: xmppRange) {
@@ -193,7 +199,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 								indent: state.indent
 							)
 							parent.children.append(text)
-							state.i += tail[fullRange].count
+							state.i += tail[fullRange].utf8.count
 							return true
 						}
 					}
@@ -211,7 +217,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 									indent: state.indent
 								)
 								parent.children.append(text)
-								state.i += tail[fullRange].count
+								state.i += tail[fullRange].utf8.count
 								return true
 							}
 						}
@@ -221,7 +227,7 @@ func testExtendedAutolink(state: inout InlineParserState, parent: inout Markdown
 
 					let link = newLink(url: url, state: state)
 					parent.children.append(link)
-					state.i += url.count
+					state.i += url.utf8.count
 
 					return true
 				}

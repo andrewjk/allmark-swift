@@ -8,16 +8,15 @@ func parseLinkInline(
 	let src = state.src
 
 	// Consume spaces
-	var spaces = consumeSpaces(text: src, i: currentStart)
-	currentStart += spaces.count
+	currentStart += consumeSpaces(text: src, i: currentStart)
 
 	// Get the url
 	var url = ""
 	if currentStart < src.count {
-		if src[currentStart] == "<" {
+		if src[currentStart] == ANGLE_LEFT_CODE {
 			currentStart += 1
 			for i in currentStart ..< src.count {
-				if src[i] == ">", !isEscaped(text: src, i: i) {
+				if src[i] == ANGLE_RIGHT_CODE, !isEscaped(text: src, i: i) {
 					url = charToString(src, from: currentStart, to: i)
 					currentStart = i + 1
 					break
@@ -27,19 +26,19 @@ func parseLinkInline(
 			var level = 1
 			for i in currentStart ... src.count {
 				if i < src.count && !isEscaped(text: src, i: i) {
-					if src[i] == ")" {
+					if src[i] == PAREN_CLOSE_CODE {
 						level -= 1
 						if level == 0 {
 							url = charToString(src, from: currentStart, to: i)
 							currentStart = i
 							break
 						}
-					} else if src[i] == "(" {
+					} else if src[i] == PAREN_OPEN_CODE {
 						level += 1
 					}
 				}
 
-				if i == src.count || isSpace(char: src[i]) {
+				if i == src.count || isSpace(code: src[i]) {
 					url = charToString(src, from: currentStart, to: i)
 					currentStart = i
 					break
@@ -49,7 +48,7 @@ func parseLinkInline(
 	}
 
 	if !url.isEmpty {
-		if url.contains("\n") || url.contains("\r\n") {
+		if url.contains("\n") || url.contains("\r\n") || url.contains("\r") {
 			return nil
 		}
 		url = decodeEntities(text: url)
@@ -62,17 +61,16 @@ func parseLinkInline(
 	}
 
 	// Consume spaces
-	spaces = consumeSpaces(text: src, i: currentStart)
-	currentStart += spaces.count
+	currentStart += consumeSpaces(text: src, i: currentStart)
 
 	// Get the title
 	var title = ""
 	if currentStart < src.count {
 		let delimiter = src[currentStart]
 
-		if delimiter == ")" {
+		if delimiter == PAREN_CLOSE_CODE {
 			// No title
-		} else if delimiter == "'" || delimiter == "\"" {
+		} else if delimiter == QUOTE_SINGLE_CODE || delimiter == QUOTE_DOUBLE_CODE {
 			currentStart += 1
 			for i in currentStart ..< src.count {
 				if src[i] == delimiter, !isEscaped(text: src, i: i) {
@@ -81,19 +79,19 @@ func parseLinkInline(
 					break
 				}
 			}
-		} else if delimiter == "(" {
+		} else if delimiter == PAREN_OPEN_CODE {
 			currentStart += 1
 			var level = 1
 			for i in currentStart ..< src.count {
 				if !isEscaped(text: src, i: i) {
-					if src[i] == ")" {
+					if src[i] == PAREN_CLOSE_CODE {
 						level -= 1
 						if level == 0 {
 							title = charToString(src, from: currentStart, to: i)
 							currentStart = i + 1
 							break
 						}
-					} else if src[i] == "(" {
+					} else if src[i] == PAREN_OPEN_CODE {
 						level += 1
 					}
 				}
@@ -109,14 +107,13 @@ func parseLinkInline(
 		title = escapeHtml(text: title)
 	}
 
-	spaces = consumeSpaces(text: src, i: currentStart)
-	currentStart += spaces.count
+	currentStart += consumeSpaces(text: src, i: currentStart)
 
 	if currentStart >= src.count {
 		return nil
 	}
 
-	if src[currentStart] != ")" {
+	if src[currentStart] != PAREN_CLOSE_CODE {
 		return nil
 	}
 

@@ -9,11 +9,10 @@ let contentRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
-func testContentStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
-	let endOfLine = getEndOfLine(state: &state)
+func testContentStart(state: inout BlockParserState, parent: MarkdownNode, endOfLine: Int) -> Bool {
 	let src = state.src
 
-	let content = charToString(src, from: state.i, to: endOfLine)
+	let content = charToString(src, from: state.i, to: endOfLine) + getLineEnding(state: state, endOfLine: endOfLine)
 
 	if parent.acceptsContent {
 		if state.hasBlankLine {
@@ -27,6 +26,5 @@ func testContentStart(state: inout BlockParserState, parent: MarkdownNode) -> Bo
 	}
 	parent.content += content
 
-	state.i = endOfLine
 	return true
 }

@@ -11,6 +11,19 @@ func _render(doc: MarkdownNode, renderers: [Renderer] = htmlRenderers, options: 
 		lineWidth: options?.lineWidth
 	)
 
+	// Reserve output capacity up-front to avoid repeated reallocations
+	var estimate = 0
+	func measure(_ node: MarkdownNode) {
+		if node.type == "text" {
+			estimate += node.content.utf8.count
+		}
+		for child in node.children {
+			measure(child)
+		}
+	}
+	measure(doc)
+	state.output.reserveCapacity(estimate + estimate / 2 + 1024)
+
 	renderChildren(node: doc, state: &state)
 
 	if !state.footnotes.isEmpty && renderersMap["footnote_list"] != nil {

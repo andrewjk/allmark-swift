@@ -7,8 +7,8 @@ public struct BlockParserState {
 	/// Block parsing rules map for fast lookup by name.
 	public var rulesMap: [String: BlockRule]
 
-	/// The source text being parsed.
-	public var src: [Character]
+	/// The source text being parsed (UTF-8 bytes).
+	public var src: [UInt8]
 	/// Current position in the source.
 	public var i: Int
 	/// Current line number.
@@ -32,7 +32,7 @@ public struct BlockParserState {
 	/// Footnote reference definitions.
 	public var footnotes: [String: FootnoteReference]
 
-	public init(rules: [BlockRule], rulesMap: [String: BlockRule], src: [Character], i: Int, line: Int, lineStart: Int, indent: Int, spaces: String, openNodes: [MarkdownNode], isEscaped: Bool, maybeContinue: Bool, hasBlankLine: Bool, refs: [String: LinkReference], footnotes: [String: FootnoteReference]) {
+	public init(rules: [BlockRule], rulesMap: [String: BlockRule], src: [UInt8], i: Int, line: Int, lineStart: Int, indent: Int, spaces: String, openNodes: [MarkdownNode], isEscaped: Bool, maybeContinue: Bool, hasBlankLine: Bool, refs: [String: LinkReference], footnotes: [String: FootnoteReference]) {
 		self.rules = rules
 		self.rulesMap = rulesMap
 		self.src = src

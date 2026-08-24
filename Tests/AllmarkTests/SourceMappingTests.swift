@@ -659,7 +659,7 @@ struct SourceMappingTests {
 			let heading = doc.children[0]
 			#expect(heading.type == "heading")
 			#expect(heading.index == 0)
-			#expect(heading.length == 12)
+			#expect(heading.length == 11)
 
 			let paragraph = doc.children[1]
 			#expect(paragraph.type == "paragraph")

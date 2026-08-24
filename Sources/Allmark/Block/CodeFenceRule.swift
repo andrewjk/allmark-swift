@@ -10,7 +10,7 @@ let codeFenceRule = BlockRule(
 	closeNode: { _, _ in }
 )
 
-func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode) -> Bool {
+func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode, endOfLine: Int) -> Bool {
 	// A fenced code block can't be started in a block that accepts content
 	if parent.acceptsContent {
 		return false
@@ -23,7 +23,7 @@ func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 
 	let char = src[state.i]
 
-	if state.indent <= 3 && (char == "`" || char == "~") {
+	if state.indent <= 3 && (char == BACKTICK_CODE || char == TILDE_CODE) {
 		var matched = 1
 		var end = state.i + 1
 		var haveSpace = false
@@ -36,9 +36,9 @@ func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 					return false
 				}
 				matched += 1
-			} else if isNewLine(char: nextChar) {
+			} else if isNewLine(code: nextChar) {
 				break
-			} else if isSpace(char: nextChar) {
+			} else if isSpace(code: nextChar) {
 				haveSpace = true
 			} else {
 				break
@@ -50,18 +50,18 @@ func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 			var closedNode: MarkdownNode? = nil
 			var currentParent = parent
 
-			let markup = String(repeating: char, count: matched)
+			let markup = String(repeating: byteString(char), count: matched)
 
 			var info = ""
 			if state.i + matched < src.count {
 				let endChar = src[end]
-				if isNewLine(char: endChar) {
+				if isNewLine(code: endChar) {
 					end += 1
 				} else {
-					end = getEndOfLine(state: &state)
+					end = endOfLine
 					info = charToString(src, from: state.i + matched, to: end)
 
-					if char == "`" && info.contains("`") {
+					if char == BACKTICK_CODE && info.contains("`") {
 						return false
 					}
 
@@ -108,8 +108,6 @@ func testCodeFenceStart(state: inout BlockParserState, parent: MarkdownNode) -> 
 			code.acceptsContent = true
 			code.info = info
 
-			state.i = end
-
 			if state.hasBlankLine && !currentParent.children.isEmpty {
 				let lastChild = currentParent.children[currentParent.children.count - 1]
 				lastChild.blankAfter = true
@@ -139,9 +137,9 @@ func testCodeFenceContinue(state: inout BlockParserState, node: MarkdownNode) ->
 
 	let char = src[state.i]
 
-	if state.indent <= 3 && (char == "`" || char == "~") {
+	if state.indent <= 3 && (char == BACKTICK_CODE || char == TILDE_CODE) {
 		// This might be a closing fence
-		if node.markup.hasPrefix(String(char)) {
+		if node.markup.hasPrefix(byteString(char)) {
 			var endMatched = 0
 			var end = state.i
 
@@ -161,9 +159,9 @@ func testCodeFenceContinue(state: inout BlockParserState, node: MarkdownNode) ->
 				while end < src.count {
 					let nextChar = src[end]
 
-					if isNewLine(char: nextChar) {
+					if isNewLine(code: nextChar) {
 						break
-					} else if isSpace(char: nextChar) {
+					} else if isSpace(code: nextChar) {
 						end += 1
 					} else {
 						return true

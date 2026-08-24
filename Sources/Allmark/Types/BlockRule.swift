@@ -15,8 +15,9 @@ public struct BlockRule: Sendable {
 	/// - Parameters:
 	///   - state: The block parser state
 	///   - parent: The parent markdown node
+	///   - endOfLine: The index of the end of the current line
 	/// - Returns: Whether the node should start
-	public var testStart: @Sendable (inout BlockParserState, MarkdownNode) -> Bool
+	public var testStart: @Sendable (inout BlockParserState, MarkdownNode, Int) -> Bool
 
 	/// Creates a node for this rule.
 	/// - Parameters:
@@ -39,7 +40,7 @@ public struct BlockRule: Sendable {
 
 	public init(
 		name: String,
-		testStart: @escaping @Sendable (inout BlockParserState, MarkdownNode) -> Bool,
+		testStart: @escaping @Sendable (inout BlockParserState, MarkdownNode, Int) -> Bool,
 		testContinue: @escaping @Sendable (inout BlockParserState, MarkdownNode) -> Bool,
 		closeNode: @escaping @Sendable (inout BlockParserState, MarkdownNode) -> Void
 	) {

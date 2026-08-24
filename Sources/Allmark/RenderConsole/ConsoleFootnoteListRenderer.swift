@@ -18,8 +18,14 @@ func renderConsoleFootnoteList(_ node: MarkdownNode, _ state: inout RendererStat
 		if let info = node.info, let refNode = state.footnoteRefs[info] {
 			renderChildren(node: refNode, state: &state)
 		}
-		if state.output.hasSuffix("\n") || state.output.hasSuffix("\r\n") {
-			state.output = String(state.output.dropLast())
+		if state.output.hasSuffix("\n") {
+			state.output.removeLast()
+		}
+		if state.output.hasSuffix("\r\n") {
+			state.output.removeLast()
+		}
+		if state.output.hasSuffix("\r") {
+			state.output.removeLast()
 		}
 		state.output += "\n"
 	}

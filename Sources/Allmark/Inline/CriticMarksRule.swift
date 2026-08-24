@@ -14,17 +14,17 @@ func testCriticMarks(
 
 	let char = src[state.i]
 
-	if !state.isEscaped && char == "{" {
+	if !state.isEscaped && char == BRACE_LEFT_CODE {
 		let start = state.i
 		var end = state.i
 
 		// Get the markup
-		var markup = String(char)
+		var markup = byteString(char)
 		for i in (start + 1) ..< src.count {
-			if src[i] == delimiter.first {
+			if src[i] == delimiter.first?.asciiValue {
 				markup.append(delimiter)
 				end += 1
-			} else if src[i] == "}" || (closeDel != delimiter && src[i] == closeDel.first) {
+			} else if src[i] == BRACE_RIGHT_CODE || (closeDel != delimiter && src[i] == closeDel.first?.asciiValue) {
 				return false
 			} else {
 				break
@@ -47,13 +47,13 @@ func testCriticMarks(
 
 			return true
 		}
-	} else if !state.isEscaped && String(char) == closeDel {
+	} else if !state.isEscaped && byteString(char) == closeDel {
 		// Get the markup
 		var markup = "{" + delimiter
 		for i in (state.i + 1) ..< src.count {
-			if src[i] == closeDel.first {
+			if src[i] == closeDel.first?.asciiValue {
 				markup.append(delimiter)
-			} else if src[i] == "}" {
+			} else if src[i] == BRACE_RIGHT_CODE {
 				break
 			} else {
 				return false

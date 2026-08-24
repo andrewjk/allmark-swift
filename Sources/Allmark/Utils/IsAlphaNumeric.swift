@@ -1,5 +1,5 @@
 @inlinable func isAlpha(code: UInt8) -> Bool {
-	return (code > 64 && code < 91) || (code > 96 && code < 123)
+	return (code > AT_SIGN_CODE && code < BRACKET_OPEN_CODE) || (code > BACKTICK_CODE && code < BRACE_LEFT_CODE)
 }
 
 @inlinable func isAlpha(char: Character) -> Bool {
@@ -8,7 +8,7 @@
 }
 
 @inlinable func isNumeric(code: UInt8) -> Bool {
-	return code > 47 && code < 58
+	return code >= DIGIT_0_CODE && code <= DIGIT_9_CODE
 }
 
 @inlinable func isNumeric(char: Character) -> Bool {

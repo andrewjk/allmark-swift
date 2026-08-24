@@ -12,10 +12,10 @@ func testSubscript(state: inout InlineParserState, parent: inout MarkdownNode) -
 
 	let char = src[state.i]
 
-	if !state.isEscaped && char == "~" {
+	if !state.isEscaped && char == TILDE_CODE {
 		// Subscripts can only be one character long, otherwise they are a GFM strikethrough
 		if state.i + 1 < src.count {
-			if src[state.i + 1] == "~" {
+			if src[state.i + 1] == TILDE_CODE {
 				return false
 			}
 		}
