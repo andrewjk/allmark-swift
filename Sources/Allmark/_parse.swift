@@ -70,6 +70,9 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 
 	parseBlockInlines(parent: &document, rules: rules.inlines, refs: state.refs, footnotes: state.footnotes)
 
+	// Parsing tracks UTF-8 byte offsets; convert them to character offsets for consumers
+	normalizeSourcePositions(document: document, src: src)
+
 	if let fm = frontmatter {
 		document.info = fm
 	}

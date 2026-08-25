@@ -728,4 +728,55 @@ struct SourceMappingTests {
 			#expect(code.length == 8)
 		}
 	}
+
+	@Test func headingWithEmoji() async {
+		let input = "# Test ☺️"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let heading = doc.children[0]
+			#expect(heading.type == "heading")
+			// Byte length would be 13, character length is 8
+			#expect(heading.index == 0)
+			#expect(heading.length == 8)
+
+			let start = heading.index
+			let end = start + heading.length
+			let startIndex = input.index(input.startIndex, offsetBy: start)
+			let endIndex = input.index(input.startIndex, offsetBy: end)
+			#expect(String(input[startIndex ..< endIndex]) == "# Test ☺️")
+		}
+	}
+
+	@Test func paragraphWithMultibyteCharacters() async {
+		let input = "日本語 *emphasis* 🚀 text"
+		await MainActor.run {
+			let doc = _parse(src: input, rules: extendedRuleSet)
+			let paragraph = doc.children[0]
+
+			let text = paragraph.children[0]
+			#expect(text.type == "text")
+			#expect(text.index == 0)
+			#expect(text.length == 4)
+
+			let emphasis = paragraph.children[1]
+			#expect(emphasis.type == "emphasis")
+			#expect(emphasis.index == 4)
+			#expect(emphasis.length == 10)
+
+			let text2 = paragraph.children[2]
+			#expect(text2.type == "text")
+			#expect(text2.index == 14)
+			#expect(text2.length == 7)
+
+			for child in paragraph.children {
+				let startIndex = input.index(input.startIndex, offsetBy: child.index)
+				let endIndex = input.index(startIndex, offsetBy: child.length)
+				_ = String(input[startIndex ..< endIndex])
+			}
+
+			let emphasisStartIndex = input.index(input.startIndex, offsetBy: emphasis.index)
+			let emphasisEndIndex = input.index(emphasisStartIndex, offsetBy: emphasis.length)
+			#expect(String(input[emphasisStartIndex ..< emphasisEndIndex]) == "*emphasis*")
+		}
+	}
 }
