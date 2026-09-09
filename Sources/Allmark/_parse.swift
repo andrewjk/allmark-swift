@@ -12,25 +12,18 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 	let chars = Array(src.utf8)
 
 	// Skip empty lines at the start
-	var start = 0
-	var i = 0
-	var index = 0
-	while i < chars.count {
-		if !isSpace(code: chars[i]) {
-			break
-		} else if isNewLine(code: chars[i]) {
-			start = i + 1
-		}
-		i += 1
-	}
-	index = i
+	let (lineStart, index) = skipEmptyLines(src: chars, start: 0)
+	var start = lineStart
 
-	// Process frontmatter if found
+	// Process frontmatter if found (the opening delimiter must be at the
+	// start of a line, so indented "---" is not frontmatter)
 	var frontmatter: String? = nil
-	if i < chars.count && chars[i] == DASH_CODE {
+	if start == index, index < chars.count, chars[index] == DASH_CODE {
 		frontmatter = extractFrontMatter(&document, chars, index)
 		if let fm = frontmatter {
-			start = index + fm.utf8.count
+			// Treat whitespace after the frontmatter exactly the same as
+			// whitespace at the start of the document.
+			start = skipEmptyLines(src: chars, start: index + fm.utf8.count).lineStart
 		}
 	}
 
@@ -78,4 +71,21 @@ func _parse(src: String, rules: RuleSet) -> MarkdownNode {
 	}
 
 	return document
+}
+
+/// Skips whitespace-only lines starting at `start`, returning the start of the
+/// first line containing content and the index of the first non-whitespace
+/// character.
+private func skipEmptyLines(src: [UInt8], start: Int) -> (lineStart: Int, index: Int) {
+	var lineStart = start
+	var index = start
+	while index < src.count {
+		if !isSpace(code: src[index]) {
+			break
+		} else if isNewLine(code: src[index]) {
+			lineStart = index + 1
+		}
+		index += 1
+	}
+	return (lineStart, index)
 }
