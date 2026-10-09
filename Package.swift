@@ -1,4 +1,4 @@
-// Version: 1.0.22
+// Version: 1.0.23
 // swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
@@ -42,6 +42,8 @@ let package = Package(
 			],
 			resources: [
 				.copy("full-markdown.md"),
+				.copy("bench-para-500.md"),
+				.copy("bench-para-2000.md"),
 			]
 		),
 	]
